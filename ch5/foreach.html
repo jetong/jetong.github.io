@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>foreach example</title>
+</head>
+<body>
+
+<h2>example</h2>
+
+<script type="text/javascript">
+var myArray = new Array(1, 2, 3)
+
+function timesTwo(value, index, array) {
+	alert(value*2);
+}
+
+var result = myArray.foreach(timesTwo);
+
+document.write("Result: " + result);
+
+</script>
+</body>
+</html>
