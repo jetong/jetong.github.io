@@ -10,7 +10,6 @@
 <h2>example</h2>
 
 <script type="text/javascript">
-document.write("Hello<br>")
 var myArray = new Array(1, 2, 3);
 
 function timesTwo(value, index, array) {
@@ -19,8 +18,16 @@ function timesTwo(value, index, array) {
 
 myArray.forEach(timesTwo);
 
-document.write("Array: ");
-document.write(myArray);
+document.write("Original array is unchanged: " + myArray);
+document.write("<br>");
+
+var doubledArray = myArray.map(timesTwo);
+var quadrupledArray = doubledArray.map(timesTwo);
+
+document.write("Doubled array: " + doubledArray);
+document.write("<br>");
+document.write("Quadrupled array: " + quadrupledArray);
+document.write("<br>");
 
 </script>
 </body>
