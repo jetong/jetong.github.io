@@ -16,14 +16,14 @@ function timesTwo(value, index, array) {
 	return value*2;
 }
 
-myArray.forEach(timesTwo);
-
+var test = myArray.forEach(timesTwo);
 document.write("Original array is unchanged: " + myArray);
+document.write("<br>");
+document.write("Test array: " + test);
 document.write("<br>");
 
 var doubledArray = myArray.map(timesTwo);
 var quadrupledArray = doubledArray.map(timesTwo);
-
 document.write("Doubled array: " + doubledArray);
 document.write("<br>");
 document.write("Quadrupled array: " + quadrupledArray);
