@@ -16,17 +16,21 @@ function timesTwo(value, index, array) {
 	return value*2;
 }
 
+// use forEach for temporarily access and print each element of myArray
 myArray.forEach(timesTwo);
+document.write("Using forEach<br>")
 document.write("Original array is unchanged: " + myArray);
 document.write("<br>");
 
+// use map to obtain a new array with processed elements
 var doubledArray = myArray.map(timesTwo);
 var quadrupledArray = doubledArray.map(timesTwo);
+document.write("Using map<br>")
 document.write("Doubled array: " + doubledArray);
 document.write("<br>");
 document.write("Quadrupled array: " + quadrupledArray);
 document.write("<br>");
-document.write("Original array is unchanged: " + myArray);
+document.write("Original array is still unchanged: " + myArray);
 
 </script>
 </body>
