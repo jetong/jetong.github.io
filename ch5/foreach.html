@@ -16,10 +16,8 @@ function timesTwo(value, index, array) {
 	return value*2;
 }
 
-var test = myArray.forEach(timesTwo);
+myArray.forEach(timesTwo);
 document.write("Original array is unchanged: " + myArray);
-document.write("<br>");
-document.write("Test array: " + test);
 document.write("<br>");
 
 var doubledArray = myArray.map(timesTwo);
@@ -28,6 +26,7 @@ document.write("Doubled array: " + doubledArray);
 document.write("<br>");
 document.write("Quadrupled array: " + quadrupledArray);
 document.write("<br>");
+document.write("Original array is unchanged: " + myArray);
 
 </script>
 </body>
