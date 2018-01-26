@@ -10,7 +10,7 @@
 <h2>example</h2>
 
 <script type="text/javascript">
-document.write("Hello")
+document.write("Hello<BR>")
 var myArray = new Array(1, 2, 3)
 
 function timesTwo(value, index, array) {
@@ -19,7 +19,8 @@ function timesTwo(value, index, array) {
 
 var result = myArray.foreach(timesTwo);
 
-document.write("Result: " + result);
+document.write("Result: ");
+document.write(result)
 
 </script>
 </body>
