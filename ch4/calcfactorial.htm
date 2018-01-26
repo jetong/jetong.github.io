@@ -23,12 +23,12 @@ function butCalculate_onclick()
     }
     catch(exception)
     {
-        if (typeof(exception) == "string")
+        if (typeof(exception) == "string")  // catch the exception (type string) thrown in try block
         {
             if (exception.charAt(0) == "!")
             {
                 alert(exception.substr(1));
-                document.form1.txtNum1.focus();
+                document.form1.txtNum1.focus();		// return focus to textbox
                 document.form1.txtNum1.select();
             }
             else
@@ -36,7 +36,7 @@ function butCalculate_onclick()
                 alert(exception);
             }
         }
-        else
+        else	// catch exceptions(type object) thrown by browser
         {
             alert("The following error occurred " + exception.message);
         }
