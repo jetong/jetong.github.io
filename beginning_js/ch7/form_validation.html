@@ -34,6 +34,13 @@
             txtAge.select();
 			document.getElementById("txtAgeError").innerHTML = "Please enter numerical age.";
         }
+		else
+		{	// remove txtAgeError message if previously displayed
+			var node = document.getElementById('txtAgeError');
+			while (node.hasChildNodes()) {
+    			node.removeChild(node.firstChild);
+			}
+		}
     }
     
     function txtName_onchange()
