@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>forEach example</title>
+</head>
+<body>
+
+<h2>example</h2>
+
+<script type="text/javascript">
+var myArray = new Array(1, 2, 3);
+
+function timesTwo(value, index, array) {
+	return value*2;
+}
+
+// use forEach for temporarily access and print each element of myArray
+myArray.forEach(timesTwo);
+document.write("Using forEach<br>")
+document.write("Original array is unchanged: " + myArray + "<br>");
+document.write("<br>");
+
+// use map to obtain a new array with processed elements
+var doubledArray = myArray.map(timesTwo);
+var quadrupledArray = doubledArray.map(timesTwo);
+document.write("Using map<br>")
+document.write("Doubled array: " + doubledArray + "<br>");
+document.write("Quadrupled array: " + quadrupledArray + "<br>");
+document.write("Original array is still unchanged: " + myArray);
+
+</script>
+</body>
+</html>
