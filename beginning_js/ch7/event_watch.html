@@ -16,8 +16,11 @@
 <body>
     <form action="" name="form1">
         <textarea rows="15" cols="40" name="textarea1" 
+			//onchange triggers when textarea content changed and focus leaves
 			onchange="DisplayEvent('onchange\n');"
             onkeydown="DisplayEvent('onkeydown\n');" 
+			//onkeypress triggers when a key press actually prints a character to the textarea
+			//eg., pressing shift, esc, or F keys does not trigger the handler 
 			onkeypress="DisplayEvent('onkeypress\n');"
             onkeyup="DisplayEvent('onkeyup\n\n');"></textarea>
 
