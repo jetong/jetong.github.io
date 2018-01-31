@@ -32,7 +32,7 @@
         {
             txtAge.focus();
             txtAge.select();
-			document.write("Please enter a numerical value for age.")
+			document.getElementById("txtAgeError").innerHTML = "Please enter numerical age.";
         }
     }
     
@@ -55,6 +55,7 @@
             <br />
             <input type="text" name="txtAge" onblur="txtAge_onblur()" 
                 size="3" maxlength="3" />
+			<span id="txtAgeError"></span>
         </p>
         <p>
             <input type="button" value="Check Details" 
