@@ -2,10 +2,19 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
     
 <html xmlns="http://www.w3.org/1999/xhtml">
+
+<!--Demonstrate top level frameset's ability to have a global variable (in this case,
+	tracking pages visited within other windows) when normally values of variables are
+	not retained when a new page is loaded.  Moreover, the frameset's variables and 
+	methods are accessible by the child frame's window objects.
+-->
+
 <head>
     <title>Chapter 8: Example 2</title>
     <script type="text/javascript">
+	// global array variable
     var pagesVisited = new Array();
+	// cycle through array to form a string of pages visited
     function returnPagesVisited()
     {
         var returnValue = "So far you have visited the following pages\n";
@@ -19,6 +28,7 @@
         return returnValue;
     }
     
+	// takes a window.location.href, parses it for the filename, and stores into array
     function addPage(fileName)
     {
         var fileNameStart = fileName.lastIndexOf("/") + 1;

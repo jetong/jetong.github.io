@@ -4,12 +4,14 @@
 <head>
     <title>Chapter 8: Example 2 Page A</title>
     <script type="text/javascript">
+	// access parent frameset's global array var through the parent's returnPagesVisited() method
     function btnShowVisited_onclick()
     {
         document.form1.txtaPagesVisited.value = window.parent.returnPagesVisited();
     }
     </script>
 </head>
+<!-- each time a page is loaded, add the filename to the global array held by the parent frame -->
 <body onload="window.parent.addPage(window.location.href)">
     <h2>This is Page A</h2>
     <p>
