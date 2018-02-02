@@ -22,12 +22,15 @@
             var indexCounter;
             var days = document.form1.theDay;
             var lastoption = new Option();
+			// add new empty option to end of list
             days.options[days.options.length] = lastoption;
+			// copy each item downwards by one index (includes index 2)
             for (indexCounter = days.options.length - 1; indexCounter > 2; indexCounter--)
             {
                 days.options[indexCounter].text = days.options[indexCounter - 1].text;
                 days.options[indexCounter].value = days.options[indexCounter - 1].value;
             }
+			// assign index 2 with the newly created option
             var option = new Option("Wednesday", 2);
             days.options[2] = option;
         }
