@@ -11,9 +11,11 @@
 
     function setFrameAndPageControls(linkIndex)
     {
+		// update the select dropdown in frameMenu to the page chosen in the current child frame
         var formobject = window.parent.parent.frameMenu.document.form1;
         formobject.choosePage.selectedIndex = linkIndex;
 
+		// also update the radio button in frameMenu to match the current frame
         if (window.parent.frameTop == window.self)
         {
             formobject.radFrame[0].checked = true;

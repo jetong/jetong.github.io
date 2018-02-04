@@ -6,8 +6,11 @@
     <script type="text/javascript">
     function choosePage_onchange()
     {
+		// gain access to the select element in the current window to see which page has been selected
         var choosePage = document.form1.choosePage;
         var windowobject;
+		// after determining whether the top or bottom frame is selected, update that window's href to
+		// the page chosen in the select element.
         if (document.form1.radFrame[0].checked == true)
         {
             windowobject = window.parent.frameMain.frameTop;
