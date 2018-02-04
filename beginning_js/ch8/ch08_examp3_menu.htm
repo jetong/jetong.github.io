@@ -6,11 +6,11 @@
     <script type="text/javascript">
     function choosePage_onchange()
     {
-		// gain access to the select element in the current window to see which page has been selected
+		// get a reference to the choosePage Select object in the current frameMenu window
         var choosePage = document.form1.choosePage;
         var windowobject;
-		// after determining whether the top or bottom frame is selected, update that window's href to
-		// the page chosen in the select element.
+		// set windowobject to reference the window object the user has chosen with the radio button
+		// and update that window's href to the page selected from the drop-down menu.
         if (document.form1.radFrame[0].checked == true)
         {
             windowobject = window.parent.frameMain.frameTop;
