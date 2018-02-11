@@ -342,15 +342,22 @@ function nameHandler(e) {	// 'keyup' event provides the key pressed?
 document.addEventListener('keyup', nameHandler);
 </script>
 
-// JQUERY
+// JQUERY library
 // download from jquery.com and include .js file using script tag
 
 // selecting elements
 $("*") selects all elements on page
-$(this) selects current element
+$(this) selects current element		// used in anonymous callbacks to access each individual element
 $("div") selects all <div> elements
 $(".title") selects all elements with class="title"
 $("#name") selects all elements with id="name"
+// advanced selectors
+$(someNodes).find(selector)			// search someNodes' children for selector
+$("div.book")			// selects the divs with class="book"
+$("div, .book")			// selects all divs and all elements with class="book"
+$("p:hidden")			// selects all <p> elements that have activated the hidden property
+$("select[name='choose']")	// selects the select menu with tagname 'choose'
+$("input:radio[name='flavors']")	// selects inputs of type radio with tagname 'flavors'
 
 // manipulating DOM contents
 $(selector).action(arguments...)
@@ -359,43 +366,50 @@ $("#name").append(" World!");	// append html
 $("#name").addClass("title");	// add to class
 $("#name").hide();
 $("#name").show();
+$("#name").val(somevalue);
+$("#name").css('font-weight', 'bold');
 
-
+// adding event listener to an element
+$(selector).event(callback)
 
 // click me example
+<html>
+<head>
 <!--<script src="jquery.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 <button id="clickMe">Click Me!</button>
 <p>
-You've clicked the button <span id="numClicks">0 times</span>.
+You clicked the button <span id="numClicks">0 times</span>.
 
 <script>
 var clicks = 0;
 
 function clickHandler() {
   clicks++;
-  var numClicksSpan = $('#numClicks');
+  var numClicksSpan = $('#numClicks');	// instead of document.getElementById('numClicks')
   if (clicks == 1)
-    numClicksSpan.html('once');
+    numClicksSpan.html('once');		// instead of numClickSpan.innherHTML = 'once'
   else
     numClicksSpan.html(clicks + ' times');
 }
 
-$('#clickMe').click(clickHandler);
-
+// instead of:
+// var button = document.getElementById('clickMe');
+// button.addEventListener('click', clickHandler);
+$('#clickMe').click(clickHandler);		// the function has the same name as the event
 
 </script>
-
 </body>
 </html>
 
 // growing list example
+<html>
+<head>
 <!--<script src="jquery.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-
 <body>
 <input id="itemField"></input>
 <p>
@@ -406,24 +420,25 @@ $('#clickMe').click(clickHandler);
 
 <script>
 function keyPressHandler(e) {
-  if (e.keyCode == 13) {
+  if (e.keyCode == 13) {	// user pressed enter key
     $('#list').append('<li>'+ $('#itemField').val() + '</li>');
     $('#itemField').val('');
   }
 }
 
+// associate the keyPressHandler function with the keyup event for #itemField
 $('#itemField').keyup(keyPressHandler);
 
 </script>
-
 </body>
 </html>
 
 // bold list item on click example
+<html>
+<head>
 <!--<script src="jquery.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-
 <body>
 
 <ul>
@@ -435,13 +450,204 @@ $('#itemField').keyup(keyPressHandler);
 
 <script>
 
-$('li').click(function() {
+$('li').click(function() {		// selects all <li> elements and defines an anonymous callback function for each one
   $(this).css('font-weight', 'bold');
 });
 
+</script>
+</body>
+</html>
+
+// mouseover list item bolds and makes red
+// combine multiple callback functions to a single element using 'on' event
+
+<html>
+<head>
+<!--<script src="jquery.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<ul>
+<li>dog</li>
+<li>cat</li>
+<li>elephant</li>
+<li>bear</li>
+</ul>
+
+<script>
+$('li').on({
+  mouseenter: function() {
+    $(this).css('color', 'red');
+    $(this).css('font-size', '120%');
+  },
+  mouseleave: function() {
+    $(this).css('color', 'black');
+    $(this).css('font-size', '100%');
+  },
+  click: function() {
+    $(this).css('background-color', 'yellow');
+  }
+});
 </script>
 
 </body>
 </html>
 
+// note: to only select list items associated with a particular class, associate
+// the class name with the <ul> tag rather than for each <li> tag.
+<ul class="highlight">
+<li>dog</li>
+<li>cat</li>
+<li>bear</li>
+</ul>
 
+<ul>
+<li>canary</li>
+<li>eagle</li>
+</ul>
+
+<script>
+$("ul.highlight").find("li").on({
+	mouseenter: function() { ... },
+	mouseleave: function() { ... },
+	click:		function() { ... }
+});
+
+// Other user events in the browser
+// mouse: click, dblclick, mousedown, mouseup, mouseover, mouseout
+// keyboard: keydown, keypress, keyup
+// form: focus, blur, change, reset, submit
+// window/element: load, resize, scroll, unload
+
+// form example
+<html>
+<head>
+<!--<script src="jquery.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form>
+<select name="choose">
+  <option value="male">Male</option>
+  <option value="female">Female</option>
+</select>
+<p>
+<input type="radio" name="species" value="dog">Dog</input>
+<input type="radio" name="species" value="cat">Cat</input>
+<input type="radio" name="species" value="bird">Bird</input>
+<p>
+<input type="checkbox" value="happy">Happy</input>
+<input type="checkbox" value="cute">Cute</input>
+<input type="checkbox" value="smart">Smart</input>
+</form>
+
+<p>
+I'd like to buy a new <span id="featureSpan"></span> 
+<span id="genderSpan"></span> <span id="speciesSpan">animal</span>.
+
+<script>
+    // handling select box
+    $("select[name='choose']").change(function() {
+       $('#genderSpan').html($(this).val());
+    });
+
+    // handling radio buttons
+    $("input:radio[name='species']").change(function() {
+       if ($(this).prop('checked')) {
+          $('#speciesSpan').html($(this).val());
+       }
+    });
+
+	var allChecked = [];
+	$('input:checkbox').change(function() {
+    	var value = $(this).val();
+    	if ($(this).prop('checked')) {
+        	allChecked.push(value);
+    	} else {
+			// it's unchecked so remove the value with splice
+        	var index = allChecked.indexOf(value);
+        	if (index != -1)
+           		allChecked.splice(index, 1);
+    	}
+    	$('#featureSpan').html('');		// clear the html and rewrite upon each checkbox change
+    	for (var i = 0; i < allChecked.length; i++) {
+       		$('#featureSpan').append(allChecked[i]);
+       		if (i < allChecked.length - 1)
+          		$('#featureSpan').append(', ');
+       		else
+         		$('#featureSpan').append(' ');
+    	}
+  	});
+</script>
+</body>
+</html>
+
+// validating password example
+<html>
+<head>
+<!--<script src="jquery.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<style>
+.errorText {
+color: red;
+}
+.errorBox {
+border: 2px solid red;
+}
+.goodBox {
+border: 2px solid green;
+}
+</style>
+</head>
+
+<body>
+<input type="password" name="password"></input>
+<br>
+<span id="errorMessage" class="errorText" hidden>	<!-- hidden by default on page first load -->
+     Please fix the following errors:</span>
+
+<ul>
+<li id="needsNumber" class="errorText" hidden>
+    The password must contain a number</li>
+<li id="atLeast10Chars" class="errorText" hidden>
+    The passsword must be at least 10 characters long</li>
+</ul>
+
+<span id="successMessage" hidden>The password is okay!</span>
+<p>
+
+<button name="submit">Validate Password</button>
+
+<script>
+$("button[name='submit']").click(function() {
+   var passwordField = $("input[name='password']");
+   var password = passwordField.val();
+   var isOkay = true;
+   if (password.length < 10) {
+     isOkay = false;
+     $('#atLeast10Chars').show();
+   }
+   if (/\d/.test(password) == false) {
+     isOkay = false;
+     $('#needsNumber').show();
+   }
+   if (isOkay == false) {
+     $('#successMessage').hide();
+     $('#errorMessage').show();
+     passwordField.removeClass("goodBox").addClass("errorBox");	// remove from goodBox class and add to errorBox
+   }
+   else {
+     $('.errorText').hide();
+     $('#successMessage').show();
+     passwordField.removeClass("errorBox").addClass("goodBox");   
+   }
+   return false;	// so that submitting the form doesn't cause page reload
+});
+
+</script>
+</body>
+</html>
+
+// REACT and D3
