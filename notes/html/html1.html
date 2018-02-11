@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<!-- iframe for youtube vid and embedded swf file not functional yet -->
 <!-- Tells the browser to render the page using the HTML5 specification --> 
 
 <!--
@@ -17,7 +18,7 @@
 	<!-- Contains data that describes the document -->
 	<head>
 	
-	<!-- Defines the documents encoding character set (Multi-lingual Universal Transformation Format) -->
+	<!-- Defines the document's encoding character set (Multi-lingual Universal Transformation Format) -->
 	<meta charset="UTF-8">
 	
 	<!-- Redriects the browser to another page after 3 seconds
@@ -67,7 +68,7 @@
 	<div id="wrapper">
 	
 	<!-- Can jump with in the page by referencing the name -->
-	<a name="pageTop">Top of page</a>
+	<a name="pageTop">Top of page</a>    <!-- or <a name="pageTop"><a/> to create target without text -->
 	
 	<!-- Links to the bottom by referencing the id -->
 	<a href="html1.html#pageBottom">Bottom of page</a>
@@ -228,9 +229,11 @@
 	video/quicktime : MOVs
 	-->
 	
+	<!-- need fix -->
 	<!-- You can embed externale resources in an iframe -->
 	<iframe width="560" height="315" src="http://www.youtube.com/embed/Rub-JsjMhWY" allowfullscreen=""></iframe>
 	
+	<!-- need fix -->
 	<!-- Interactive files like Flash files can be embedded with embed
 	You can define the file type, plugin and set other params -->
 	<embed src="https://github.com/jetong/jetong.github.io/blob/master/notes/html/sine-function.swf" pluginspage="http://www.macromedia.com/shockwave/download/" type="application/x-shockwave-flash" width="300" height="120" loop="false" quality="high"> 
