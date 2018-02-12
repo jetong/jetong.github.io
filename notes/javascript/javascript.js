@@ -342,7 +342,7 @@ function nameHandler(e) {	// 'keyup' event provides the key pressed?
 document.addEventListener('keyup', nameHandler);
 </script>
 
-// JQUERY library
+// JQUERY library, for simplifying DOM access
 // download from jquery.com and include .js file using script tag
 
 // selecting elements
@@ -650,4 +650,58 @@ $("button[name='submit']").click(function() {
 </body>
 </html>
 
-// REACT and D3
+// REACT library, for building user interfaces
+// Three main features: 
+// 1) modularity: organize code into reusable components that can work together
+// 2) lifecycle maintenance: modifying component based on state; event listeners; simplified conditional rendering
+// 3) JSX: write HTML within JavaScript
+
+// Components:
+// Components are the core of React and make up the nodes of the VirtualDOM.
+// Each component includes and maintains a state that changes with events
+// Each component maintains state independently
+
+// VirtualDOM
+// The DOM is the structural representation of all the HTML elements.
+// In React, the VirtualDOM selectively renders and re-renders subtrees of nodes based on state changes
+// Efficient and provides layer of absraction to the developer
+
+// In the normal DOM, if any node is changed, the entire DOM is re-rendered.
+// In VirtualDOM, when a node is updated, two things occur:
+//		- 'diff' to dtermine which nodes within DOM have changed
+//		- 'reconciliation' to update which other (child) nodes are affected
+
+// Three steps developing with React
+// 1) Within the page's HTML, allocate a position on the page in which the desired React
+//		component will be rendered, e.g. a div
+// 2) Create a React component in JS
+//		-establish an initial state
+//		-define any events that could change the component's state over its lifecycle
+//		-define the function to render the HTML
+// 3) Drop the component into position allocated in Step 1)
+
+// JSX
+// -JavaScript XML Syntax Transform
+// -allows user to write HTML-like tags within JavaScript
+// -converts text (HTML) to React code
+
+// example
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ReactJS Example</title>
+		<script src="react.js"></script>
+		<script src="react-dom.js"></script>
+	</head>
+	<body>
+		<div id='container'></div>	<!-- div for inserting our React component -->
+		<script type='text/jsx'>
+			ReactDOM.render(
+				<h1> Hello, React! </h1>,				<!-- specifies WHAT we want to display -->
+				document.getElementById('container')	<!-- specifies WHERE we want it displayed -->
+			);
+		</script>
+	</body>
+</html>
+
+
