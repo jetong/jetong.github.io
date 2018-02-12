@@ -656,10 +656,24 @@ $("button[name='submit']").click(function() {
 // 2) lifecycle maintenance: modifying component based on state; event listeners; simplified conditional rendering
 // 3) JSX: write HTML within JavaScript
 
-// Components:
+// React Components:
 // Components are the core of React and make up the nodes of the VirtualDOM.
-// Each component includes and maintains a state that changes with events
-// Each component maintains state independently
+// They are JavaScript objects based off the React.Component prototype
+// Each component includes and maintains a state independently that changes with events.
+// They define properties, event-based state variables, and callback functions
+// A component's render() function is used to render HTML
+// VirtualDOM manages each component's lifecycle and calls its render() function as needed.
+// 4 main parts: properties, state variables, callback functions/event handlers, render function.
+// Properties	-attributes and values that are set when the component is created
+//				-should never be modified after initialization
+//				-properties can be set in the render function much like html attributes name="Maria"
+//				 they can be retrieved/accessed through this.props (this.props.name in this case)
+// State		-attributes and values that represent the current state of the component,
+// 				 based on what it does/represents
+//				-should be initialized in the constructor
+//				-can be modified during the component's lifecycle
+//				-can be accessed using this.state
+// Both properties and state can be used when rendering the component
 
 // VirtualDOM
 // The DOM is the structural representation of all the HTML elements.
@@ -704,4 +718,228 @@ $("button[name='submit']").click(function() {
 	</body>
 </html>
 
+// Two ways to create components (like creating new HTML tags)
 
+// Classical way:
+// React.createClass() allows us to define a component.  It takes an object containing
+// the component's specifications as an argument.
+
+var HelloComponent = React.createClass ({	// defines HelloComponent object
+	render: function() {		// one of the properties of the object passed to createClass is render, which is a function 
+		return (<h1>Hello, React!</h1>);	// that will be called when it's time to render this component.
+	}										// here we're using JSX
+}
+
+// Once we create the custom component, we can render it the same way as HTML elements:
+ReactDOM.render (
+	<HelloComponent />,
+	document.getElementById('container')
+);
+
+// More current approach using the ES6 version of JavaScript syntax:
+// We define a class instead of a single object
+class HelloComponent extends React.Component {
+	render() {
+		return (<h1>Hello, React!</h1>);
+	}
+}
+
+// render is the same as before:
+ReactDOM.render(
+	<HelloComponent />,
+	document.getElementById('container')
+);
+
+// TimesViewed
+<html>
+  <head>
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script type="text/jsx">
+
+      class TimesViewed extends React.Component {
+         constructor(props) {
+            super(props);
+            var timesViewed = 0;
+            if (localStorage.timesViewed) {
+                timesViewed = localStorage.timesViewed;
+            }
+            timesViewed++;
+            this.state = { numViews: timesViewed };
+            localStorage.timesViewed = timesViewed;
+         }
+
+         render() {
+           return <b>Hello {this.state.numViews}</b>;
+         }
+      }
+
+      ReactDOM.render(
+        <TimesViewed />,
+        document.getElementById('container')
+      );
+
+    </script>
+  </body>
+</html>
+
+// Events examples
+// Button click
+<html>
+  <head>
+    <title>Button Click</title>
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+
+    <div id='container'></div>
+
+    <script type="text/jsx">
+
+class Counter extends React.Component { 
+
+  constructor(props) {
+    super(props);
+    this.state = { count : 0 };
+  }
+
+  incrementCount () { 
+    this.setState({ 
+      count: this.state.count + 1 
+    });
+  }
+      
+      
+  render () { // invoked when setState is called
+    return ( 
+      <div>Count: { this.state.count } 
+      < button type = "button" onClick = { this.incrementCount.bind(this) } > Click Me! </button> </div>
+    );
+  } 
+}; 
+
+ReactDOM.render(
+  <div>
+    <Counter />
+  </div>,
+  document.getElementById('container'));
+    </script>
+
+  </body>
+</html>
+
+// Like/Unlike Button
+<html>
+  <head>
+    <title>Like, Unlike</title>
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+
+    <div id='container'></div>
+
+    <script type="text/jsx">
+class LikeButton extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { liked : false };
+  }
+ 
+
+  toggle() {
+    this.setState({liked: !this.state.liked});
+  }
+
+  render() {
+    var name = this.props.name;
+    var txt = this.state.liked ? 'Unlike' : 'Like';
+    //var color = this.state.liked ? '#3b5998' : '#627AAC';
+    var color = this.state.liked ? 'red' : 'black';
+    var bold = this.state.liked ? 'bold' : 'normal';
+    return (
+      <p>
+      <span style={{color: color, fontWeight: bold}}>
+        {name} </span><span onClick={this.toggle.bind(this)}> {'\ud83d\udc4d' + txt}
+      </span>
+      </p>
+    );
+  }
+};
+
+ReactDOM.render(
+  <div>
+    <LikeButton name="Java" />
+    <LikeButton name="JavaScript" />
+   </div>,
+document.getElementById('container'))
+;
+    </script>
+
+  </body>
+</html>
+
+// MyText mouseover & click
+<html>
+  <head>
+    <title>Mouse Over, Mouse Out</title>
+
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"> </script> 
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+
+  </head>
+  <body>
+
+    <div id='container'></div>
+
+    <script type="text/jsx">
+
+class MyText extends React.Component { 
+
+  constructor(props) {
+    super(props);
+    this.state = { bold : false, color : 'black' };
+  }
+
+    handleMouseOver() {
+     this.setState( { bold : true } );
+   }
+   
+    handleMouseOut() {
+     this.setState( { bold: false } );
+    }
+
+    handleClick() { 
+      this.setState( { color : (this.state.color == 'red' ? 'black' : 'red') } );
+    }
+      
+      
+    render () { 
+      var color = this.state.color;
+      var bold = this.state.bold ? 'bold' : 'normal' ;
+      return ( 
+      <span style={{color:color, fontWeight:bold}} onClick={this.handleClick.bind(this)} onMouseOver={this.handleMouseOver.bind(this)} onMouseOut={this.handleMouseOut.bind(this)}> {this.props.text} </span>
+      );
+  } 
+}; 
+
+ReactDOM.render(
+  <div>
+    <MyText text="Look at me!"/>
+  </div>,
+  document.getElementById('container')
+);
+    </script>
+
+  </body>
+</html>
