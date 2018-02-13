@@ -1261,3 +1261,6 @@ ReactDOM.render(<ArticlesGrid/>, document.getElementById('container'));
 
   </body>
 </html>
+
+// Using Node.js Package Manager (npm) to help manage components into different files for modularity.
+
