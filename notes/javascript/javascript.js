@@ -754,8 +754,8 @@ ReactDOM.render(
 <html>
   <head>
     <title>Hello World</title>
-    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
-    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"> </script> 
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   </head>
   <body>
@@ -793,8 +793,8 @@ ReactDOM.render(
 <html>
   <head>
     <title>Button Click</title>
-    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
-    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"> </script> 
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   </head>
   <body>
@@ -839,8 +839,8 @@ ReactDOM.render(
 <html>
   <head>
     <title>Like, Unlike</title>
-    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
-    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"> </script> 
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   </head>
   <body>
@@ -939,6 +939,324 @@ ReactDOM.render(
   </div>,
   document.getElementById('container')
 );
+    </script>
+
+  </body>
+</html>
+
+
+// Component interactivity, by composing one component with another
+
+// Filtered List
+<html>
+  <head>
+    <title>Filtered List</title>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"> </script> 
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id='container'></div>
+    <script type="text/jsx">
+
+	class FilteredList extends React.Component { 
+		constructor(props) {
+ 			super(props);
+	  		var allItems = [ "anteater", "bear", "cat", "dog", "elephant", "fox" ];
+	  		this.state = { initialItems: allItems, currentItems: allItems }; 
+		}
+
+		filterList(input){ 
+	  		var updatedList = this.state.initialItems; 
+	  		updatedList = updatedList.filter(function(item){ 
+        		return item.search(input.target.value) !== -1; 
+      		}); 
+	  		this.setState({currentItems: updatedList}); 
+		} 
+
+		render(){ 
+	  		return ( 
+				<div className="filter-list"> 
+  				<input type="text" placeholder="Filter" onChange={this.filterList.bind(this)}/> 
+				<List items={this.state.currentItems}/> 
+				</div> 
+	  		); 
+		} 
+	}; 
+
+	class List extends React.Component { 
+		render(){ 
+			return ( 
+				<ul> { this.props.items.map(function(item) { 
+					return <li key={item}>{item}</li> }) }
+				</ul> 
+			) 
+		} 
+	}; 
+
+	ReactDOM.render(<FilteredList/>, document.getElementById('container'));
+    </script>
+
+  </body>
+</html>
+
+// TodoApp
+
+<html>
+  <head>
+    <title>To-Do List</title>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"> </script> 
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+
+    <div id='container'></div>
+
+    <script type="text/jsx">
+class TodoApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {items: [], text: '', id: 0};
+  }
+
+  handleChange(e) {
+    this.setState({text: e.target.value});	// set text to whatever was typed in the box
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();	// to not reload the page by default submit
+    var newItem = {
+      text: this.state.text,
+      id: this.state.id
+    };
+    this.setState({
+      items: this.state.items.concat(newItem),
+      text: '',
+      id: this.state.id + 1
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>TO-DO LIST</h3>
+        <TodoList items={this.state.items} />
+		// bind the functions to the onSubmit and onChange events
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <input onChange={this.handleChange.bind(this)} value={this.state.text} />
+          <button>Add</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+class TodoList extends React.Component {
+  render() {
+    return (
+      <ul>
+        {this.props.items.map(function(item) {
+	  	  return <TodoItem id={item.id} text={item.text}/>
+        })}
+      </ul>
+    );
+  }
+}
+
+class TodoItem extends React.Component {
+ constructor(props) {
+   super(props);
+   this.state = { amDone : true };
+ }
+
+
+ handleClick() {
+   var doneState = !this.state.amDone; 
+   this.setState({ amDone: !this.state.amDone});
+ }
+
+ render() {
+  var line =  this.state.amDone ? 'none' : 'line-through';
+  return (
+    <li key={this.props.id} onClick={this.handleClick.bind(this)} style={{textDecoration:line}}>{this.props.text}</li>
+  );
+ }
+}
+
+ReactDOM.render(<TodoApp/>, document.getElementById('container'));
+
+    </script>
+
+  </body>
+</html>
+
+// Thinking in terms of components: to modularize portions of the webpage for reuse, and for efficiency so that
+// only certain components that need to be re-rendered are actually re-rendered.
+// Here, we have one component encompassing the entire app, and composed within it are 3
+// other components: 2 for the input boxes and 1 for the ouput of the results.
+
+// Multiplier example
+<html>
+  <head>
+    <title>Multiplier</title>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"> </script> 
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+
+    Enter two numbers to multiply:
+    <div id='container'></div>
+
+    <script type="text/jsx">
+
+class Multiplier extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { input1: 0, input2: 0, product: 0 };
+    this.multiply = this.multiply.bind(this);  // create multiply object for this component and bind to multiply()
+  }
+
+  multiply(id, val) { 
+    if (id == 1) {	// since setState is called in Multiplier, its render() is automatically called.
+      this.setState( { input1: val, product: val * this.state.input2 } );
+    }
+    else if (id == 2) {
+      this.setState( { input2: val, product: this.state.input1 * val } );
+    }
+  }
+
+  render() {
+    return (
+      <div>	
+	  // pass the function multiply() as parameter to NumberInputField component
+      <NumberInputField id="1" action={this.multiply}/>
+      <NumberInputField id="2" action={this.multiply}/>
+      <OutputField product={this.state.product}/>
+      </div>
+    );
+  }
+}
+
+class NumberInputField extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+ 
+  handleChange(e) {
+    this.props.action(this.props.id, e.target.value);	// onChange, send this input field's id and value to multiply()
+  }
+  
+  render() {
+    return(
+      <input onChange={this.handleChange}></input>
+    );
+  }
+
+}  
+
+class OutputField extends React.Component {
+  render() {
+     return(
+      <div>The product is {this.props.product}.</div>
+     );
+  }
+}  
+
+ReactDOM.render(<Multiplier/>, document.getElementById('container'));
+
+    </script>
+
+  </body>
+</html>
+
+// ArticlesGrid example
+<html>
+  <head>
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id='container'></div>
+    <script type="text/jsx">
+
+class ArticlesGrid extends React.Component {
+	constructor (props) {
+ 		super(props);
+ 		this.state = {
+      		articles: []
+   		};
+ 	}
+
+	componentDidMount () {
+ 		var API_KEY = ''; // replace this with the API key you obtained from https://developer.nytimes.com/
+ 		var query = location.search ? (location.search.split('?q=')[1]).split('&')[0] : 'all';
+ 		var url= 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + query + '&api-key=' + API_KEY;
+  		$.getJSON(url, function(data, status) {
+        	return this.setState({articles: this.parse(data)});
+        }.bind(this));
+	}
+
+	parse(results) {
+  		if(!results || !results.response) return [];
+  		var articles = results.response.docs;
+  		var parsedArticles = [];
+  		for(var i = 0; i < articles.length; i++) {
+    		var article = articles[i];
+    		if (article.multimedia.find(this.checkXLarge)) {
+				parsedArticles.push({
+        			id: article._id,
+        			title:    article.headline.main || 'Untitled',
+        			imageURL: article.multimedia.find(this.checkXLarge).url || '#',
+        			webURL:   article.web_url || '#'
+      			});
+    		}
+  		}
+  		return parsedArticles;
+	}
+
+	checkXLarge(image) {
+		return image.subtype === 'xlarge';
+	}
+
+	render () {
+		return this.state.articles && (
+    		<div className='articles'>
+      			{ this.state.articles.map( function (article) {
+        			return <Article article={article} key={article._id} />;
+      			})}
+    		</div>
+  		);
+	}
+
+}
+
+// display the article
+// this is shorthand for a component that only has a render function
+var Article = function({article}) {
+	var imgURL = 'https://static01.nyt.com/' + article.imageURL;
+	return (
+    	<div className='article'>
+			<a className='article-link' href={article.webURL}>
+				<img className='article-image' 
+             		title={article.title} 
+             		src={imgURL} 
+        		/>
+      		</a>
+    	</div>
+  	); 
+}
+
+ReactDOM.render(<ArticlesGrid/>, document.getElementById('container'));
+
     </script>
 
   </body>
