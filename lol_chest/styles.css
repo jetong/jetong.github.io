@@ -1,5 +1,5 @@
 body {
-  background-image:url(https://github.com/jetong/jetong.github.io/blob/master/lol_chest/akali_vs_baron.jpg?raw=true);
+  background-image:url(akali_vs_baron.jpg);
   background-repeat:no-repeat;
   background-size:cover;
   color:#ffe500;
@@ -14,8 +14,8 @@ a:visited {
 
 #frame {
   border: 30px solid;
-  border-image:url(https://github.com/jetong/jetong.github.io/blob/master/lol_chest/frame.png?raw=true) 36 32 21 32 round;
-  /*border-image-source: url(https://github.com/jetong/jetong.github.io/blob/master/lol_chest/frame.png?raw=true);
+  border-image:url(frame.png) 36 32 21 32 round;
+  /*border-image-source: url(frame.png);
   border-image-slice:36 32 21 32;
   border-image-repeat:round;
   */
