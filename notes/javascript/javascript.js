@@ -1631,3 +1631,245 @@ rect:hover {
 </script>
 </body>
 </html>
+
+// Node.js Server-side
+// Node is asynchronous and allows us to treat HTTP requests as events that invoke
+// callback functions/handlers that construct the HTTP response
+
+// In new project folder, run: npm init and specify index.js as entry point.
+
+// Express 	- define separate modules that have different responsibilities
+// 			- handle requests via different routes and routers
+//			- split each step in the processing of a request into Middleware functions
+// From within the folder with Node.js app, run: npm install express --save
+// This will download the Express package and configure package.json file as a dependency.
+
+// Create index.js
+var express = require('express');
+var app = express();
+
+app.use('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(3000, () => {
+  console.log('Listening on port 3000');
+});
+
+// From the project folder, run: node index.js
+
+// Request Object Properties/Functions
+app.use('/', (req, res) => {
+  var method = req.method;					// the HTTP request verb/action
+  var url = req.url;						// the resource that was requested
+  var agent = req.headers['user-agent'];	// object containing all headers
+  agent = req.get('User-Agent');			// the preferred way to request a header field (case insensitive)
+
+  res.send('Hello World!');
+});
+
+// Response Object Properties/Functions
+app.use('/', (req, res) => {
+  res.status(200);							// set status code
+  res.type('html');							// set content type
+  res.write('Hello World!');				// add content to the body of the response
+  res.write('<p>');
+  res.write('<b>Have a nice day</b>');
+  res.end();								// send the response and close the connection
+});
+
+// Routers
+var express = require('express');
+var app = express();
+
+var nameFinder= (req, res, next) => {
+    var name = req.query.name;
+    if (name)
+	req.username = name.toUpperCase();
+    else
+	req.username = 'Guest';
+    next();
+};
+
+var greeter = (req, res, next) => {
+    res.status(200).type('html');
+    res.write('Hello, ' + req.username);
+    next();
+};
+
+var adminName = (req, res, next) => {
+    req.username = 'Admin';
+    next();
+};
+
+var logger = (req, res, next) => {
+    var url = req.url;
+    var time = new Date();
+    console.log('Served request for ' + url + ' at ' + time);
+    next();
+};
+
+var header = (req, res, next) => {
+    // header
+    next();
+};
+
+var footer = (req, res, next) => {
+    // footer
+    next();
+};
+
+var commonRoute = express.Router();
+commonRoute.use(header, greeter, footer);
+
+// note: if we just have app.use(logger); then logger will be invoked on any HTTP request
+app.use('/welcome', logger, nameFinder, commonRoute,
+	(req, res) => { res.end(); } );
+
+
+app.use('/admin', logger, adminName, commonRoute, 
+	(req, res) => { res.end(); } );
+
+app.use('/', logger, (req, res) => { res.send('hi'); } );
+
+app.use( /*default*/ (req, res) => {
+	res.status(404).send('Not found!');
+	// can also send back a file
+	// res.status(404).sendFile(__dirname + '/404.html');
+});
+
+
+app.listen(3000,  () => {
+	console.log('Listening on port 3000');
+    });
+
+// Getting Data from the User
+
+// Case 1A: Query Parameters included in the URL
+// http://localhost:3000/?name=Lydia&location=United+States
+app.use('/', (req, res) => {
+  var query = req.query;
+  console.log(query);	// ?name=Lydia&location=United+States
+
+  var name = query.name;	// 'Lydia'
+  var location = query.location;	// 'United States'
+
+  var length = Object.keys(query).length;	// 2
+
+  res.send('Hello World!');
+});
+
+// Case 1B: Query Parameters included in the URL
+// http://localhost:3000/name/Lydia/location/United States
+app.use('/name/:userName/location/:userLocation', (req, res) => {
+  var params = req.params;
+  console.log(params);
+
+  var name = params.userName;
+  var location = params.userLocation;
+
+  var length = Object.keys(params).length;
+
+  res.send('Hello World!');
+});
+
+// Case 2: POST data included in the body of the HTTP request
+// To read from the body, use middlewear body-parser. (npm install body-parser)
+// form.html
+<html>
+<body>
+
+<form action="/handleForm" method="post">
+
+Name: <input name="username">
+<p>
+I Like:<br>
+<input type=checkbox name="animal" value="dogs">Dogs <br>
+<input type=checkbox name="animal" value="cats">Cats <br>
+<input type=checkbox name="animal" value="birds">Birds <br>
+<p>
+<input type=submit value="Submit Form!">
+
+</form>
+
+</body>
+</html>
+// index.js
+var express = require('express');
+var app = express();
+
+app.use('/public', express.static('files'));
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/handleForm', (req, res) => {
+  var name = req.body.username;
+  var animals = req.body.animal;	// this is an array
+  . . .
+  res.send('Thank you!');
+});
+
+app.listen(3000, () => {
+  console.log('Listening on port 3000');
+});
+
+// Generating HTML server-side and sending back as reponse
+// Use EJS to separate format(HTML) from functionality(JavaScript)
+// EJS - EmbeddedJS is a view engine that uses data and embedded JavaScript to produce HTML
+// EJS allows HTML to be rendered dynamically on the server and then sent back as content to the browser.
+// (npm install ejs)
+// Place ejs files in views/ folder of project.
+
+// To use EJS in an Express app:
+// 1. Set EJS as the default rendering method using app.set('view engine', 'ejs');
+// 2. Generate and send the HTML from an .ejs file using the Response's render function
+
+// form.html
+<html>
+
+<form action="/handleForm" method="post">
+
+Name: <input name="username">
+<p>
+I like:<br>
+<input type=checkbox name="animal" value="dogs">Dogs<br>
+<input type=checkbox name="animal" value="cats">Cats<br>
+<input type=checkbox name="animal" value="birds">Birds<br>
+<p>
+<input type="submit" value="Submit form!">
+
+</form>
+</html>
+
+// index.js
+var express = require('express');
+var app = express();
+
+app.set('view engine', 'ejs');
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/handleForm', (req, res) => {
+	var name = req.body.username;
+	var animals = [].concat(req.body.animal);
+	console.log(animals);
+	res.render('showAnimals', { name: name, animals: animals });
+});
+
+app.use('/public', express.static('public'));
+
+app.listen(3000,  () => {
+	console.log('Listening on port 3000');
+});
+
+// showAnimals.ejs
+Hello, <%= name %>, nice to meet you.
+<p>Here are the animals you like:
+<ul>
+<% animals.forEach( (animal) => { %>
+  <li> <%= animal %> </li>
+<% }); %>
+</ul>
+<a href='/public/form.html'>Back to form</a>
