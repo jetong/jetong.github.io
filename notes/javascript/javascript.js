@@ -1337,3 +1337,79 @@ describe("Test suite for App component", function() {	// using mocha testing fra
 
 // run tests
 // npm run test
+
+// ES6 - ECMAScript 6 - newest JavaScript Specification released in 2015
+// Some key features:
+
+// Arrow Notation
+// ES5 syntax:
+var arr = [1,2,3,4,5];
+var square = function (n) {
+  return n*n;
+}
+arr.forEach( function(v, i) {
+  arr[i] = square(v);
+});
+
+// ES6 syntax:
+let arr = [1,2,3,4,5];
+let square = n => {
+  return n*n;
+}
+arr.forEach( (v, i) => {
+  arr[i] = square(v);
+});
+
+// Assign default values to function parameters using '='
+function pow (base, power = 2) {
+  return Math.pow(base, power);
+};
+console.log(pow(3));	// 9
+console.log(pow(3,3));	// 27
+
+// Define template for rendering strings using backticks
+var person = { name: "Lydia" };
+var msg = `Dear ${person.name}, 	// newline will be detected here
+           How are you?`
+
+// Classes: instead of building prototypes, classes can be directly defined in more traditional OOP style
+
+// ES5
+var Rectangle = function (height, width) {
+  this.height = height;
+  this.width = width;
+}
+
+Rectangle.prototype.area = function () }
+  return this.height * this.width;
+}
+
+// ES6
+class Rectangle {
+  constructor (height, width) {
+    this.height = height;
+    this.width = width;
+  }
+  area () {
+    return this.height * this.width;
+  }
+}
+
+// Added Data Structures
+
+// Sets
+let s = new Set();
+s.add("alligator");
+s.add("fox");			// s = {"alligator", "fox"}
+s.has("alligator");		// true
+s.delete("alligator");
+for (let v of s.values())
+  console.log(v);
+
+// Map
+let m = new Map();
+m.set("dog", "sparky");	// m = {"dog" => "sparky"}
+m.get("dog");			// "sparky"
+m.get("cat");			// undefined
+for (let [key, val] of m.entries())
+  console.log(key + ": " + val);
