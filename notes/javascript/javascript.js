@@ -1413,3 +1413,221 @@ m.get("dog");			// "sparky"
 m.get("cat");			// undefined
 for (let [key, val] of m.entries())
   console.log(key + ": " + val);
+
+// Basic visual elements in HTML using Scalable Vector Graphics (SVG)
+<html>
+  <head>
+    <style>
+      circle:hover {
+        fill:green;
+      }
+    </style>
+  </head>
+
+  <body>
+    <svg width="400" height="400">
+
+      <circle cx="50" cy="50" r="40" 
+        stroke="blue" stroke-width="4" fill="yellow" />
+
+      <rect x="50" y="20" rx="20" ry="20"
+        width="150" height="150"
+        style="fill:red;stroke:black;stroke-width:5;opacity:0.5"
+        onclick="style.fill='cyan'" />
+
+    </svg>
+  </body>
+</html>
+
+// D3: Data-Driven Documents
+// D3.js is a JavaScript library for manipulating HTML docs based on data
+// We can bind the data to DOM elements (HTML, SVG) and programmatically apply data-driven transformations.
+// Generate HTML tables, SVG charts, graphs, etc.
+<html>
+<head>
+  <script src="http://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+  <svg width="400" height="400">
+    <circle />		<!-- will be determined by code -->
+  </svg>
+
+  <script>
+var circle = {
+  x: 50,
+  y: 50,
+  r: 40,
+  stroke: 'blue',
+  width: 4
+};
+
+var svg = d3.select("svg");
+svg.select("circle")
+  .attr("cx", circle.x)
+  .attr("cy", circle.y)
+  .attr("r", circle.r)
+  .style("stroke", circle.stroke)
+  .style("stroke-width", circle.width);
+  .style("fill", () => {
+    if (circle.r <50 )
+      return 'yellow';
+    else
+      return 'cyan';
+  })
+  </script>
+</body>
+</html>
+
+// Bar Chart example
+<html>
+<head>
+<style>
+rect {
+  fill: darkred;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+rect:hover {
+  fill: darkblue;
+}
+
+</style>
+
+<script src="http://d3js.org/d3.v4.min.js"></script>
+
+</head>
+
+<body>
+<svg class="chart" height="200">
+</svg>
+<p>
+
+<input id="inputField"></input>
+<button onclick="insert();">Insert</button>
+
+<script>
+function insert() {
+     var value = document.getElementById('inputField').value;
+     //alert(value);
+     numbers.push(value);
+     drawChart();
+     document.getElementById('inputField').value = '';
+}
+
+function drawChart() {
+  var svg = d3.select("svg");
+
+  // the svg tag starts without any groups.  We can think of this as creating an empty container for adding groups.
+  var selection = svg.selectAll("g")	
+     .data(numbers)		// use 'data' function to bind the array of numbers to the selection
+    .enter().append("g")	// 'enter' joins the data to the html element and create a d3 object for each data.
+							// for each object, append the html g element and apply a transformation.
+    .attr("transform", (d,i) => { return "translate(" + 40*i + "," + (200-d) + ")"; });
+
+  selection.append("rect")
+    .attr("width", 39)
+    .attr("height", (d,i) => { return d; });
+
+   selection.append("text")
+    .attr("x", (d,i) => { return 25; })
+    .attr("y", (d,i) => { return 10; })
+    .text(function(d) { return d/10; });
+}
+
+var numbers = [40, 130, 75, 170];
+  
+drawChart();
+
+</script>
+
+// Plot Weighted Circles Chart example
+// Data used in D3 can be objects, not just numbers
+<html>
+<head>
+<style>
+rect {
+  fill: darkred;
+}
+
+rect:hover {
+  fill: darkblue;
+}
+
+</style>
+
+<script src="http://d3js.org/d3.v4.min.js"></script>
+
+</head>
+
+<body>
+<svg class="chart" height="900" width="900">
+</svg>
+
+<script>
+
+
+  var values = [ {price: 700, sqft: 3000, br: 3, pets: [ 'cats', 'dogs' ] },
+                 {price: 445, sqft: 1700, br: 2, pets: [] },
+                 {price: 421, sqft: 1455, br: 2, pets: [ 'cats', 'dogs' ] },
+                 {price: 411, sqft: 1314, br: 2, pets: [ 'dogs' ] },
+                 {price: 275, sqft: 1200, br: 1, pets: [ 'cats' ]},
+                 {price: 500, sqft: 650, br: 1, pets: [] },
+  
+               ];
+
+
+  var svg = d3.select("svg");
+  
+  var selection = svg.selectAll("g")
+    .data(values)
+    .enter()
+    .append("g")
+    .attr("transform", "translate(10,10)");
+
+  selection.append("circle")
+    .attr("cx", (d,i) => { return d.price/2; })
+    .attr("cy", (d,i) => { return (4000 -  d.sqft)/(4000/400) ; })
+    .attr("r", (d,i) => { return d.br * 10 ; })
+    .style("fill", (d,i) => {return color(d.pets);})
+    .style("opacity", "0.5")
+    .append("svg:title").text( (d,i) => { return print(d); });
+
+
+    var width = 400;
+    var height = 400;
+    
+    var xScale = d3.scaleLinear()
+    .domain([0, width*2])
+    .range([0, width]);
+    var xAxis = d3.axisBottom(xScale);
+    svg.append("g").attr("transform", "translate(10,410)").call(xAxis);
+
+    var yScale = d3.scaleLinear()
+    .range([height,0])
+    .domain([0, 4000]); 
+
+    var yAxis = d3.axisRight(yScale);
+    svg.append("g").attr("transform", "translate(10, 10)").call(yAxis);
+
+
+  function print(home) {
+     return `$${home.price}k, ${home.sqft}sqft, ${home.br} BRs`;
+  }
+
+  function color(pets) {
+    var dogs = pets.indexOf('dogs') != -1;
+    var cats = pets.indexOf('cats') != -1;
+
+    if (dogs) return cats ? 'purple' : 'blue' ;
+    return cats ? 'red' : 'gray';
+  }
+
+</script>
+</body>
+</html>
