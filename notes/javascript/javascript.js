@@ -1262,5 +1262,78 @@ ReactDOM.render(<ArticlesGrid/>, document.getElementById('container'));
   </body>
 </html>
 
-// Using Node.js Package Manager (npm) to help manage components into different files for modularity.
+// Using Node.js Package Manager (npm) to help manage components into different files for modularity
+// instead of including all JavaScript in a <script> tag.  Node.js also allows us to incorporate
+// package dependencies with 'require' and 'import'
+// var React = require('react'); and import MyComponent from './MyComponent.js';
 
+// https://nodejs.org/en/download/
+// npm comes with node installation, make sure updated to most recent version using: npm install npm -g
+
+// install create-react-app
+// npm install -g create-react-app
+
+// create new React app
+// create-react-app my-app-dir
+// src for JavaScript & CSS files, public for HTML files, images, other static web content.
+
+// cd my-app/
+// npm start
+// starts web server listening for HTTP requests on port 3000.  visit http://localhost:3000/
+
+// Testing with mocha, chai, and enzyme
+// To include enzyme and chai as dependencies:
+// npm install --save-dev enzyme react-test-renderer chai
+// Place test code in 'tests' directory in the form of *.test.js
+// in App.txt.js, include libraries necessary for testing:
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { mount, shallow } from 'enzyme';
+import {expect} from 'chai';
+import App from '../App';
+
+describe("Test suite for App component", function() {	// using mocha testing framework to define a test suite 
+  it("only one element in App class", function() {
+    // creates React component.  Shallow does a shallow creation which creates the component but not the 
+	// child subcomponents such as Dogs or AddDog.  Here we are only creating an instance of the App component.
+    const wrapper = shallow(<App />);		
+    expect(wrapper.find(".App")).length(1);
+  });
+
+  it('Dog List contains two dogs', function() {
+    const wrapper = mount(<App/>);	// mount does a deep creation rather than shallow
+    // we expect to find a Dogs component inside the App component.
+    expect(wrapper.find('Dogs')
+                  .find('DogItem')).length(2);	// within the Dogs component we expect to find DogItem
+												// and by default we have 2 dogs in the array
+  });
+
+  it("successfully adds dog to list when form submitted", function() {
+    const wrapper = mount(<App/>);
+    const adddog = wrapper.find('AddDog');
+
+    // simulate filling out and submitting form
+    adddog.find('#dogName').get(0).value = 'Lola';	// enter Lola into the dogName field
+    adddog.find('#imageURL').get(0).value = 'https://static.pexels.com/photos/54386/pexels-photo-54386.jpeg';
+    adddog.find('#dogBreed').get(0).value = 'Beagle';
+
+    const form = adddog.find('form');
+    form.simulate('submit');
+    expect(wrapper.find('Dogs')
+                  .find('DogItem')).length(3);
+    expect(wrapper.state().dogs[2].name == 'Lola');
+  });
+
+  it('removes dog from list when deleted', function() {
+    const wrapper = mount(<App/>);
+    const deleteLink = wrapper.find('a').first();	// get first anchor tag's link
+    deleteLink.simulate('click');
+    expect(wrapper.find('Dogs')
+                  .find('DogItem')).length(1);		
+    // note that even though we had 3 dogs in the previous test, each test starts with the original state
+    // which has 2 dogs in the default array.
+  });
+});
+
+// run tests
+// npm run test
