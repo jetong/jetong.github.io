@@ -2245,4 +2245,41 @@ app.listen(3000,  () => {
 });
 
 //////////////////////////////
+// Previously, the interaction between Client, Server, and Database looked like this:
+					   HTTP request				query DB
+			(        ) -----------> (		 ) ----------> (		  )
+          	( Client )				( Server )			   ( Database )
+			(		 ) <----------- (        ) <---------- (		  )
+					   HTTP response			 results
+				(Re-render entire HTML page)
+
+// Intead of sending back and re-rendering the entire page, how about sending back only the data
+// that resulted from the HTTP request, and have some client-side code take that data and render 
+// the HTML accordingly.
+
+// Use an API (Application Programming Interface)
+// - a URL or a set of URLs that returns pure data to requests
+// - APIs can be used to incorporate data and functionality into your webapp from other sources
+// - you can also create your own API using Node.js to return JSON data to HTTP requests
+
+( Client )					  ( Server )				( Database )
+			HTTP request
+	--- GET /public/books.html -->
+
+	<----static HTML form page----
+
+	  Instead of submitting a form, send an HTTP request with the query we want to conduct
+	----- GET /api?... ---------->
+
+									Server recognizes this request is for /api, so conducts a db query
+									------- Query ------------>			and gets back the results
+
+									<----------Result---------
+
+	  Rather than re-rendering entire HTML page, we just pass along the data as a JSON object.
+	<--------JSON ---------------
+	  Browser now renders only the affected HTML
+
+
+
 
