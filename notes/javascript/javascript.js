@@ -2056,3 +2056,193 @@ Updated <%= person.name %>'s age to <%= person.age %>
 
 <br><a href='/public/personform.html'>Create New Person</a>
 <br><a href='/all'>Show All</a>
+
+/////////////////////////////////////////////////////////////
+// More advanced MongoDB queries for more complicated objects
+
+// bookform.html
+<form action='/createbook' method='post'>
+Title: <input name='title'>
+<p>
+Year: <input name='year'>
+<p>
+Author #1: <br>
+<!-- Notation for associating the input tag name attribute with the name property of the first author object in the authors array. -->
+Name: <input name='authors[0][name]'> <br>		
+Affiliation: <input name='authors[0][affiliation]'>
+<p>
+Author #2: <br>
+<!-- Notation for associating the input tag name attribute with the name property of the second author object in the authors array. -->
+Name: <input name='authors[1][name]'> <br>
+Affiliation: <input name='authors[1][affiliation]'>
+<p>
+<input type='submit' value='Submit'>
+</form>
+
+// booksearch.html
+Indicate the search criteria:
+
+<form action='/search' method='post'>
+Title: <input name='title'>
+<p>
+Author name: <input name='name'>
+<p>
+Year: <input name='year'>
+<p>
+<input type='radio' name='which' value='all' checked>All<br>
+<input type='radio' name='which' value='any'>Any<br>
+<p>
+<input type='submit' value='Search'>
+</form>
+
+// books.ejs
+Here are the results of your search:
+<ul>
+<% books.forEach( (book) => { %>
+
+<li>
+<i><%= book.title %></i>.
+
+<% book.authors.forEach( (author) => { if (author.name) { %>
+
+<%= author.name %>, 
+
+<% } }); %>
+
+<%= book.year %>.
+
+</li>
+
+<%  }); %>
+
+</ul>
+
+// Book.js for Mongo schema
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/myDatabase');
+
+var Schema = mongoose.Schema;
+
+var authorSchema = new Schema({
+	name: String,
+	affiliation: String
+});
+
+var bookSchema = new Schema({
+	title: {type: String, required: true, unique: true},
+	year: Number,
+	authors: [authorSchema]
+});
+module.exports = mongoose.model('Book', bookSchema);
+
+// index.js
+var express = require('express');
+var app = express();
+app.set('view engine', 'ejs');
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+var Book = require('./Book.js');
+
+app.use('/createbook', (req, res) => {
+	// we can pass req.body to Book because we set up the req.body to have the proper schema.
+	// Note that if we did a console.log(req.body); we would see:
+	// { title: 'Some Book Title',
+	//   year: 'some year',
+	//   authors:
+	//    [ { name: 'author1', affiliation: 'aff1' },
+	//      { name: 'author2', affiliation: 'aff2' } ] }
+	// When creating a new object, we must pass to it an object with the properties and values 
+	// we want to use to initialize the object we're creating.
+	var newBook = new Book(req.body);
+	newBook.save( (err) => { 
+		if (err) {
+		    res.type('html').status(500);
+		    res.send('Error: ' + err);
+		} else {
+		    res.send('Created new book');
+			// or res.render('created', { book: newBook });  if we set up created.ejs
+		}
+	}); 
+});
+
+app.use('/search', (req, res) => {
+	if (req.body.which == 'all') {
+	    searchAll(req, res);
+	} else if (req.body.which == 'any') {
+	    searchAny(req, res);
+	} else {
+	    searchAll(req, res);
+	}
+});
+
+// gets results that match ANY of the supplied search criteria.
+function searchAny(req, res) {
+	// The only difference here is in how we construct the query.
+	// instead of having 1 search query object, we will set up an array of search query objects
+    var terms = [];
+
+    if (req.body.title) {
+	// this results in a search for an exact match of title rather than matching as a substring.
+	// terms.push( { title: req.body.title });		
+	// instead, set title to an object whose key is $regex:
+	   terms.push( { title: { $regex: req.body.title } });
+    }
+    if (req.body.name) {
+	terms.push( { 'authors.name' : req.body.name });
+    }
+    if (req.body.year) {
+	terms.push( { year: req.body.year });
+    }
+    var query = { $or : terms };	// MongoDB syntax for querying using OR format
+	// console.log(query);
+	// when not using $regex: { '$or': [ {title: 'Programming'}, {year: '2017'} ] }  
+	// when using $regex: { '$or': [ {title: [Object]}, {year: '2017'} ] }
+
+	// this is the same as before
+	Book.find( query, (err, books) => {
+		if (err) {
+		    res.type('html').status(500);
+		    res.send('Error: ' + err);
+		} else {
+		    res.render('books', { books: books });
+		}
+	}).sort( { 'title': 'asc' } );	// sorts titles in ascending order.  sort() is called before the callback calls render()
+}
+
+// gets results that match ALL the search supplied criteria
+function searchAll(req, res) {
+	var query = {};		// empty object used to conduct query in db after filling in properties
+	if (req.body.title) {	// if the user didn't enter a title, this would be a falsy value
+	    query.title = req.body.title;
+	}
+	if (req.body.name) {
+	    query['authors.name'] = req.body.name;	// use this notation to set the name property of 
+	}											// the author object in the authors array
+	if (req.body.year) {
+	    query.year = req.body.year;
+	}
+
+	// console.log(query);
+	// { 'authors.name': 'Chris Murphy', year: '2017' }
+	// the query object now has a property called authors.name set to 'Chris Murphy' 
+
+	// find() with no arguments will retrieve all objects
+	// here we send the query as parameter and the search results will be in array books which we pass to the callback
+	Book.find( query, (err, books) => { if (err) {
+		    res.type('html').status(500);
+		    res.send('Error: ' + err);
+		} else {
+		    res.render('books', { books: books });
+		}
+	});
+}
+
+app.use('/public', express.static('public'));
+
+app.listen(3000,  () => {
+	console.log('Listening on port 3000');
+});
+
+//////////////////////////////
+
