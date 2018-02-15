@@ -1853,7 +1853,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/handleForm', (req, res) => {
 	var name = req.body.username;
-	var animals = [].concat(req.body.animal);
+	// The req.body.animal property will be a single value if the user selected only one animal, but will
+	// be an array if more were selected.
+	// Use this JS trick to force animals to stat as an empty array, and concat any number of items to it.
+	var animals = [].concat(req.body.animal);	
 	console.log(animals);
 	res.render('showAnimals', { name: name, animals: animals });
 });
@@ -1879,6 +1882,12 @@ Hello, <%= name %>, nice to meet you.
 // ./mongodb-osx-x86_64-3.4.6/bin/mongod --dbpath data/db/
 // npm install mongoose --save
 
+// General program flow:
+// User interacts with page rendered by HTML (submitting forms)
+// The HTML either as .html or .ejs will have an action or href to another page.
+// This is handled by the middleware/routing in index.js, which renders to another .ejs
+// which may have other actions and hrefs.
+
 // personform.html
 <html>
 <body>
@@ -1894,7 +1903,7 @@ Age: <input name='age'>
 </body>
 </html>
 
-// index.js
+///<<<  index.js >>>///
 var express = require('express');
 var app = express();
 
@@ -1903,7 +1912,7 @@ app.set('view engine', 'ejs');
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var Person = require('./Person.js');
+var Person = require('./Person.js');	// Person object associated with Mongo db instance
 
 app.use('/create', (req, res) => {	// triggered by form submit
 	var newPerson = new Person ({	// as defined in Person.js
@@ -1916,43 +1925,38 @@ app.use('/create', (req, res) => {	// triggered by form submit
 		if (err) {					// after the save attempt, this callback will be invoked with the err parameter
 		    res.type('html').status(500);
 		    res.send('Error: ' + err);
-		}
-		else {
+		} else {
 		    res.render('created', {person : newPerson});
 		}
 	}); 
 });
 
-app.use('/all', (req, res) => {
-    Person.find( {}, (err, allPeople) => {
+app.use('/all', (req, res) => {		// remember, the callback function is not called until after the db search.
+    Person.find( {}, (err, allPeople) => {	// we pass err and the array of all the person objects it found in the db.
 		if (err) {
 		    res.type('html').status(500);
 		    res.send('Error: ' + err);
-		}
-		else {
-		    if (allPeople.length == 0) {
-			res.type('html').status(200);
-			res.send('There are no people');
-		    }
-		    else {
-			res.render('showAll', { persons: allPeople });
-		    }
+		} else {
+			if (allPeople.length == 0) {
+				res.type('html').status(200);
+				res.send('There are no people');
+			} else {
+				res.render('showAll', { persons: allPeople });
+			}
 		}
 	});
 });
 
-app.use('/person', (req, res) => {
+app.use('/person', (req, res) => {		// used to create person links within showAll.ejs
 	var searchName = req.query.name;
-	Person.findOne( {name: searchName}, (err, person) => {
+	Person.findOne( {name: searchName}, (err, person) => {	// include search query for docs with name: searchName
 		if (err) {
 		    res.type('html').status(500);
 		    res.send('Error: ' + err);
-		}
-		else if (!person) {
+		} else if (!person) {
 		    res.type('html').status(200);
 		    res.send('No person named ' + searchName);
-		}
-		else {
+		} else {
 		    res.render('personInfo', {person: person});
 		}
 	});
@@ -1961,19 +1965,27 @@ app.use('/person', (req, res) => {
 
 app.use('/update', (req, res) => {
     var updateName = req.body.username;
-    var updateAge = req.body.age;
 
-	Person.findOne( {name: updateName}, (err, person) => {
-		if (err) {
+	// locate the document matching the username
+	// if found, save the person object with the new update age
+	Person.findOne( {name: updateName}, (err, person) => {	// person was passed as parameter
+		if (err) {											// from personInfo.ejs
 		    res.type('html').status(500);
 		    res.send('Error: ' + err);
 		}
 		else if (!person) {
 		    res.type('html').status(200);
 		    res.send('No person named ' + updateName);
-		}
-		else {
-		    res.render('updated', { person : person });
+		} else {
+			person.age = req.body.age;
+			person.save( (err) => {
+				if (err) {
+					res.type('html').status(500);
+					res.send('Error: ' + err);
+				} else {
+		    		res.render('updated', { person : person });
+				}
+			});
 		}
 	});
 });
@@ -1988,18 +2000,15 @@ app.listen(3000,  () => {
 
 // Person.js for prepping the mongo schema 
 var mongoose = require('mongoose');
-
-// where does the db name come from? I just made this up
 mongoose.connect('mongodb://localhost:27017/myDatabase');
 
 var Schema = mongoose.Schema;
-
-var personSchema = new Schema({	// a Person will have 2 properties: name and age.
-	name: {type: String, required: true, unique: true},	// name must be required and unique
+var personSchema = new Schema({				// define Person to have 2 properties: name and age.
+	name: {type: String, required: true, unique: true},		// name must be required and unique
 	age: Number
 });
 
-// export this scheme as a Person class so that other files can create persons with this schema.
+// export this schema as a Person class so that other files can create persons with this schema.
 module.exports = mongoose.model('Person', personSchema);
 
 personSchema.methods.standardizeName = function() {
@@ -2031,7 +2040,10 @@ Here are all the people:
 // personInfo.ejs
 <form action='/update' method='post'>
 Name: <%= person.name %><br>
-<input name='username' value='<%= person.name %>' hidden>
+
+<!-- send person.name hidden as part of the form submission so that '/update' will have access to it.  -->
+<input name='username' value='<%= person.name %>' hidden>	
+
 Age: <input name='age' value='<%= person.age %>'>
 <input type='submit' value='Update'>
 </form>
