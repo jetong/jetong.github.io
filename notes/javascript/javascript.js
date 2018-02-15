@@ -2281,5 +2281,112 @@ app.listen(3000,  () => {
 	  Browser now renders only the affected HTML
 
 
+// index.js
+var express = require('express');
+var app = express();
 
+app.set('view engine', 'ejs');
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+var Book = require('./Book.js');
+
+var router = express.Router();
+
+// instead of retrieving parameters from the body, we retrieve from the URL using query
+app.use( '/api', (req, res) => {
+	var query = {};
+	if (req.query.title) {
+	    query.title = { $regex : req.query.title };		// search for the title in the db using regex
+	}
+	if (req.query.name) {
+	    query['authors.name'] = { $regex: req.query.name };
+	}
+	if (req.query.year) {
+	    query.year = req.query.year;
+	}
+
+	if (Object.keys(query).length == 0) {	// nothing was queried
+	    res.json({});
+	} else {
+	    Book.find( query, (err, books) => {
+			if (err) {
+		    	res.type('html').status(500);
+		    	res.send('Error: ' + err);
+			} else {
+		    	res.json(books);	// rather than using EJS to render entire page, send books as JSON data.
+			}
+	    });	    
+	}
+});
+
+app.use('/public', express.static('public'));
+
+app.listen(3000,  () => {
+	console.log('Listening on port 3000');
+    });
+
+/////////////////////////
+// books.html
+<html>
+  <head>
+    <title>Book Finder</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+
+	<!-- Note that there is no action or submission needed for the form.
+     	 We are simply collecting data in the form -->
+    <form>
+      Title: <input name='title'><br>
+      Author: <input name='author'><br>
+      Year: <input name='year'><br>
+    </form>
+
+    <ul><div id='results'></div></ul>
+
+    <script>
+
+// use jquery to select all input elements on the page since we want this code to run for an action
+// on any of those 3 inputs.
+// The event for which we're defining the callback function is the 'on' event, which will look for
+// the specified events to trigger the callback function.
+// Here we specify events with different names to accommodate different browsers.
+$("input").on( "change input textInput", () => {
+  var title = $("input[name='title']").val();		// jquery selecting the input with property name='title'
+  var author = $("input[name='author']").val();
+  var year = $("input[name='year']").val();
+
+  var query = '?';
+  if (title) query += 'title=' + title + '&';
+  if (author) query += 'name=' + author + '&';
+  if (year) query += 'year=' + year;
+
+  //$("#results").html(query);
+
+  var url = 'http://localhost:3000/api/' + query;
+
+  $.getJSON(url, (books, status) => {		// getJSON() is from AJAX library.
+  // getJSON() sends an HTTP request to the url and defines a callback to be invoked 
+  // on the books JSON data that comes back.
+
+  // normally check the status of the HTTP reponse and handle any errors here
+
+  // using jquery:
+    var results = $("#results");		// select the <div> with id 'results'
+    results.html('');
+    books.forEach( (book) => {
+      results.append('<li><i>' + book.title + '</i>, ');
+      book.authors.forEach( (author) => {
+        if (author.name) results.append(author.name + ', ');
+      });
+      results.append(book.year + '</li>');
+    });
+  });
+});	// close on()
+
+    </script>
+
+  </body>
+</html>
