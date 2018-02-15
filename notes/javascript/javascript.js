@@ -1873,3 +1873,174 @@ Hello, <%= name %>, nice to meet you.
 <% }); %>
 </ul>
 <a href='/public/form.html'>Back to form</a>
+
+
+// MongoDB
+// ./mongodb-osx-x86_64-3.4.6/bin/mongod --dbpath data/db/
+// npm install mongoose --save
+
+// personform.html
+<html>
+<body>
+<form action='/create' method='post'>
+
+Name: <input name='name'>
+<p>
+Age: <input name='age'>
+<p>
+<input type=submit value='Submit form!'>
+
+</form>
+</body>
+</html>
+
+// index.js
+var express = require('express');
+var app = express();
+
+app.set('view engine', 'ejs');
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+var Person = require('./Person.js');
+
+app.use('/create', (req, res) => {	// triggered by form submit
+	var newPerson = new Person ({	// as defined in Person.js
+		name: req.body.name,		// as defined in personform.html
+		age: req.body.age,
+	});
+
+	// write to the DB
+	newPerson.save( (err) => {		// any potential errors during the save will be stored in err
+		if (err) {					// after the save attempt, this callback will be invoked with the err parameter
+		    res.type('html').status(500);
+		    res.send('Error: ' + err);
+		}
+		else {
+		    res.render('created', {person : newPerson});
+		}
+	}); 
+});
+
+app.use('/all', (req, res) => {
+    Person.find( {}, (err, allPeople) => {
+		if (err) {
+		    res.type('html').status(500);
+		    res.send('Error: ' + err);
+		}
+		else {
+		    if (allPeople.length == 0) {
+			res.type('html').status(200);
+			res.send('There are no people');
+		    }
+		    else {
+			res.render('showAll', { persons: allPeople });
+		    }
+		}
+	});
+});
+
+app.use('/person', (req, res) => {
+	var searchName = req.query.name;
+	Person.findOne( {name: searchName}, (err, person) => {
+		if (err) {
+		    res.type('html').status(500);
+		    res.send('Error: ' + err);
+		}
+		else if (!person) {
+		    res.type('html').status(200);
+		    res.send('No person named ' + searchName);
+		}
+		else {
+		    res.render('personInfo', {person: person});
+		}
+	});
+	
+});
+
+app.use('/update', (req, res) => {
+    var updateName = req.body.username;
+    var updateAge = req.body.age;
+
+	Person.findOne( {name: updateName}, (err, person) => {
+		if (err) {
+		    res.type('html').status(500);
+		    res.send('Error: ' + err);
+		}
+		else if (!person) {
+		    res.type('html').status(200);
+		    res.send('No person named ' + updateName);
+		}
+		else {
+		    res.render('updated', { person : person });
+		}
+	});
+});
+
+app.use('/public', express.static('public'));
+
+app.use('/', (req, res) => { res.redirect('/public/personform.html'); } );
+
+app.listen(3000,  () => {
+	console.log('Listening on port 3000');
+});
+
+// Person.js for prepping the mongo schema 
+var mongoose = require('mongoose');
+
+// where does the db name come from? I just made this up
+mongoose.connect('mongodb://localhost:27017/myDatabase');
+
+var Schema = mongoose.Schema;
+
+var personSchema = new Schema({	// a Person will have 2 properties: name and age.
+	name: {type: String, required: true, unique: true},	// name must be required and unique
+	age: Number
+});
+
+// export this scheme as a Person class so that other files can create persons with this schema.
+module.exports = mongoose.model('Person', personSchema);
+
+personSchema.methods.standardizeName = function() {
+    this.name = this.name.toLowerCase();
+    return this.name;
+}
+
+// created.ejs
+Successfully created new person:
+<p>
+<b>Name:</b> <%= person.name %>
+<br>
+<b>Age:</b> <%= person.age %>
+<br><a href='/public/personform.html'>Create New Person</a>
+<br><a href='/all'>Show All</a>
+
+// showAll.ejs
+Here are all the people:
+<ul>
+<% persons.forEach( (person) => { %>
+
+<li><a href="/person?name=<%= person.name %>"> <%= person.name %>: <%= person.age %></li>
+
+<% }); %>
+</ul>
+
+<br><a href='/public/personform.html'>Create New Person</a>
+
+// personInfo.ejs
+<form action='/update' method='post'>
+Name: <%= person.name %><br>
+<input name='username' value='<%= person.name %>' hidden>
+Age: <input name='age' value='<%= person.age %>'>
+<input type='submit' value='Update'>
+</form>
+
+<% include ../partials/createNewPersonLink %>
+<% include ../partials/showAllPeopleLink %>
+
+// updated.ejs
+Updated <%= person.name %>'s age to <%= person.age %>
+
+<br><a href='/public/personform.html'>Create New Person</a>
+<br><a href='/all'>Show All</a>
