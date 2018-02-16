@@ -12,6 +12,13 @@
 // properties: name, value, form, type
 // methods: focus(), blur()
 
+// Web Internationalization
+<!doctype html>
+<html lang="en">	// specify lang of your content
+<head>
+<meta charset="utf-8"/>
+<head>
+
 <script type="text/javascript" src="myFile.js"></script>
 
 document.form1.txtNum1.focus();
