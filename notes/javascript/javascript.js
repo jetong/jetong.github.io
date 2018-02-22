@@ -1795,7 +1795,7 @@ I Like:<br>
 <input type=checkbox name="animal" value="cats">Cats <br>
 <input type=checkbox name="animal" value="birds">Birds <br>
 <p>
-<input type=submit value="Submit Form!">
+<input type="submit" value="Submit Form!">
 
 </form>
 
@@ -1971,12 +1971,12 @@ app.use('/person', (req, res) => {		// used to create person links within showAl
 });
 
 app.use('/update', (req, res) => {
-    var updateName = req.body.username;
+    var updateName = req.body.username;  // username was passed as parameter from personInfo.ejs
 
 	// locate the document matching the username
 	// if found, save the person object with the new update age
-	Person.findOne( {name: updateName}, (err, person) => {	// person was passed as parameter
-		if (err) {											// from personInfo.ejs
+	Person.findOne( {name: updateName}, (err, person) => {	
+		if (err) {											
 		    res.type('html').status(500);
 		    res.send('Error: ' + err);
 		}
