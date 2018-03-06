@@ -180,7 +180,7 @@ var results = numbers.filter(isLessThan3);	// results is an array {1, 2}.
 
 // use map() to apply function to each element of an array, returning another array with results
 var myArray = new Array(1, 2, 3);
-function iimesTwo(value, index, array) {
+function timesTwo(value, index, array) {
 	return value*2;
 }
 var doubledArray = myArray.map(timesTwo);
@@ -2397,3 +2397,43 @@ $("input").on( "change input textInput", () => {
 
   </body>
 </html>
+
+// Bootstrap - For automatic response web designing, designing for different devices
+// https://getbootstrap.com/getting-started/
+// Container is a class in the bootstrap css that has the formatting rules
+// Think of each row as having 12 columns
+
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<!-- Latest compiled and minified CSS --> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<!-- jQuery library --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+<!-- Latest compiled JavaScript --> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head> 
+<body> 
+
+  <!-- using bootstrap -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">This is the first piece of RWD content.</div>
+      <div class="col-md-4">This is the second piece of RWD content.</div>
+      <div class="col-md-4">This is the third piece of RWD content.</div>      
+    </div>
+  </div>
+  <p>
+
+  <!-- without bootstrap -->
+  <table width="100%" border="1">
+    <tr align="center">
+      <td>This is the first table cell</td>
+      <td>This is the second table cell</td>
+      <td>This is the third table cell</td>
+    </tr>
+  </table>
+
+ </body>
+ </html>
