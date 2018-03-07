@@ -1954,7 +1954,9 @@ app.use('/all', (req, res) => {		// remember, the callback function is not calle
 	});
 });
 
-app.use('/person', (req, res) => {		// used to create person links within showAll.ejs
+// The '/person' route is created as anchor tags in showAll.ejs, where the anchor hrefs
+// include and pass along the person.name as query parameter
+app.use('/person', (req, res) => {
 	var searchName = req.query.name;
 	Person.findOne( {name: searchName}, (err, person) => {	// include search query for docs with name: searchName
 		if (err) {
@@ -2033,18 +2035,23 @@ Successfully created new person:
 <br><a href='/all'>Show All</a>
 
 // showAll.ejs
+// passes the person.name as a query parameter to /person handler
 Here are all the people:
 <ul>
 <% persons.forEach( (person) => { %>
-
-<li><a href="/person?name=<%= person.name %>"> <%= person.name %>: <%= person.age %></li>
-
+  <li>
+      <a href="/person?name=<%= person.name %>">
+      <%= person.name %></a>: 
+      <%= person.age %>
+  </li>
 <% }); %>
 </ul>
-
 <br><a href='/public/personform.html'>Create New Person</a>
 
 // personInfo.ejs
+// In contrast to showAll.ejs where we provide the user with a link (through which person.name
+// is passed as a query parameter, in personInfo.ejs we provide the user with a form, and so
+// we pass the person.name as a hidden input value to be retrieved from the body within /update. 
 <form action='/update' method='post'>
 Name: <%= person.name %><br>
 
