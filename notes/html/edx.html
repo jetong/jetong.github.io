@@ -221,4 +221,91 @@ Adding closed captions and subtitles using <track>:
 http://www.universalsubtitles.org, also known as http://www.amara.org.  Allow uploading
 YouTube video and offers online editor.
 
+<!-- Graphics using <canvas> -->
+Ensure page is loaded before running js either:
+<body onload="init();">
+or
+in script, use window.onload = function() { get canvas object, etc };
+or
+place <script></script> tags at the very end
+or
+use defer
+
+Steps:
+1.  Declare the canvas, remembering to add an id attribute, and fallback content:  
+<canvas id="myCanvas" width="200" height="200">
+...fallback content...
+</canvas>
+2.  Get a reference to the canvas in a JavaScript variable using the DOM API: 
+    var canvas=document.getElementById('myCanvas');
+3.  Get the context for drawing in that canvas:  
+    var ctx=canvas.getContext('2d');
+4.  Specify some drawing properties (optional):  
+    ctx.fillStyle='#FF0000';
+5.  Draw some shapes: 
+    ctx.fillRect(0,0,80,100);
+
+Example
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <title>Drawing principales unité</title>
+  <meta charset="utf-8"/>
+ <style>
+     #myCanvas {
+         border: 1px solid black;
+     }
+ </style>
+ <script>
+   var canvas, ctx;
+ 
+   function init() {
+     // 1 - Get the canvas
+     canvas = document.getElementById('myCanvas');
+     // 2 - Get the context
+     ctx=canvas.getContext('2d');
+
+     // Optionally do transformations to the context before drawing
+     ctx.translate(100, 100);
+     ctx.rotate(Math.PI/4);
+     ctx.scale(0.5, 0.5);
+
+     // 3 - we can draw
+     drawSomething();
+   }
+   function drawSomething() {
+     // draw a red rectangle, line width=3 pixels
+     ctx.lineWidth=3;
+     ctx.strokeStyle='red';
+     ctx.strokeRect(10,10,80,100);
+   }
+ </script>
+ </head>
+<body onload="init();">
+    <canvas id="myCanvas" width="200" height="200">
+            Your browser does not support the canvas tag.
+    </canvas>
+</body>
+</html>
+
+There are two methods for saving and restoring the context properties: ctx.save()and ctx.restore().
+Best practice: save the context at the beginning of any function 
+that changes the context, restore it at the end of the function!
+
+To draw an image from a file source, make sure web page loaded, and make sure image is loaded in memory first:
+<script>
+  // wait for page to load
+  window.onload = function () {
+    var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+    var imageObj = new Image();
+    // wait for image to load into memory before drawing
+    imageObj.onload = function () {
+      context.drawImage(imageObj, 0, 0);
+    };
+    // Calls the imageObj.onload function asynchronously, once loaded to memory
+    imageObj.src = "http://www.w3.org/html/logo/downloads/HTML5_Logo_512.png";
+  };
+</script>
+
 

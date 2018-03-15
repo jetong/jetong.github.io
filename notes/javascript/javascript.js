@@ -63,7 +63,7 @@ while(foundAtPosition != -1) {
 var name="Bob"
 // use name.charAt(0) or name[0]
 
-// trim()   returns string with beginning and ending whitespace  removed
+// trim()   returns string with beginning and ending whitespace removed
 // startsWith(s), endsWith(s), includes(s)  return booleans
 
 // search(s)  returns index of first match, or -1
