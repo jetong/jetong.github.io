@@ -308,4 +308,130 @@ To draw an image from a file source, make sure web page loaded, and make sure im
   };
 </script>
 
+Path mode = fill a buffer then execute all buffered orders at once to enable optimization and parallelism
+Call drawing methods that work in path mode, for example call ctx.rect(...) instead of ctx.strokeRect(...) or ctx.fillRect(...)
+Call ctx.stroke() or ctx.fill() to draw the buffer's contents,
+Beware that the buffer is never emptied, two consecutive calls to ctx.stroke() will draw the buffer contents twice! Instead, use ctx.beginPath() to empty it if needed.
+Use ctx.moveTo(x,y) and ctx.lineTo(x,y) to draw lines
+ctx.closePath() to connect start and end points.
 
+Colors: set the current color using the strokeStyle and fillStyle properties of the canvas context object
+Ex:
+ctx.strokeStyle = 'red';
+ctx.fillStyle = "#00ff00";
+ctx.strokeStyle = "rgb(0, 0, 255)";
+ctx.fillStyle = "rgba(0, 0, 255, 0.5)";  where a is alpha channel value between 0 (transparent) and 1 (opaque)
+
+Example: Shadows
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  </head>
+<body onload = init();>
+<canvas id="myCanvas" width="400" height =800>
+  Your browser does not support the canvas tag.</canvas>
+</body>
+</html>
+
+var canvas, ctx;
+ 
+function init() {
+  canvas = document.getElementById('myCanvas');
+  ctx = canvas.getContext('2d');
+  
+  setShadow();
+  
+  // first green filled rectangle
+  ctx.fillStyle = "#22FFDD"; // rectangle color
+  ctx.fillRect(20, 20, 200, 100); 
+  
+  // second stroked rectangle
+  ctx.strokeStyle = "purple"; // rectangle color
+  ctx.lineWidth=10;
+  ctx.strokeRect(20, 150, 200, 100); 
+}
+
+function setShadow() {
+   ctx.shadowColor = "Grey";      // color
+   ctx.shadowBlur = 20;           // blur level
+   ctx.shadowOffsetX = 15;        // horizontal offset
+   ctx.shadowOffsetY = 15;        // vertical offset
+}
+
+<!-- Animations -->
+Before HTML5:
+For animation, the setInterval(function, ms) and setTimeout(function, ms) methods were the only solutions. 
+Both methods take a function as the first parameter, and a number of milliseconds as the second parameter.
+The only difference is that the code provided to setInterval will run every n milliseconds whereas the 
+code in setTimeout will run only once after n milliseconds
+After HTML5:
+The above are now completed by a new method that comes with multiple advantages: the requestAnimationFrame API.
+
+Core example:
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Animation</title>
+      
+    <style>
+        #myCanvas {
+            border: 1px solid black;
+        }
+    </style>
+    <script>
+      var canvas, ctx;
+      var rectangleX = 0;
+      var colors = ['red', 'blue', 'green'];
+      var currentColor = 0;
+      var speed = 3;
+      function init() {
+        // 1 - Get the canvas
+        canvas = document.getElementById('myCanvas');
+
+        // 2 - Get the context
+        ctx=canvas.getContext('2d');
+
+        // 3 - we can draw
+        // Old way: using only setInterval & setTimeout unreliable timing can be imprecise if animate
+        // is task-heavy.  Instead, use requestAnimationFrame to achieve 60 fps.
+        //setInterval(animate, 100);
+        //setTimeout(animate, 100);
+        requestAnimationFrame(animate);
+        setInterval(changeColor, 1000);
+      }
+      
+      function animate() {
+        // - 1 clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 2 - draw a red rectangle
+        ctx.fillRect(rectangleX,0,80,100);
+        
+        // 3 - move the shape
+        rectangleX = rectangleX +speed;
+        if((rectangleX+80 > 200) || (rectangleX <= 0)){
+          speed = -speed;
+        }
+        
+        // Call the animate function again after 100ms
+        //setTimeout(animate, 100);   // old way of doing it
+        requestAnimationFrame(animate);
+      }
+      
+      function changeColor() {
+        ctx.fillStyle= colors[currentColor%3];
+        currentColor += 1;
+        // Comment next line if you do not want to change the speed at each bounce
+        speed += Math.sign(speed)*1;
+        console.log("speed = " + speed)
+      }
+    </script>
+    </head>
+
+  <body onload="init();">
+    <canvas id="myCanvas" width="200" height="200"> Your browser does not support the canvas tag.</canvas>
+  </body>
+</html>
