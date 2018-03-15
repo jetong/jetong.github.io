@@ -5,7 +5,6 @@ Title pages, use alt for images, web internationalization
 "type" attribute in link and script tags are optional
 
 for accessibility and portability, split page content into regions using aside, footer, header, main, nav.
-
 <section>
    <article>
      <header>
@@ -26,4 +25,200 @@ for accessibility and portability, split page content into regions using aside, 
     ...
    </article>
 <section>
+<!---------------------------------------->
+<!-- FlexBox -->
+<!-- associate an element with the 'flex-container' css class, then 
+     its child elements automatically become flexible items. --> 
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.flex-container {
+  display: flex;
+  background-color: Blue;
+}
+
+.flex-container > div {
+  background-color: #11f1f1;
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;
+  width:30%;
+}
+</style>
+</head>
+
+<body>
+<div class="flex-container">
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>  
+</div>
+</body>
+</html>
+
+<!---------------------------------------->
+<!-- details & summary tags to create simple widget to hide/show contents -->
+<!-- The summary element is not supported in Edge/Internet Explorer -->
+<details>
+  <summary>Copyright 1999-2014.</summary>
+  <p> - by Refsnes Data. All Rights Reserved.</p>
+</details>
+
+<!-- css to format details & summary -->
+summary::-webkit-details-marker {
+ color:#FF0000; 
+ background:#FFFFFF; 
+}
+
+details[open] summary::-webkit-details-marker {
+	color:#0000FF;
+	background:#00FFFF;
+}
+
+<!---------------------------------------->
+polyfills - fallback javascript code that emulates an HTML5 feature not yet implemented certain browsers
+http://caniuse.com
+http://html5please.com
+modernizr on github
+Search for the particular HTML5 feature to see browser support and check for fallback script in resources tab
+
+<!---------------------------------------->
+<time> tag for flexibility in outputing various date formats for readers while making it 
+easier for programs to index date data and allowing search engines and other programs to 
+quickly locate and parse them.
+
+<!---------------------------------------->
+<mark> for highlighting text
+
+<!---------------------------------------->
+Download attribute.
+<a href="https://www.somewhere.com/picture.gif" download="pic.gif">Download Picture</a>
+Enables ability to force a download rather than navigating to the file.  Downloaded filename can be specified as well.
+
+<!---------------------------------------->
+Translate attribute.
+<span translate="no">Linda</span>
+Prevent/limit the impact of translation tools such as Google Translate.
+This person's name would otherwise be translated into "Pretty" in Spanish.
+Any children of the attributed elemented will also inherit the attribute.
+
+<!-- Video embedding -->
+Old way:
+<object width="425" height="344">
+   <param name="movie"
+          value="http://www.youtube.com/v/9sEI1AUFJKw&hl=en_GB&fs=1&">
+   </param>
+   <param name="allowFullScreen"   value="true"></param>
+   <param name="allowscriptaccess" value="always"></param>
+   <embed src="http://www.youtube.com/v/9sEI1AUFJKw&hl=en_GB&fs=1&"
+          type="application/x-shockwave-flash"
+          allowscriptaccess="always" allowfullscreen="true"
+          width="425" height="344">
+   </embed>
+</object>
+
+HTML5
+<!-- <video> tag, with the @controls attribute giving it the play/pause/seeker controls. 
+     autoplay or loop, and can style using css since <video> is part ot the DOM -->
+<video id="vid" controls autoplay> 
+	<!-- I have three versions of the video encoded with
+	     different codecs.  The browser will automatically
+	     choose the first one it knows it can play. --> 
+	<source src=http://html5doctor.com/demos/video-canvas-magic/video.webm type=video/webm> 
+	<source src=http://html5doctor.com/demos/video-canvas-magic/video.ogg type=video/ogg> 
+	<source src=http://html5doctor.com/demos/video-canvas-magic/video.mp4 type=video/mp4> 
+</video> 
+<button onclick="playVideo();" style="cursor: pointer;">Play</button>
+<button onclick="pauseVideo();" style="cursor: pointer;">Pause</button>
+<button onclick="rewindVideo();" style="cursor: pointer;">Back to beginning</button>
+<script>
+  vid = document.querySelector("#vid");
+  function playVideo() { vid.play(); }
+  function pauseVideo() { vid.pause(); }
+  function rewindVideo() { vid.currentTime = 0; }
+</script>
+<!-- That's it!  You now have video playing in your browser! -->
+
+CSS for fullscreen video
+body {
+  margin:0;
+  padding:0;
+  overflow:hidden;
+}
+ 
+video {
+  width:100%;
+  height:auto;
+}
+
+To detect end of video and do something else (like play another video), listen for 'ended' event
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Sequential Movies</title>
+    <script>
+      var myVideo;
+      var currentVideo = 0;
+      var sources = [
+        "https://mainline.i3s.unice.fr/mooc/samuraiPizzacat.mp4",
+        "http://www.archive.org/download/AnimatedMechanicalArtPiecesAtMit/P1120973_512kb.mp4"
+        ];
+      // Set the src of the video to the next URL in the playlist
+      function loadNextVideo() {
+        myVideo.src = sources[currentVideo % sources.length]
+        myVideo.load();
+        currentVideo++;
+      }
+      // called by addEventListener
+      function loadAndplayNextVideo() {
+        console.log("playing " + sources[currentVideo % sources.length])
+        loadNextVideo();
+        myVideo.play();
+      }
+      function init(){
+        myVideo = document.querySelector("#myVideo");
+        // Define a callback function called each time a video ended
+        myVideo.addEventListener('ended', loadAndplayNextVideo, false);
+        // Load the first video when the page is loaded.
+        loadNextVideo();
+      }
+    </script>
+  </head>
+<body onload="init()">
+    <video id="myVideo"
+      controls>
+    </video>
+</body>
+</html>
+
+For YouTube, Dailymotion, Vimeo, etc, need to embed differently:
+(right click on video and select 'copy embed code')
+(licensing and royalties prevent certain videos from playing)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ZH1XOsv8Oyo" frameborder="0" allowfullscreen></iframe>
+
+<!-- Audio -->
+<audio controls="controls">
+   <source src="https://mainline.i3s.unice.fr/mooc/horse.ogg" type="audio/ogg" />
+   <source src="https://mainline.i3s.unice.fr/mooc/horse.mp3" type="audio/mp3" />
+      Your browser does not support the audio element.
+      Download the audio/video in
+   <a href="https://mainline.i3s.unice.fr/mooc/horse.ogg">OGG</a>
+   or <a href="https://mainline.i3s.unice.fr/mooc/horse.mp3">MP3</a>
+   format.
+</audio>
+
+Example using CSS3 transformations on video: https://jsbin.com/lunosev/1/edit?html,css,js,output
+
+Example using filters in real time: https://jsbin.com/siduxad/edit?html,output
+
+Example handling video errors and logs: https://jsbin.com/becaref/3/edit?html,output
+
+Example displaying buffer progress indicator: https://jsbin.com/xororol/3/edit?html,output
+
+Adding closed captions and subtitles using <track>:
+http://www.universalsubtitles.org, also known as http://www.amara.org.  Allow uploading
+YouTube video and offers online editor.
+
 
