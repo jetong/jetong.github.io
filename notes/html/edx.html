@@ -1087,81 +1087,6 @@ function initSprites(spritesheet, spriteWidth, spriteHeight, nbLinesOfSprites,
    	}
 }
 
-<!-- Forms -->
-Explore: HTML5 client side validation, input tags and attributes.
-Form example using lists: https://jsbin.com/sivula/edit?html,css,js,output
-Form example using fieldset/legend structure: http://dev.dhc3.intrasoft-intl.com/html5/philipbkemp/forum.html
-
-Basic Example:
-(match the label's 'for' attr with the input's 'id' attr.  Good practice for accessibility and
-clicking on label selects the associated input element in the form)
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Form example</title>
-</head>
-<body>
-<form id="myForm">
-  <fieldset>
-    <legend>Personal informations</legend>
-    
-    <!-- inputs come with some basic validation depending on the specfied type,
-         and CSS can respond by using input:valid or input:invalid (see CSS below). -->
-    <label for="firstName">First name:</label>
-    <input type="text" id="firstName" required name="firstName">
-    
-    <br>
-    
-    <label for="lastName">Last name:</label>
-    <input type="text" id="lastName" required name="lastName">
-    
-    <br>
-     <label for="email">Email:</label>
-    <input type="email" id="email" required name="email">
-    
-     <br>
-     <label for="age">Age:</label>
-    <input type="number" min=0 max=120  step=5 id="age" required name="age">
- 
-         <br>
-     <label for="date">Birth date:</label>
-    <input type="date"  id="date" required name="date">
-  </fieldset>
-  
-  <button>Submit form</button>
-  </form>
-</body>
-</html>
-
-CSS
-fieldset {
-  padding:10px;
-  border-radius:10px;    /* for rounded corners */
-}
-
-label {
-  display:inline-block;  /* block: each label contained in it's own "paragraph".  
-                            inline: lets us put the labels inline right next to the associated input boxes 
-                         */
-  margin-bottom:10px;    /* specify amount of margin between label blocks */
-}
-
-*/ This setup lets us align the input boxes regardless of the character length of our labels */
-input {
-  float:right;
-  margin-right:70px;
-  width:150px;
-}
-
-*/ change the input box background color according to the data validation */
-input:invalid {
-  background-color:pink;
-}
-
-input:valid {
-  background-color:lightgreen;
-}
 
 <!-- Using GUI input elements(widgets) to drive graphics in animations & chart displays
 <!DOCTYPE html>
@@ -1187,7 +1112,6 @@ var x = 40, y = 190;
 // Data to be visualized
 var values = [1, 10, 2, 7, 9, 2, 34, 100, 12, 14, 19];
 
-//init function is launch when the page is loaded.
 function init() {
     canvas = document.getElementById('canvas'); 
     context = canvas.getContext('2d'); 
@@ -1468,4 +1392,664 @@ function makeBrokenLines(x, y, width, height, values) {
   
   context.restore();
 }
+
+
+<!----- Forms ------>
+Explore: HTML5 client side validation, input tags and attributes.
+Form example using lists: https://jsbin.com/sivula/edit?html,css,js,output
+Form example using fieldset/legend structure: http://dev.dhc3.intrasoft-intl.com/html5/philipbkemp/forum.html
+
+Basic Example:
+(match the label's 'for' attr with the input's 'id' attr.  Good practice for accessibility and
+clicking on label selects the associated input element in the form)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Form example</title>
+</head>
+<body>
+<form id="myForm">
+  <fieldset>
+    <legend>Personal informations</legend>
+    
+    <!-- inputs come with some basic validation depending on the specfied type,
+         and CSS can respond by using input:valid or input:invalid (see CSS below). -->
+    <label for="firstName">First name:</label>
+    <input type="text" id="firstName" required name="firstName">
+    
+    <br>
+    
+    <label for="lastName">Last name:</label>
+    <input type="text" id="lastName" required name="lastName">
+    
+    <br>
+     <label for="email">Email:</label>
+    <input type="email" id="email" required name="email">
+    
+     <br>
+     <label for="age">Age:</label>
+    <input type="number" min=0 max=120  step=5 id="age" required name="age">
+ 
+     <br>
+     <label for="date">Birth date:</label>
+    <input type="date"  id="date" required name="date">
+  </fieldset>
+  
+  <button>Submit form</button>
+  </form>
+</body>
+</html>
+
+CSS
+fieldset {
+  padding:10px;
+  border-radius:10px;    /* for rounded corners */
+}
+
+label {
+  display:inline-block;  /* block: each label contained in it's own "paragraph".  
+                            inline: lets us put the labels inline right next to the associated input boxes 
+                         */
+  margin-bottom:10px;    /* specify amount of margin between label blocks */
+}
+
+*/ This setup lets us align the input boxes regardless of the character length of our labels */
+input {
+  float:right;
+  margin-right:70px;
+  width:150px;
+}
+
+*/ change the input box background color according to the data validation */
+input:invalid {
+  background-color:pink;
+}
+
+input:valid {
+  background-color:lightgreen;
+}
+
+<!-- 13 new input types (typically used within forms) -->
+HTML4: button, checkbox, file, hidden, image, password, radio, reset, submit, text.
+HTML5: color, email, number, range, search, tel, url, and 5 variants for choosing dates:
+       date, datetime, datetime-local, month, time, week.
+Browsers providing native implementation will give boost to performance and reduce size of embedded JS.
+
+Example: change background color using color picker
+<!DOCTYPE html>
+<html lang="en"><head></head>
+<body>
+  Select a color : <input type="color" id="colorChooser"/>
+  <script>
+     var colorInputField = document.querySelector("#colorChooser");
+     colorInputField.addEventListener('input', function(evt) {
+          document.body.style.backgroundColor = this.value;
+      }, false);
+</script>
+</body>
+</html>
+
+Example: limit user's available color options.  Use datalist with id matching the list attr of input.
+Datalist good for linking a list of choices to an input element.
+<input type="color" value="#333333" list="colors">
+<datalist id="colors">
+     <option>#0000FF</option>
+     <option>#00FF00</option>
+     <option>#FF0000</option>
+</datalist>
+
+Example: color picker polyfill - spectrum.js  The downsides to this color picker: it's appearance is often
+dependent on browser and OS, the location where the dialog window will appear can't be controlled.  W3C suggests
+using Web Components instead.
+Spectrum example:
+https://jsbin.com/wibekaditi/edit?html,output
+Add these lines between head tags:
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.0/spectrum.min.js"></script>
+<link rel="stylesheet" type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.6.1/spectrum.min.css">
+or
+Download the spectrum.js library and reference directly:
+<!doctype html>
+<html lang="en">
+<head>
+<title>Spectrum polyfill example, for input type=color</title>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="../spectrum.css">
+<script type="text/javascript" src="../docs/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="../spectrum.js"></script>
+</head>
+<body>
+     <input type="color" onchange="alert(this.value);"></p>
+</body>
+</html>
+
+<!-- Date input -->
+<input type="date"
+    id="birthdayParty"
+    value="2015-06-20"
+    min="2015-06-20"
+    max="2015-06-30"
+    step="7">
+
+using <datalist> to specify which dates possible options.
+<input type="date"
+    id="birthdayParty"
+    list="birthdayPartyPossibleDates"
+    value="2015-06-20">
+<datalist id="birthdayPartyPossibleDates">
+     <option label="Best for me">2015-06-20</option>
+     <option label="Ok for me too ">2015-06-27</option>
+     <option label="This one is a sunday, hmmm">2015-06-28</option>
+</datalist>
+
+Listening to date input event
+<input type="date" id="date" />
+...
+<script>
+  var field = document.querySelector("#date");
+  field.oninput = function(evt) {
+    var date = this.value;
+    pickedDate.innerHTML = "<b>"+date+"</b>";
+  }
+</script>
+
+
+Other Input Types:
+<input type="email">, <input type="tel">, <input type="URL"> and <input type="search">
+
+Input type: "tel" (for smartphones and tablets, a keyboard layout automatically pops up)
+<label for="tel">Enter a telephone number:</label>
+<input type="tel" id="tel"
+        placeholder="(555) 555-5555"
+        pattern="^(?\d{3})?[-\s]\d{3}[-\s]\d{4}.*?\)"/>
+
+Input type: "url" (for smartphones and tablets, a keyboard layout automatically pops up)
+<input type="url1" id="url"/>
+ <p>
+<label for="url2">Enter a URL (custom validation, must start with http, https or ftp):</label>
+    <input id="url2" type="url" placeholder="http://www.domain.com"
+           pattern="(http|https|ftp)\:\/\/[a-zA-Z0-9\-\.\/]*"/><p>
+
+Example simple validation using CSS:
+<form>
+  <label for="url_input">Enter a URL:</label>
+  <input type="url" id="url_input" />
+  <br />
+  <br />
+  <label for="email_input">Enter an email address:</label>
+  <input type="email" id="email_input" required/>
+</form>
+
+input:invalid {
+  background-color: #ffdddd;
+}
+
+form:invalid {
+  border: 5px solid #ffdddd;
+}
+
+input:valid {
+  background-color: #ddffdd;
+}
+
+form:valid {
+  border: 5px solid #ddffdd;
+}
+  
+input:required {  /* or refer using #email_input:required */
+  border-color: #800000;
+  border-width: 3px;
+}
+
+input:required:invalid {
+  border-color: #C00000;
+}
+
+Number input type:
+<input type="number">
+Good for entering integers and floats but not zipcodes which should use text type with a pattern matching possible hyphen
+
+Range input type:
+<script>
+      window.onload = function() {
+        printValue('slider1','rangeValue1');
+      }
+      function printValue(sliderId, outputId) {
+      var x = document.getElementById(outputId);
+      var y = document.getElementById(sliderId);
+      x.value = y.value;
+      }
+</script>
+  </head>
+  <body>
+    <form >
+      <label for="slider1">Select a value:</label>
+      <input id="slider1" type="range"
+        min="100" max="500" step="10" value="150"
+        oninput="printValue('slider1','rangeValue1')"/>
+      <output id="rangeValue1"></output>
+    </form>
+    <br/>
+      Play with attributes: value, min, max, step...
+  </body>
+
+HTML5 Attributes
+form
+readonly
+autocomplete
+autofocus
+list
+pattern
+required*
+placeholder
+multiple
+list
+min
+max
+step
+formaction
+formenctype
+formmethod
+formtarget
+formnovalidate
+
+<!-- Form -->
+Useful for putting input fields outside the form itself.  Good in conjunction with <fieldset> for page/form layout.
+  <body>
+    <label for="yourName">Enter your name:</label>
+    <input type="text" id="yourName" name="yourName" form="form1"/>   <!-- This textbox will be outside the fieldset box -->
+    <p>
+    <form id="form1" action="sumit.php" method="post">
+      <fieldset>
+        <legend>Choose option</legend>
+        <label for="free">Free registering</label>
+        <input type="checkbox" id="free"/>
+        <label for="premium">Premium</label>
+        <input type="checkbox" id="premium"/>
+        <button type="submit">Send form</button>
+      </fieldset>
+    </form>
+  </body>
+
+<!-- Autofocus -->
+Default focus is given to first input field of page.  To specify another input field's focus on page load,
+use autofocus attr.  No more than one input element should have this attr.
+
+<!-- List with datalist -->
+Enables autocomplete with dropdown of matching options.
+<form>
+    ...
+    <input list="browsers" id="mybrowser" />
+    <datalist id="browsers">
+       <option value="Internet Explorer">
+       <option value="Firefox">
+       <option value="Chrome">
+       <option value="Opera">
+       <option value="Safari">
+    </datalist>
+...
+</form>
+
+<!-- Pattern -->
+The pattern attribute enables the validation of the user's input on the fly (also at submission time), 
+based on regular expressions. It applies to the text, search, url, tel, email, and password input types. 
+Ready-to-go patterns at http://html5pattern.com/
+Regex tester: https://regex101.com/#javascript
+
+<!-- Multiple -->
+The multiple attribute is used with email and file input types
+Used for entering multiple comma-separated emails or selecting multiple files.
+
+<!-- Form elements -->
+<datalist>
+<output>
+<meter>
+<progress>
+
+<!-- Output -->
+As input field values are considered as strings by JavaScript, using x.value = a.value + b.value 
+would result in a string concatenation instead of an addition. That's why we use the valueAsNumber property.
+HTML5 has introduced new input field properties: valueAsNumber and valueAsDate. 
+The last example is similar to the previous one except that we use an addition instead of a multiplication.
+
+As input field values are considered as strings by JavaScript, using x.value = a.value + b.value would 
+result in a string concatenation instead of an addition. That's why we use the valueAsNumber property.
+<body>
+  Example 1 :<p>
+<form oninput="o.value=a.value*b.value">
+  <input type="number" name="a" value="2"> x
+  <input type="number" name="b" value="3"> =
+  <output for="a b"    name="o">6</output>
+</form>
+  
+  Example 2 :<p>
+<form oninput="x.value=a.valueAsNumber+b.valueAsNumber">
+  <input type="range" name="a" value="50" /> 100+
+  <input type="number" name="b" value="50" /> = 
+  <output for="a b" name="x"></output>
+</form>
+
+<!-- Meter -->
+Display colored gauge bar to correspond to range widget
+<body>
+<pre>&lt;meter value=75 min=0 low=20 high=80 max=100 optimum=19 &gt;&lt;/meter&gt;</pre>
+
+<p>Grades: <meter id="meter2" value="75"  min=0 low=20  high=80 max=100 optimum=19>75%</meter> 
+  
+<input min="0" max="100"   value="75" id="meter2range" oninput="effect('meter2', 'meter2range')" type="range"> 
+  <output id="meter2val" for="meter2range"></output></p>
+ <script>
+ function effect(meter, meterrange) {
+	var currVal = document.getElementById(meterrange).value;
+	document.getElementById(meter).value =  currVal;
+	document.getElementById(meter+ "val").innerHTML = currVal;
+ }
+ </script>
+</body>
+
+<!-- Progress -->
+Download progress:  <progress id=pr value=500  max=1000></progress> 
+  <script>
+    var i=500;
+window.setInterval(function () {
+  i = (i+1) %1000;
+  document.getElementById('pr').value = i;
+},1);
+  </script>
+</body>
+
+More on realtime data validation using CSS3
+Use 'title' attr to customize dialogue box msg associated with invalid data input.
+
+      input:invalid { background-color: lightPink;}
+      input:valid { background-color:lightGreen; }
+      input:required {border: 2px solid red;}
+      input:optional {border: 2px solid green;}
+
+Example using icon inside input field to indicate validity of data.
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CSS3 pseudo-classes for form validation visual feedback</title>
+<style>
+.myForm input:required:valid { background:url('http://i.imgur.com/BJolppS.png') no-repeat right top;
+}
+.myForm input:required {
+  background:url('http://i.imgur.com/7pIN7wz.png') no-repeat right top;
+}
+</style>
+  </head>
+<body>
+
+<form class="myForm">
+  <fieldset>
+    <legend>Type invalid values and see the result</legend>
+  <label for="myEmail" class="formLabel">E-mail:</label> <input type="email" id="myEmail" required/><br>
+    <button>Submit form</button><br />
+  </fieldset>
+</form>
+
+</body>
+</html>
+
+Ensuring 2nd password matchest first, and using setCustomValidity() to customize dialog msg for invalid input.
+An empty string msg indicates valid data.
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Example of using the validation API</title>
+    <style>
+      .myForm input:invalid { background-color: lightPink;}
+      .myForm input:valid { background-color:lightGreen; }
+      .myForm input:required {border: 2px solid red;}
+      .myForm input:optional {border: 2px solid green;}
+      .myForm label { display: inline-block; width: 140px; text-align: right; } 
+    </style>
+  </head>
+
+  <body>
+    <form class="myForm">
+      <fieldset>
+        <legend>Example use of the validation API</legend>
+          <label for="password1" >Password:</label> <input type="password" id="password1" oninput="checkPasswords()" required>
+          <p>
+          <label for="password2">Repeat password:</label> <input type="password" id="password2" oninput="checkPasswords()" required>
+          <p>
+       <button>Submit</button>
+      </fieldset>
+    </form>
+    
+    <script> 
+     function checkPasswords() {
+       var password1 = document.getElementById('password1');
+       var password2 = document.getElementById('password2');
+       if (password1.value != password2.value) {
+         password2.setCustomValidity('Passwords non identiques');
+       } else {
+         password2.setCustomValidity('');
+       }
+     }
+    </script>
+  </body>
+</html>
+
+<!-- Fine tuning validation messages using validity property of input elements -->
+<!-- can also access the messages using 
+console.log("Validation message = " + input.validationMessage);
+-->
+<body>  
+  <script>
+    function validate() {
+      var input = document.getElementById('b');
+      var validityState_object = input.validity;
+      
+      if(validityState_object.valueMissing) {
+         input.setCustomValidity('Please set an age (required)');	
+      } else if (validityState_object.rangeUnderflow) {
+         input.setCustomValidity('Your value is too low');
+      } else if (validityState_object.rangeOverflow) {
+         input.setCustomValidity('Your value is too high');
+      } else if (validityState_object.typeMismatch) {
+         input.setCustomValidity('Type mismatch');
+      } else if (validityState_object.tooLong) {
+         input.setCustomValidity('Too long');
+      } else if (validityState_object.stepMismatch) {
+         input.setCustomValidity('stepMismatch');
+      } else if (validityState_object.patternMismatch) {
+         input.setCustomValidity('patternMismatch');
+      } else {
+        input.setCustomValidity('');
+      }
+    }
+  </script>
+  <form>
+      <label for="b">Enter a value between 10 and 20 </label> 
+
+      <input  type="number" name="text" id="b"
+              required  min="10" max ="20" step="1" oninput='validate()'/>    
+        <input type="submit"/>
+  </form>
+  
+</body>
+
+<!-- Custom validation: changing the default behavior, aggregating error messages, removing bubbles, etc. -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Aggregating error messages</title>
+        <style>
+            input:invalid { background-color: lightPink;}
+            input:valid { background-color:lightGreen; }
+            input:required {border: 2px solid red;}
+            input:optional {border: 2px solid green;}
+
+            .error-messages {
+                display: none;
+                margin: 0 10px 15px 10px;
+                padding: 8px 35px 8px 30px;
+                color: #B94A48;
+                background-color: #F2DEDE;
+                border: 2px solid #EED3D7;
+                border-radius: 4px;
+            }
+            fieldset {
+                border:1px solid;
+                padding:20px;
+            }
+           label { display: inline-block; width: 140px; text-align: right; } 
+        </style>
+    </head>
+    <body>
+        <form>
+            <fieldset>
+              <legend>Submit with one or two invalid fields </legend>
+                <ul class="error-messages"></ul>
+                <label for="name">Name:</label>
+                <input id="name" name="name" required>
+                <p>
+                    <label for="email">Email:</label>
+                    <input id="email" name="email" type="email" required>
+                <p>
+                    <button>Submit</button>
+            </fieldset>
+
+        </form>
+
+        <script>
+            function replaceValidationUI(form) {
+                // Suppress the default bubbles
+                form.addEventListener("invalid", function (event) {
+                    event.preventDefault();
+                }, true);
+
+                // Support Safari, iOS Safari, and the Android browser—each of which do not prevent
+                // form submissions by default
+                form.addEventListener("submit", function (event) {
+                    if (!this.checkValidity()) {
+                        event.preventDefault();
+                    }
+                });
+
+                // Container that holds error messages. By default it has a CSS display:none property
+                var errorMessages = form.querySelector(".error-messages");
+
+                var submitButton = form.querySelector("button:not([type=button]), input[type=submit]");
+
+                submitButton.addEventListener("click", function (event) {
+                    var invalidFields = form.querySelectorAll("input:invalid"),
+                            listHtml = "",
+                            errorMessagesContainer = form.querySelector(".error-messages"),
+                            label;
+
+                    // Get the labels' values of their name attributes + the validation error
+                    // message of the corresponding input field using the validationMessage
+                    // property of input fields
+                    // We build a list of <li>...</li> that we add to the error message container
+                    for (var i = 0; i < invalidFields.length; i++) {
+                        label = form.querySelector("label[for=" + invalidFields[ i ].id + "]");
+                        listHtml += "<li>" +
+                                label.innerHTML +
+                                " " +
+                                invalidFields[ i ].validationMessage +
+                                "</li>";
+                    }
+
+                    // Update the list with the new error messages
+                    errorMessagesContainer.innerHTML = listHtml;
+
+                    // If there are errors, give focus to the first invalid field and show
+                    // the error messages container by setting its CSS property display=block
+                    if (invalidFields.length > 0) {
+                        invalidFields[ 0 ].focus();
+                        errorMessagesContainer.style.display = "block";
+                    }
+                });
+            }
+
+            // Replace the validation UI for all forms
+            var forms = document.querySelectorAll("form");
+          
+            for (var i = 0; i < forms.length; i++) {
+                replaceValidationUI(forms[ i ]);
+            }
+        </script>
+    </body>
+</html>
+
+<!------ HTML5 JavaScript APIs ------>
+
+<!-- HTML5 cache / offline applications -->
+Caching is not a new feature of HTML, but with HTML5 there is more control of what or what not to cache
+at the application layer.
+Specify cache file inside of which lists all files that need to be cached, including images, libraries like jquery, etc.
+<html manifest="myCache.appcache">
+...
+</html>
+Any html page with manifest will be cached by default.
+Example manifest file(must have CACHE MANIFEST first line):
+CACHE MANIFEST
+clock.html
+clock.css
+clock.js
+
+The HTTP server that serves your files must be configured so that .appcache files are served with the
+MIME type text/cache-manifest. For example, with the Apache server, this line must be added in the 
+HTTP.conf configuration file (or in the .htaccess files): 
+AddType text/cache-manifest .appcache
+
+PITFALL #1 : When a file is available in the cache and on the remote HTTP server, it will always be retrieved from the cache!
+PITFALL #2: If one file cannot be retrieved and cached, none of the files will be updated in the cache.
+
+Another manifest file example:
+The CACHE section specifies the URLs of the resources that must be cached
+The NETWORK section is the contrary of the CACHE section: it is useful for specifying resources that should NOT be cached.
+The FALLBACK section specifies resources that will be displayed when the user requests a resource that is not available when offline. 
+
+CACHE MANIFEST
+CACHE:
+#images      # for comment
+/images/image1.png
+/images/image2.png
+#pages
+/pages/page1.html
+/pages/page2.html
+#CSS
+/style/style.css
+#scripts
+/js/script.js
+FALLBACK:
+/ /offline.html
+NETWORK:
+login.html
+
+Tools for generating manifest files:
+1. ManifestR: a manifest file generator (http://westciv.com/tools/manifestR/)
+manifestR is a bookmarklet, meaning that you are able to drag it to your bookmarks bar. Then, when you visit 
+a page, you will click on the manifestR button, and it will create an HTML5 appcache manifest file for that page.
+
+2. Confess.js: multi purpose command line tools
+Confess.js is a small script library that uses PhantomJS 1.2 (or later) to analyze Web pages. Currently it can perform the following tasks:
+
+Generation of an appcache manifest for a Web app
+Simple performance analysis of a Web page and its resources
+List of CSS properties used on the page
+
+3. Cache validators
+Manifesto is an HTML5 Offline Application Cache verification bookmarklet.
+
+When a resource is in the cache, it will ALWAYS be retrieved from the cache, even if you are online, and even if a more recent version is available on your Web server.
+To force an update, best practice is to update the manifest file server side.  Modifying the manifest file triggers browser to check if all files under CACHE section needs updating.
+
+Clearing cache for debugging in Chrome: dev tools - application tab, clear storage
+
+Cache size is limited, but generally sufficient.  Browser also knows to extend size if when needed.
+
+To check status of browser, use navigator.online
+Note this only checks for local network connectivity and doesn't guarantee the remote server is up or that the DNS server is operational.
+
+<!-- Web storage API: localStorage, sessionStorage -->
 
