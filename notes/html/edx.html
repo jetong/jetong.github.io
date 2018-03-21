@@ -1,34 +1,22 @@
-Best practices
-Title pages, use alt for images, web internationalization
+Basics (structure, best practices)
+Multimedia (audio/video)
+Graphics
+Animations
+Forms (validation, new input types and attributes)
+APIs (cache manifest, web storage, local files, geolocation)
+
+Some best practices
+Do title pages, use alt for images, web internationalization
 <meta charset="utf-i"/>
 <html lang="fr">
 "type" attribute in link and script tags are optional
 
-for accessibility and portability, split page content into regions using aside, footer, header, main, nav.
-<section>
-   <article>
-     <header>
-       Heading
-     </header>
-     <p>
-       Some content.
-       Some content.
-       Some content.
-     </p>
-     <figure>
-       <img src="some_pic.png" alt="some picture" />
-         <figcaption>
-             Fig. 1 : some pic... 
-         </figcaption>
-     </figure>
-   <article>
-    ...
-   </article>
-<section>
-<!---------------------------------------->
+Pages have relied too heavily on divs and spans and on CSS and Javascript to apply custom styles and behaviors.  
+HTML5 partly addresses this evolution of web pages.
+Also helps with accessibility and portability, splitting page content into regions using: 
+header, footer, nav, section, article, aside, main
+
 <!-- FlexBox -->
-<!-- associate an element with the 'flex-container' css class, then 
-     its child elements automatically become flexible items. --> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +45,119 @@ for accessibility and portability, split page content into regions using aside, 
 </body>
 </html>
 
-<!---------------------------------------->
+CSS note: em unit is a ratio of the current element's font size, or if no font size is defined, it inherits
+from the nearest parent.  The font size then becomes a sort of base for the element's children and this 
+allows CSS to be modular.  Changing the base font size scales all the other sizes below.
+
+More elaborate example: https://codepen.io/w3devcampus/pen/wKRwbX
+<!DOCTYPE html>
+<html lang="en">  
+<head>
+  <meta charset="utf-8">
+  <title>HTML5 Semantics and Flexbox</title>
+  <style>
+    header, footer {
+      margin: 0.2em;
+      padding: 0.5em;
+      background-color: #D2691E;
+      text-align: center;
+    }  
+
+    /* this corresponds to a div that contains the mid-section: nav, main, aside */
+    .row {  
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+    }    
+
+    nav {
+    margin: 0.2em;
+	min-height: 8em;
+	padding: 0.5em;  
+    width: 10%;
+    background-color: lightgreen;
+    text-align: center;  
+    }
+
+    /* main section */
+    .column {
+	margin: 0.2em;
+	min-height: 8em;
+	padding: 1em;
+	width: 65%;
+    background-color: #9df5d7;  
+    }
+
+    aside {
+	margin: 0.2em;
+	min-height: 8em;
+	padding: 1em;
+	width: 20%;
+    background-color: lightBlue;
+    }
+    a {
+      text-decoration: none;
+    }
+    a:hover {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HTML5 Semantics and Flexbox</h1>    
+  </header>
+  
+<div class="row">
+  <nav>    
+    <h3>Navigate</h3>          
+    <strong>Home<br>
+    <a href="">Link1</a><br>
+    <a href="">Link2</a>
+    </strong>
+  </nav>
+  <main class="column">
+  <section>
+    <article>
+      <h2>
+        About This Page
+      </h2>
+      <p>On this page, I am experimenting with HTML5 semantics and CSS flexbox for a tidy layout.</p>
+      <p>On JS Bin, I purposedly includes the stylesheet on the HTML tab (instead of separate CSS tab) for easier code reading for those with small screen.</p>
+      <p>The <code>main</code> element is placed within a <code>div</code> element along with <code>nav</code> and <code>aside</code>. I don't know if this is right or wrong (let me know?).</p>
+      <p>Navigation links are placed within <code>nav</code>, laid on the left. The <code>main</code> is at the center column (this column). Within it is the main topic (this article).</p>
+      <p>The <code>aside</code> element is at the rightmost of the column, I put supplemental information on it.</p>    
+    </article>
+  </section>
+  <section>
+    <article>
+      <h2>Test This Page!</h2>
+      <p>Do test this page by:</p>
+        <ul>
+          <li>Resizing the browser windows; see if flexbox lives up to its reputation.</li>
+          <li>Run HTML Outliner or HeadingsMap (or similar tool) and see if the outline is good. </li>
+          <li>Check the markup in this page with W3C Markup validator; see if the markups are good. Paste the URL of this page to the address column. <a href="https://validator.w3.org/" target="_blank">Click here to try!</a>.</li>
+          <li>Check the CSS part of this page too! <a href="https://jigsaw.w3.org/css-validator/" target="_blank">Click here!</a></li>
+        </ul>
+    </article>
+  </section>
+  </main>  
+  <aside>
+    <h2>HTML</h2>    
+    <p>Stands for HyperText Markup Language. The current standard is HTML5.</p>
+    <h2>CSS</h2>
+    <p>Stands for Cascaded Style Sheet. The current standard is CSS3.</p>
+    <h2>URL</h2>
+    <p>Short for Uniform Resource Locator. It is a reference (an address) to a resource on the Internet.</p>
+  </aside>
+</div>
+
+  <footer>Nov, 2015 @ royray</footer>  
+ </body>
+</html>
+ 
+
 <!-- details & summary tags to create simple widget to hide/show contents -->
 <!-- The summary element is not supported in Edge/Internet Explorer -->
 <details>
@@ -103,9 +203,10 @@ Prevent/limit the impact of translation tools such as Google Translate.
 This person's name would otherwise be translated into "Pretty" in Spanish.
 Any children of the attributed elemented will also inherit the attribute.
 
-<!-- Video embedding -->
+
+
+<!-- VIDEO EMBEDDING --> 
 Old way:
-<object width="425" height="344">
    <param name="movie"
           value="http://www.youtube.com/v/9sEI1AUFJKw&hl=en_GB&fs=1&">
    </param>
@@ -119,8 +220,8 @@ Old way:
 </object>
 
 HTML5
-<!-- <video> tag, with the @controls attribute giving it the play/pause/seeker controls. 
-     autoplay or loop, and can style using css since <video> is part ot the DOM -->
+<!-- attributes: controls, autoplay, loop.  
+     can style using css since <video> is part ot the DOM -->
 <video id="vid" controls autoplay> 
 	<!-- I have three versions of the video encoded with
 	     different codecs.  The browser will automatically
@@ -138,7 +239,6 @@ HTML5
   function pauseVideo() { vid.pause(); }
   function rewindVideo() { vid.currentTime = 0; }
 </script>
-<!-- That's it!  You now have video playing in your browser! -->
 
 CSS for fullscreen video
 body {
@@ -180,7 +280,7 @@ To detect end of video and do something else (like play another video), listen f
       function init(){
         myVideo = document.querySelector("#myVideo");
         // Define a callback function called each time a video ended
-        myVideo.addEventListener('ended', loadAndplayNextVideo, false);
+        myVideo.addEventListener('ended', loadAndplayNextVideo, false);     // here //
         // Load the first video when the page is loaded.
         loadNextVideo();
       }
@@ -198,7 +298,17 @@ For YouTube, Dailymotion, Vimeo, etc, need to embed differently:
 (licensing and royalties prevent certain videos from playing)
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ZH1XOsv8Oyo" frameborder="0" allowfullscreen></iframe>
 
-<!-- Audio -->
+Example using CSS3 transformations(zoom, rotate, etc) on video: https://jsbin.com/lunosev/1/edit?html,css,js,output
+Example using filters in real time: https://jsbin.com/siduxad/edit?html,output
+Example handling video errors and logs: https://jsbin.com/becaref/3/edit?html,output
+Example displaying buffer progress indicator: https://jsbin.com/xororol/3/edit?html,output
+
+Adding closed captions and subtitles using <track>:
+http://www.universalsubtitles.org, also known as http://www.amara.org.  Allow uploading
+YouTube video and offers online editor.
+
+
+<!------ AUDIO ------>
 <audio controls="controls">
    <source src="https://mainline.i3s.unice.fr/mooc/horse.ogg" type="audio/ogg" />
    <source src="https://mainline.i3s.unice.fr/mooc/horse.mp3" type="audio/mp3" />
@@ -209,20 +319,10 @@ For YouTube, Dailymotion, Vimeo, etc, need to embed differently:
    format.
 </audio>
 
-Example using CSS3 transformations on video: https://jsbin.com/lunosev/1/edit?html,css,js,output
 
-Example using filters in real time: https://jsbin.com/siduxad/edit?html,output
-
-Example handling video errors and logs: https://jsbin.com/becaref/3/edit?html,output
-
-Example displaying buffer progress indicator: https://jsbin.com/xororol/3/edit?html,output
-
-Adding closed captions and subtitles using <track>:
-http://www.universalsubtitles.org, also known as http://www.amara.org.  Allow uploading
-YouTube video and offers online editor.
-
-<!-- Graphics using <canvas> -->
-Ensure page is loaded before running js either:
+<!-- GRAPHICS using <canvas> -->
+Ensure page is loaded before running js: 
+either
 <body onload="init();">
 or
 in script, use window.onload = function() { get canvas object, etc };
@@ -233,9 +333,9 @@ use defer
 
 Steps:
 1.  Declare the canvas, remembering to add an id attribute, and fallback content:  
-<canvas id="myCanvas" width="200" height="200">
-...fallback content...
-</canvas>
+    <canvas id="myCanvas" width="200" height="200">
+      ...fallback content...
+    </canvas>
 2.  Get a reference to the canvas in a JavaScript variable using the DOM API: 
     var canvas=document.getElementById('myCanvas');
 3.  Get the context for drawing in that canvas:  
@@ -264,15 +364,14 @@ Example
      canvas = document.getElementById('myCanvas');
      // 2 - Get the context
      ctx=canvas.getContext('2d');
-
      // Optionally do transformations to the context before drawing
      ctx.translate(100, 100);
      ctx.rotate(Math.PI/4);
      ctx.scale(0.5, 0.5);
-
      // 3 - we can draw
      drawSomething();
    }
+
    function drawSomething() {
      // draw a red rectangle, line width=3 pixels
      ctx.lineWidth=3;
@@ -360,7 +459,8 @@ function setShadow() {
    ctx.shadowOffsetY = 15;        // vertical offset
 }
 
-<!-- Animations -->
+
+<!-- ANIMATIONS -->
 Before HTML5:
 For animation, the setInterval(function, ms) and setTimeout(function, ms) methods were the only solutions. 
 Both methods take a function as the first parameter, and a number of milliseconds as the second parameter.
@@ -387,10 +487,10 @@ Core example:
       var colors = ['red', 'blue', 'green'];
       var currentColor = 0;
       var speed = 3;
+
       function init() {
         // 1 - Get the canvas
         canvas = document.getElementById('myCanvas');
-
         // 2 - Get the context
         ctx=canvas.getContext('2d');
 
@@ -399,19 +499,17 @@ Core example:
         // is task-heavy.  Instead, use requestAnimationFrame to achieve 60 fps.
         //setInterval(animate, 100);
         //setTimeout(animate, 100);
-        requestAnimationFrame(animate);
 
-        // use setInterval instead to update the state of objects, such as changing color/speed.
+        requestAnimationFrame(animate);
+        // use setInterval to update the object state (changing color/speed) rather than for animating directly
         setInterval(changeColor, 1000);
       }
       
       function animate() {
-        // - 1 clear canvas
+        // 1 - clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         // 2 - draw a red rectangle
         ctx.fillRect(rectangleX,0,80,100);
-        
         // 3 - move the shape
         rectangleX = rectangleX +speed;
         if((rectangleX+80 > 200) || (rectangleX <= 0)){
@@ -528,8 +626,6 @@ getBoundingClientRect() to adjust origin.
               writeMessage(canvas, message);
           }, false);
       };
-      
-      
       
       function writeMessage(canvas, message) {
           ctx.save();
@@ -910,9 +1006,6 @@ var spritesWoman = {
 	sprites : []
 };
 
-
-
-
 DIR_S= 0;
 DIR_SW = 1;
 DIR_W= 2;
@@ -1153,7 +1246,7 @@ function init() {
   makeBrokenLines(40, 370, width, height, values);
 }
 
-// callback for sliders' onchange events. 
+// callback for slider onchange events. 
 function changeValue(index) {
     var value = document.getElementById("id"+index).value; 
   
@@ -1394,7 +1487,7 @@ function makeBrokenLines(x, y, width, height, values) {
 }
 
 
-<!----- Forms ------>
+<!----- FORMS ------>
 Explore: HTML5 client side validation, input tags and attributes.
 Form example using lists: https://jsbin.com/sivula/edit?html,css,js,output
 Form example using fieldset/legend structure: http://dev.dhc3.intrasoft-intl.com/html5/philipbkemp/forum.html
@@ -1419,20 +1512,19 @@ clicking on label selects the associated input element in the form)
     <input type="text" id="firstName" required name="firstName">
     
     <br>
-    
     <label for="lastName">Last name:</label>
     <input type="text" id="lastName" required name="lastName">
     
     <br>
-     <label for="email">Email:</label>
+    <label for="email">Email:</label>
     <input type="email" id="email" required name="email">
     
-     <br>
-     <label for="age">Age:</label>
+    <br>
+    <label for="age">Age:</label>
     <input type="number" min=0 max=120  step=5 id="age" required name="age">
  
-     <br>
-     <label for="date">Birth date:</label>
+    <br>
+    <label for="date">Birth date:</label>
     <input type="date"  id="date" required name="date">
   </fieldset>
   
@@ -1444,24 +1536,23 @@ clicking on label selects the associated input element in the form)
 CSS
 fieldset {
   padding:10px;
-  border-radius:10px;    /* for rounded corners */
+  border-radius:10px;   
 }
 
 label {
   display:inline-block;  /* block: each label contained in it's own "paragraph".  
-                            inline: lets us put the labels inline right next to the associated input boxes 
-                         */
+                            inline: lets us put the labels inline right next to the associated input boxes */
   margin-bottom:10px;    /* specify amount of margin between label blocks */
 }
 
-*/ This setup lets us align the input boxes regardless of the character length of our labels */
+/* This setup lets us align the input boxes regardless of the character length of our labels */
 input {
   float:right;
   margin-right:70px;
   width:150px;
 }
 
-*/ change the input box background color according to the data validation */
+/* change the input box background color according to the data validation */
 input:invalid {
   background-color:pink;
 }
@@ -1469,6 +1560,7 @@ input:invalid {
 input:valid {
   background-color:lightgreen;
 }
+
 
 <!-- 13 new input types (typically used within forms) -->
 HTML4: button, checkbox, file, hidden, image, password, radio, reset, submit, text.
@@ -1979,6 +2071,7 @@ console.log("Validation message = " + input.validationMessage);
         </script>
     </body>
 </html>
+
 
 <!------ HTML5 JavaScript APIs ------>
 
