@@ -1,0 +1,1011 @@
+Download bootstrap
+Folder structure after unzipping:
+-Bootstrap
+  -CSS
+  -IMG
+  -JS
+Can move these folders around within project, but CSS and IMG folders must be at same level.
+Link bootstrap.css in a link tag inside head.
+
+Bootstrap.js has dependency on JQuery, so include JQuery in script tag before bootstrap.
+Place these in a script tag at the very end of the body tag rather than in the head for 
+better perceived page load times.
+
+Use semantic class names.  Use descriptive names that are not too specific.
+Sidebar rather than rightSide, or success or warning instead of redtext.
+This gives us flexibility and understanding.
+
+Classes in bootstrap are typically refactored into singular and modular effects and these
+can be composed with one another to give multiple effects to an element.
+This allows us to be very specific and granular about what effects we want or do not want to be included.
+
+To customize certain styles offered in bootstrap.css, link your own stylesheet after the bootstrap.css link.
+Inside your stylesheet, override the style (first inspect the element and trace back to the property style 
+provided in bootstrap.css and copy/paste to your stylesheet for editing).
+
+
+LAYOUTS WITH BOOTSTRAP
+
+Grid Layouts
+<div class="row">
+  <div class="span7">Left</div>
+  <div class="span5">Right</div>
+</div>
+<div class="row">
+  <div class="span3">3</div>
+  <!-- offset classes push elements to the right and leave a gap in the grid -->
+  <div class="span7" offset2">7 offset 2</div>     
+</div>
+
+By default, all content is flush left aligned.
+Also by default, bootstrap grid never changes a column's defined span width even if window is shrunk.
+Instead, the columns collapse to form a new row below.
+
+Fixed Grids (non-responsive):
+If we don't want the default behavior, surround the rows with a <div class="container">
+This now centers the grid on the page, and the columns are fixed and don't collapse.
+Note that when we inspect this container element, we see that bootstrap has assigned a fixed 
+width in pixels, and so the columns that make up the container has fixed width as well.
+To start considering responsive grids, we need to look at Fluid Grids and Responsive Design.
+
+Fluid Grids:
+We assign percentages to the column widths rather than specific pixel values.
+Change class="container" to class ="container-fluid" and class="row" to class="row=fluid"
+Embedded images also scale in both directions proportionally.
+
+Responsive Design:
+Using media queries:
+@media(min-width:768px) and (max-width:979px) {
+  .. styles for this size ..
+}
+Bootstrap already presets the media queries for some common devices.
+
+Simply include bootstrap-responsive.min.css and add the responsive classes to the designated column divs.
+Available classes: visible-phone, visible-tablet, visible-desktop, hidden-phone, hidden-tablet, hidden-desktop.
+Then both fixed and fluid grid items will adjust to smaller devices.
+<div class="container">
+  <div class="row">
+    <div class="span4">
+      <div class="visible-phone">Only visible on phone</div>
+    </div>
+  </div>
+</div>
+
+www.boottheme.com to personalize themes for download.
+
+
+EVERYDAY BOOTSTRAP
+
+Typography:
+Some classes to affect text: muted, text-warning, text-error, text-info, text-success, pull-right (right align)
+Bootstrap styles <address> element into a block, and <blockquote> elements have some indentation, bordering and background.
+<ul> and <ol> have class: unstyled to remove padding and bullets.
+<code> for short inline code
+<pre> for longer block of code, has border, background, and monaco font.  Use <pre class="pre-scrollable"> for longer code.
+For syntax highlighting check out: google-code-prettify or syntaxhighlighter.
+
+Tables:
+<div class="span12">
+  <table class="table">				<-- bootstrap class
+    <caption>Schedule</caption>		<-- optional for screenreaders
+    <thead>							<-- explicitly use <thead> to help bootstrap identify header row
+      <tr>
+        <th>Course</th>
+        <th>Instructor</th>
+        <th>Days of Week</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Math</td>
+        <td>Smith</td>
+        <td>M-W-F</td>
+      </tr>
+      ....
+    </tbody>
+  </table>
+</div>
+
+Other optional table classes: table-striped, table-bordered, table-hover, table-condensed.
+Other tr classes: success, error, info.
+
+Forms:
+The default styles in bootstrap.css already does a lot of formatting.
+(note that labels are slightly off center from their checkboxes and radiobuttons.  For these we need
+to add class="checkbox" and class="radio" or class="radio inline" to line other radio buttons side by side)
+
+For inputs, can use classes like input-mini or input-medium to size(or just use class span12, etc).  
+Can also make the input block level: input-block-level, pushing adjacent elements below as it takes the full width.
+<input class="btn btn-primary"> for other input button styles
+
+Ex: Default form and horizontal form.  Includes demo of basic validation feedback using help-inline or help-block
+    and extending inputs with append and prepend.
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Forms</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />   
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h2>Default Form</h2>
+                <form action="/signup" method="post">
+                    <fieldset>
+                        <legend>To get started, provide us with the following information:</legend>
+                        <label for="UserInfo_Email">Email:</label>
+                        <input id="UserInfo_Email" name="UserInfo.Email" type="text" value="">
+                        <label for="UserInfo_FirstName">First name:</label>
+                        <input id="UserInfo_FirstName" name="UserInfo.FirstName" type="text" value="">
+                        <label for="UserInfo_LastName">Last name:</label>
+                        <input id="UserInfo_LastName" name="UserInfo.LastName" type="text" value="">
+                        <label for="UserInfo_Company">Company:</label>
+                        <input id="UserInfo_Company" name="UserInfo.Company" type="text" value="">
+                        <label for="UserInfo_HowHeard">How did you hear about us?</label>
+                        <select id="UserInfo_HowHeard_SelectedValue" name="UserInfo.HowHeard.SelectedValue">
+                            <option>Blogs</option>
+                            <option>Colleague</option>
+                            <option>Returning customer</option>
+                            <option>Pluralsight instructor</option>
+                            <option>Microsoft</option>
+                            <option>MSDN</option>
+                            <option>Trade Show</option>
+                            <option>Search Engine</option>
+                            <option>Social Community</option>
+                            <option>User Group</option>
+                        </select>
+                        <label for="UserInfo_JobTitle">Job title:</label>
+                        <input class="span6" id="UserInfo_JobTitle" name="UserInfo.JobTitle" type="text" value="">
+                        <div>
+                            <label class="checkbox inline">
+                                <input type="checkbox" value="">
+                                I like Pina Coladas
+                            </label>
+                            <label class="checkbox inline">
+                                <input type="checkbox" value="">
+                                I like getting caught in the rain
+                            </label>
+                        </div>
+                        <label class="radio">
+                            <input type="radio" name="optionsRadios" value="option1" checked>
+                            I'm into yoga                             
+                        </label>
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                            I'm not into yoga
+                        </label>
+                        <label for="describe">Describe yourself:</label>
+                        <textarea class="input-block-level" id="describe" rows="3"></textarea>
+                        <input type="submit" value="Sign Up!" class="btn btn-primary" />
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="span6">
+                <h2>Search</h2>
+                <form class="form-search">
+                    <input type="search" class="search-query">
+                    <button type="submit" class="btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span12">
+                <h2>Horizontal Form</h2>
+                <form action="/signup" method="post" class="form-horizontal">
+                    <fieldset>
+                        <legend>To get started, provide us with the following information:</legend>
+                        <div class="control-group error">
+                            <label class="control-label" for="UserInfo_Email">Email:</label>
+                            <div class="controls">
+                                <input id="Text1" name="UserInfo.Email" type="text" value="">
+                                <span class="help-block">You need to fill this out!</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="UserInfo_HowHeard">How did you hear about us?</label>
+                            <div class="controls">
+                                <select multiple id="Select1" name="UserInfo.HowHeard.SelectedValue">
+                                    <option selected="selected"></option>
+                                    <option>Blogs</option>
+                                    <option>Colleague</option>
+                                    <option>Returning customer</option>
+                                    <option>Pluralsight instructor</option>
+                                    <option>Microsoft</option>
+                                    <option>MSDN</option>
+                                    <option>Trade Show</option>
+                                    <option>Search Engine</option>
+                                    <option>Social Community</option>
+                                    <option>User Group</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <label class="checkbox">
+                                    I like Pina Coladas
+                                <input type="checkbox" value="">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <input type="submit" value="Sign Up!" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="span12">
+                <h2>Extending Inputs</h2>
+                <form action="/signup" method="post">
+                    <fieldset>
+                        <legend>To get started, provide us with the following information:</legend>
+
+                        <div class="input-prepend">
+                            <span class="add-on">@</span>
+                            <input id="handle" type="text" placeholder="Twitter Handle" />
+                        </div>
+
+                        <div class="input-prepend input-append">
+                            <span class="add-on">$</span>
+                            <input id="Text2" type="text" placeholder="Budget" />
+                            <span class="add-on">.00</span>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+Buttons:
+Ex:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Buttons</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Button</th>
+                            <th>Link</th>
+                            <th>class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><button type="button" class="btn">Default</button></td>
+                            <td><a href="#" class="btn">Default</a></td>
+                            <td><code>btn</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary">Primary</button></td>
+                            <td><a href="#" class="btn btn-primary">Primary</a></td>
+                            <td><code>btn btn-primary</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-info">Info</button></td>
+                            <td><a href="#" class="btn btn-info">Info</a></td>
+                            <td><code>btn btn-info</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-success">Success</button></td>
+                            <td><a href="#" class="btn btn-success">Success</a></td>
+                            <td><code>btn btn-success</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-warning">Warning</button></td>
+                            <td><a href="#" class="btn btn-warning">Warning</a></td>
+                            <td><code>btn btn-warning</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-danger">Danger</button></td>
+                            <td><a href="#" class="btn btn-danger">Danger</a></td>
+                            <td><code>btn btn-danger</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-inverse">Inverse</button></td>
+                            <td><a href="#" class="btn btn-inverse">Inverse</a></td>
+                            <td><code>btn btn-inverse</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-link">Link</button></td>
+                            <td><a href="#" class="btn btn-link">Link</a></td>
+                            <td><code>btn btn-link</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-large">Large</button></td>
+                            <td><a href="#" class="btn btn-primary btn-large">Large</a></td>
+                            <td><code>btn btn-primary btn-large</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-small">Small</button></td>
+                            <td><a href="#" class="btn btn-primary btn-small">Small</a></td>
+                            <td><code>btn btn-primary btn-small</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-mini">Mini</button></td>
+                            <td><a href="#" class="btn btn-primary btn-mini">Mini</a></td>
+                            <td><code>btn btn-primary btn-mini</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-block">Block</button></td>
+                            <td><a href="#" class="btn btn-primary btn-block">Block</a></td>
+                            <td><code>btn btn-primary btn-block</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary disabled">Disabled</button></td>
+                            <td><a href="#" class="btn btn-primary disabled">Disabled</a></td>
+                            <td><code>btn btn-primary disabled</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+Images and Icons:
+(Icons from glyphicons.com.  Also check out font-awesome in github)
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Buttons</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Button</th>
+                            <th>Link</th>
+                            <th>class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><button type="button" class="btn">Default</button></td>
+                            <td><a href="#" class="btn">Default</a></td>
+                            <td><code>btn</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary">Primary</button></td>
+                            <td><a href="#" class="btn btn-primary">Primary</a></td>
+                            <td><code>btn btn-primary</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-info">Info</button></td>
+                            <td><a href="#" class="btn btn-info">Info</a></td>
+                            <td><code>btn btn-info</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-success">Success</button></td>
+                            <td><a href="#" class="btn btn-success">Success</a></td>
+                            <td><code>btn btn-success</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-warning">Warning</button></td>
+                            <td><a href="#" class="btn btn-warning">Warning</a></td>
+                            <td><code>btn btn-warning</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-danger">Danger</button></td>
+                            <td><a href="#" class="btn btn-danger">Danger</a></td>
+                            <td><code>btn btn-danger</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-inverse">Inverse</button></td>
+                            <td><a href="#" class="btn btn-inverse">Inverse</a></td>
+                            <td><code>btn btn-inverse</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-link">Link</button></td>
+                            <td><a href="#" class="btn btn-link">Link</a></td>
+                            <td><code>btn btn-link</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-large">Large</button></td>
+                            <td><a href="#" class="btn btn-primary btn-large">Large</a></td>
+                            <td><code>btn btn-primary btn-large</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-small">Small</button></td>
+                            <td><a href="#" class="btn btn-primary btn-small">Small</a></td>
+                            <td><code>btn btn-primary btn-small</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-mini">Mini</button></td>
+                            <td><a href="#" class="btn btn-primary btn-mini">Mini</a></td>
+                            <td><code>btn btn-primary btn-mini</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary btn-block">Block</button></td>
+                            <td><a href="#" class="btn btn-primary btn-block">Block</a></td>
+                            <td><code>btn btn-primary btn-block</code></td>
+                        </tr>
+                        <tr>
+                            <td><button type="button" class="btn btn-primary disabled">Disabled</button></td>
+                            <td><a href="#" class="btn btn-primary disabled">Disabled</a></td>
+                            <td><code>btn btn-primary disabled</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+BOOTSTRAP COMPONENTS
+Dependencies: bootstrap.css, jquery-1.7.1.min.js, bootstrap.js
+Dropdown Menus (can be used in other different places like buttons and nav bars):
+
+Ex: Simple dropdown, divider, and submenu
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Menus, Buttons, Dropdowns</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="scripts/jquery-1.7.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h2>Simple Dropdown</h2>
+                <div class="dropdown">
+
+                    <a id="dropdownmenu" class="dropdown-toggle" data-toggle="dropdown" href="#">See the sites!
+                        <b class="caret"></b>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownmenu">
+                        <!-- tabindex="-1" so that tabbing traverses the anchors at the top level rather than
+                             going through each of the list items within the menus -->
+                        <li><a tabindex="-1" href="http://pluralsight.com">Pluralsight</a></li>
+                        <li><a tabindex="-1" href="http://amazon.com">Amazon</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span12">
+                <h2>With Dividers</h2>
+                <div class="dropdown">
+
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">See the sites!
+                        <b class="caret"></b>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a href="http://pluralsight.com">Pluralsight</a></li>
+                        <li><a href="http://amazon.com">Amazon</a></li>
+                        <li class="divider"></li>
+                        <li><a href="http://twitter.com">Twitter</a></li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+
+         <div class="row">
+            <div class="span12">
+                <h2>Sub Menu</h2>
+
+                <div class="dropdown">
+
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">See the sites!
+                        <b class="caret"></b>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a href="http://pluralsight.com">Pluralsight</a></li>
+                        <li><a href="http://amazon.com">Amazon</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">More options</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://odetocode.com">OdeToCode</a></li>
+                                <li><a href="http://twitter.com">Twitter</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+
+
+Buttons with Menus:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Menus & Buttons</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="scripts/jquery-1.7.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="span12">
+                <h2>Button groups</h2>
+
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <button class="btn"><i class="icon-backward"></i></button>
+                        <button class="btn"><i class="icon-play"></i></button>
+                        <button class="btn"><i class="icon-forward"></i></button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn"><i class="icon-plus"></i></button>
+                        <button class="btn"><i class="icon-minus"></i></button>
+                        <button class="btn"><i class="icon-asterisk"></i></button>
+                    </div>
+                </div>
+                <hr />
+
+                <h2>Buttons with menus</h2>
+                <div class="btn-toolbar">
+                    <div class="btn-group dropup">    <!-- menu drops upward -->
+                        <!-- Style the button -->
+                        <a class="btn btn-primary btn-large dropdown-toggle" data-toggle="dropdown" href="#">See the sites
+                            <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                            <li><a tabindex="-1" href="http://pluralsight.com">Pluralsight</a></li>
+                            <li><a tabindex="-1" href="http://amazon.com">Amazon</a></li>
+                        </ul>
+
+                    </div>                   
+                        <div class="btn-group">
+                        <!-- Provide 2 anchors so button press has one functionality, while the caret has dropdown menu -->
+                        <a class="btn btn-large btn-primary" href="#">See the sites</a>
+                        <a class="btn btn-large btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="caret"></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                            <li><a tabindex="-1" href="http://pluralsight.com">Pluralsight</a></li>
+                            <li><a tabindex="-1" href="http://amazon.com">Amazon</a></li>
+                        </ul>
+
+                    </div>                   
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>
+
+
+Tabs and Pills:
+There are a number of nav components in bootstrap, and often use <ul> to create it.
+<ul class="nav"> takes away the bullets and gives basic hover shading.
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Navigation</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="scripts/jquery-1.7.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="span3">
+                <h2>Tabs & Pills</h2>
+
+                <ul class="nav nav-list">
+                    <li class="nav-header">Places to go</li>
+                    <li><a href="#">Home</a></li>
+                    <li class="active"><a href="#">Contact</a></li>
+                    <li><a href="#">Sales</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">See more sites!
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a tabindex="-1" href="http://pluralsight.com">Pluralsight</a></li>
+                            <li><a tabindex="-1" href="http://amazon.com">Amazon</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="span9">
+                <h2>Tabbable</h2>
+                <!-- tabbable enables us to have tabs that toggle to display other content within the page 
+                     that are within tab-content divs. -->
+                <div class="tabbable tabs-below">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab">Section 1</a></li>
+                        <li>
+                            <a href="#tab2" data-toggle="tab">Section 2</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <p>Twitter Bootstrap is fun!</p>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <p>Pluralsight is fun!</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+The Navbar:
+Other variations:
+<nav class="navbar navbar-fixed-top">   (Navigation bar stays as page scrolls)
+<nav class="navbar navbar-fixed-bottom">
+The fixed navbar will block some portion of the body, so add some margin:
+<style>
+  body {
+    margin-top: 40px;
+  }
+</style>
+
+<nav class="navbar navbar-inverse">    (Takes body's text and background color and applies to navbar inversely)
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Navigation</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
+    <script src="scripts/jquery-1.7.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <style>
+    
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <a class="brand" href="/">The Sample Site</a>
+
+            <!-- allows us to have a clickable 3-row/bar icon that reveals the nav elements below
+                 that would have collapsed on smaller devices -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <!-- responsive design (requires us to link bootstrap-responsive.css and bootstrap.js)
+                 allows us to specify which components to collapse and hide -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="/Articles/List">Articles</a></li>
+                    <li><a href="/blogs/all">Blog</a></li>
+                    <li><a href="/about/">About</a></li>
+                    <!-- can add a dropdown as before -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">See more sites!
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a tabindex="-1" href="http://pluralsight.com">Pluralsight</a></li>
+                            <li><a tabindex="-1" href="http://amazon.com">Amazon</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- include a search form -->
+                <form class="navbar-search pull-right input-append">
+                    <input class="span2" id="appendedInputButtons" type="search">
+                    <button class="btn" type="button">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="span10">
+
+                <!-- Use breadcrumb to let users know what links/pages they've navigated through to get 
+                     to their current page -->
+                <ul class="breadcrumb">
+                    <li><a href="#">Home</a> <span class="divider">/</span></li>
+                    <li><a href="#">Articles</a> <span class="divider">/</span></li>
+                    <li class="active">Life with XAML</li>
+                </ul>
+
+                <!-- Creates pagination control bar:  Prev | 1 | 2 | 3 | 4 | Next  -->
+                <div class="pagination pagination-centered pagination-large">
+                    <ul>
+                        <li class="disabled"><span>Prev</span></li>
+                        <li class="active"><a href="/articles/lifewithxaml?page=1">1</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">2</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">3</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">4</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">Next</a></li>
+                    </ul>
+                </div>
+
+
+                <h1>Life with XAML</h1>
+                <div class="muted">
+                    Saturday, February 04, 2006
+                </div>
+
+                <article>
+                    <p>British mathematician John Conway invented the “Game of Life” in 1970. The rules of the game are simple, but the results of the game can be surprising. This combination made Conway and his creation famous, and stirred the debate over the ability of machines to simulate life. Although the “Game of Life” didn’t start as a computer game, programmers have written versions of the game in nearly every programming language and for nearly every platform. In this article we will implement the “Game of Life” for the Windows Presentation Foundation (WPF). </p>
+                    <h3>Rules of Life</h3>
+                    <p>
+                        The game of life plays out on a grid of cells. Each cell can be “alive” or “dead”. As time moves on, a dead cell can come to life, while a living cell can die. The rules for determining the state of a cell for the next time slice are the following: 
+                    </p>
+                </article>
+
+            </div>
+            <div class="span2">
+                <section>
+                    <ul class="nav nav-list">
+                        <li><a class="" href="http://twitter.com/OdeToCode">Follow</a></li>
+                        <li><a class="" href="http://feeds.feedburner.com/OdeToCode" title="Subscribe to my feed" rel="alternate" type="application/rss+xml">Subscribe</a></li>
+                        <li><a class="" href="/about/contact">Contact</a></li>
+                        <li><a class="" href="/about/search">Search</a></li>
+                        <li><a class="" href="/home/archives">Archives</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+    <footer>
+        (c) Some Web Site
+    </footer>
+</body>
+</html>
+
+
+Miscellaneous Components:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Other Components</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" />
+    <script src="scripts/jquery-1.7.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="navbar-inner">
+            <a class="brand" href="/">The Sample Site</a>
+
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="/Articles/List">Articles</a></li>
+                    <li><a href="/blogs/all">Blog</a></li>
+                    <li><a href="/about/">About</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">See more sites!
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a tabindex="-1" href="http://pluralsight.com">Pluralsight</a></li>
+                            <li><a tabindex="-1" href="http://amazon.com">Amazon</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-search pull-right input-append">
+                    <input class="span2" id="appendedInputButtons" type="search">
+                    <button class="btn" type="button">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="span10">
+
+<!-- hero -->
+                <div class="hero-unit">
+                    <h1>Use HTML!</h1>
+                    <p>It's better than XML!</p>
+                    <p>
+                        <a class="btn btn-primary btn-large">Learn more</a>
+                    </p>
+                </div>
+<!-- end hero -->
+
+                <h1>Life with XAML</h1>
+                <div class="muted">
+                    Saturday, February 04, 2006
+                </div>
+
+                <article>
+                    <h3>Rules of Life </h3>
+<!-- label -->
+                    <div><span class="label label-important">Follow the rules!</span></div>
+<!-- end label -->
+                    <p>
+                        The game of life plays out on a grid of cells. Each cell can be “alive” or “dead”. As time moves on, a dead cell can come to life, while a living cell can die. The rules for determining the state of a cell for the next time slice are the following: 
+                    </p>
+                    <ol>
+                        <li>A cell that is alive stays alive if two <i>or</i> three of the neighboring cells are alive.</li>
+                        <li>A cell that is dead comes alive if three of the neighboring cells are alive.</li>
+                    </ol>
+
+<!-- media -->
+                    <h3>Pictures of Life</h3>
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img class="media-object" src="http://home.adelphi.edu/~stemkoski/mathematrix/0life.jpg">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">In Black and White</h4>
+                            <div class="media">
+                                This game uses black circles in a white grid. 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                            <img class="media-object" src="https://lh3.ggpht.com/W29C-I-82oU4i8OFTw-xjvkJrU78AwirkJVr1QbKxKHOyqUHxGjX7Yt5XJH6mzp41DBl=w124">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">Square</h4>
+                            <div class="media">
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                            </div>
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object" src="http://upload.wikimedia.org/wikipedia/commons/9/9c/Conways_game_of_life_canoe.png" />
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">A Bit Of Color</h4>
+                                    <div class="media">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h3>Building a UI with Angled Brackets</h3>
+
+<!-- alert that can be dismissed -->
+                    <div class="alert alert-success">
+                        <button class="close" data-dismiss="alert">&times;</button>
+                        <strong>Wow!</strong> You made it this far!
+                    </div>
+
+<!-- component with code snippet -->
+                    <div style="BORDER-RIGHT: black 1pt solid; BORDER-TOP: black 1pt solid; FONT-SIZE: 8pt; BORDER-LEFT: black 1pt solid; BORDER-BOTTOM: black 1pt solid; FONT-FAMILY: monospace; BACKGROUND-COLOR: #d3d3bd">
+                        <span style="COLOR: blue">&lt;</span><span style="COLOR: maroon">asp</span><span style="COLOR: blue">:</span><span style="COLOR: maroon">Panel</span><span style="COLOR: black"> </span><span style="COLOR: red">runat</span><span style="COLOR: blue">="server"</span><span style="COLOR: black"> </span><span style="COLOR: red">ID</span><span style="COLOR: blue">="Panel1"&gt;<br>
+                        </span><span style="COLOR: black">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="COLOR: blue">&lt;</span><span style="COLOR: maroon">asp</span><span style="COLOR: blue">:</span><span style="COLOR: maroon">Label</span><span style="COLOR: black"> </span><span style="COLOR: red">runat</span><span style="COLOR: blue">="server"</span><span style="COLOR: black"> </span><span style="COLOR: red">ID</span><span style="COLOR: blue">="Label1"</span><span style="COLOR: black"> </span><span style="COLOR: red">Text</span><span style="COLOR: blue">="Name: "/&gt;<br>
+                        </span><span style="COLOR: black">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="COLOR: blue">&lt;</span><span style="COLOR: maroon">asp</span><span style="COLOR: blue">:</span><span style="COLOR: maroon">TextBox</span><span style="COLOR: black"> </span><span style="COLOR: red">runat</span><span style="COLOR: blue">="server"</span><span style="COLOR: black"> </span><span style="COLOR: red">ID</span><span style="COLOR: blue">="TextBox1"</span><span style="COLOR: black"> </span><span style="COLOR: blue">/&gt;<br>
+                            &lt;/</span><span style="COLOR: maroon">asp</span><span style="COLOR: blue">:</span><span style="COLOR: maroon">Panel</span><span style="COLOR: blue">&gt;<br>
+                            </span>
+                    </div>
+                    <p></p>
+
+                    <h3>Goodbye, World</h3>
+                    <p>In this article we took a look at programming with WPF, both using XAML and C# code. We’ve seen data binding and layout elements, yet have barely scratched the surface of what is available in WPF and the WinFX API. <a href="http://odetocode.com/aimages/lifexaml/fxlife.zip">Download the code</a>, and try the Game of Life for yourself. </p>
+                </article>
+
+                <div class="pagination pagination-centered">
+                    <ul>
+                        <li class="disabled"><span>Prev</span></li>
+                        <li class="active"><a href="/articles/lifewithxaml?page=1">1</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">2</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">3</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">4</a></li>
+                        <li><a href="/articles/lifewithxaml?page=1">Next</a></li>
+                    </ul>
+                </div>
+
+<!-- nav bar on right side with span2 -->
+            </div>
+            <div class="span2">
+                <section>
+                    <ul class="nav nav-list">
+                        <li><a class="" href="http://twitter.com/OdeToCode">Follow</a></li>
+                        <li><a class="" href="http://feeds.feedburner.com/OdeToCode" title="Subscribe to my feed" rel="alternate" type="application/rss+xml">Subscribe</a></li>
+                        <li><a class="" href="/about/contact">Contact</a></li>
+                        <li><a class="" href="/about/search">Search</a></li>
+                        <li><a class="" href="/home/archives">Archives</a></li>
+                    </ul>
+                </section>
+                <hr />
+<!-- more examples of labels -->
+                <section>
+                    <span class="label">Default</span>
+                    <span class="label label-success">Success Label</span>
+                    <span class="label label-warning">Warning</span>
+                    <span class="label label-important">Important</span>
+                    <span class="label label-info">Info</span>
+                    <span class="label label-inverse">Inverse</span>
+                </section>
+                <hr />
+                <section>
+                    <span class="badge">B</span>
+                    <span class="badge badge-success">Software</span>
+                    <span class="badge badge-warning">Wide Badge</span>
+                    <span class="badge badge-important">I</span>
+                    <span class="badge badge-info"><i class="icon-info-sign icon-white"></i></span>
+                    <span class="badge badge-inverse">O</span>
+                </section>
+                <hr />
+            </div>
+        </div>
+    </div>
+    <footer>
+        (c) Some Web Site
+    </footer>
+</body>
+</html>
+
