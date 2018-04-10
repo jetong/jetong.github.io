@@ -1,0 +1,545 @@
+Tim Wright
+
+PROGRESSIVE ENHANCEMENT
+Progressive Enhancement - Content is King
+Keep separate, start with bottom content layer first and progressively build upon that:
+
+JavaScript - behavior
+CSS - presentation
+HTML - structure
+
+Performance/Adaptability/Efficiency/Resuability
+Can remove the layer of JavaScript when a browser is detected to have JavaScript turned off.
+Separation allows for reusability and organization that prevents clutter and unecessary complicated layers.
+
+Progressive Enhancement based off of graceful degradation methodology where we provide fallback support
+for older browser versions.
+
+Structure Layer:
+The browser applies some default styling.
+Really try to look at HTML tags as structuring content based on its context/purpose.  
+Knowing that just because the default behavior of <blockquote> is to indent text doesn’t mean you should use a 
+<blockquote> to indent text is a very important principle of progressive enhancement.  You need to know what 
+<blockquote> means (it’s used for block-level quoted text) and that, for your purposes, it’s irrelevant that a 
+Web browser’s default way to display that element is to indent it. HTML’s default output is based on a stylesheet 
+that the browser chose for convenience to keep unstyled content still functional and readable. When you write 
+custom CSS for a site, you’re overwriting what the browser did and creating new styles to match your design needs.
+
+When writing HTML, focus on capturing the content using the skeletal structure and ignore the actual style rendering.
+Make use of the semantic HTML5 tags for meaning: <header>, <nav>, <section>, <article>, <aside>, and <footer>.
+
+Presentation Layer:
+"The key to writing great JavaScript is knowing when to use CSS instead"
+This can be the most important layer in progressive enhancement because of how flexible it is. Knowing CSS will 
+help you write better JavaScript.  JavaScript is notoriously slow to render in a browser.  Knowing all the 
+capabilities of CSS and understanding the separation between presentation and behavior will allow 
+you to offload a lot of heavy JavaScript functions
+Inline CSS can be just as bad as generating inline CSS dynamically with JavaScript.
+Inline CSS is not reusable, clutters the HTML of non-content, and is not cached.
+Never use inline.  Always link external stylesheets.  Keep to one CSS file.
+
+Before the final layer, the page should be fully functional, so that we can fall back to this functionality
+when JavaScript fails.
+
+Behavior Layer:
+3 ways to apply JavaScript: Inline, Embedded, External.
+Strive to have all JavaScript applied externally.
+Link external file at very end of body for performance and to ensure entire page has loaded.
+
+
+JAVASCRIPT IN THE BROWSER and User Experience
+
+History:
+Java -> Java Applets -> LiveScript (JavaScript) to control applets more efficient-> Developers used JavaScript for other
+purposes -> Struggled to take off due to security holes -> IE supported its proprietary JScript instead -> Frustrations
+with broswer compatibility gave birth to ECMAScript standards -> Universal DOM to structure HTML documents was born -> 
+Beginnings of Progressive Enhancement
+
+Unlike back-end languages, a front-end language doesn’t get run or executed until it is rendered in a Web browser. 
+HTML and CSS are other examples of front-end languages. This is important to note because many factors, such as 
+feature support, connection speed, screen size, and rendering performance, are completely out of your hands. When 
+coding with front-end languages, you have to keep all those inconsistencies in mind as you go about your build process.
+
+Browsers block all other HTTP requests while processing JavaScript, so process JavaScript last at the very bottom and
+keep efficiency in mind as this drives user experience.
+
+Code working differently on different browsers is due to browsers having different JavaScript rendering engines.
+Rendering Engines:
+Firefox			Gecko
+IE				Trident
+Chrome			Webkit
+Safari			Webkit
+iOS & Android	Webkit
+Opera			Presto
+
+What JavaScript can do, and how/when you should do it.
+- Modifying HTML (adding/removing HTML, changing attributes, style properties, ..anything in the document)
+- Communicating with the server (often referring to Ajax, to improve user experience by doing things realtime)
+- Storing data (storing data in browser or server databases)
+
+Careful to not overuse JavaScript.  Use CSS as substitute where applicable.
+Example of adding a class and letting the CSS do the rest of the work:
+<style>
+  .hide {
+    display: none;
+}
+</style>
+...
+<div id="target">
+  <p>Some paragraph</p>
+</div>
+
+<!-- done inline only for demo purposes -->
+<script>
+  var button = document.getElementById("hide"),
+      target = document.getElementById("target");
+  function hide(){
+    target.setAttribute("class","hide"); 
+  }
+  button.addEventListener("click", hide, false);
+</script>
+...
+
+Creating Fallbacks
+/* check if localStorage is supported */ 
+if(typeof window.localStorage !== "undefined"){
+  // use localStorage
+} else {
+  // use normal cookies
+}
+
+BEST PRACTICES
+Avoid global variables,  avoid new,  avoid  ==,  avoid eval()
+Global variables and functions can be overwritten by other scripts.
+Use local variables instead, and learn how to use closures.
+
+It is a good coding practice to put all declarations at the top of each script or function.
+-Give cleaner code
+-Provide a single place to look for local variables
+-Make it easier to avoid unwanted (implied) global variables
+-Reduce the possibility of unwanted re-declarations
+
+It is a good coding practice to initialize variables when you declare them.
+-Give cleaner code
+-Provide a single place to initialize variables
+-Avoid undefined values
+var firstName = "",
+    lastName = "",
+    price = 0,
+    discount = 0,
+    fullPrice = 0,
+    myArray = [],
+    myObject = {};
+
+Always treat numbers, strings, or booleans as primitive values. Not as objects.
+Declaring these types as objects, slows down execution speed, and produces nasty side effects:
+var x = "John";             
+var y = new String("John");
+(x === y) // is false because x is a string and y is an object.
+
+var x = new String("John");             
+var y = new String("John");
+(x == y) // is false because you cannot compare objects.
+
+Don't Use new Object()
+Use {} instead of new Object()
+Use "" instead of new String()
+Use 0 instead of new Number()
+Use false instead of new Boolean()
+Use [] instead of new Array()
+Use /()/ instead of new RegExp()
+Use function (){} instead of new Function()
+
+Use === Comparison
+The == comparison operator always converts (to matching types) before comparison.
+The === operator forces comparison of values and type:
+0 == "";        // true
+1 == "1";       // true
+1 == true;      // true
+
+0 === "";       // false
+1 === "1";      // false
+1 === true;     // false
+
+Use Parameter Defaults
+If a function is called with a missing argument, the value of the missing argument is set to undefined.
+Undefined values can break your code. It is a good habit to assign default values to arguments.
+function myFunction(x, y) {
+    if (y === undefined) {
+        y = 0;
+    }
+}
+
+or
+
+function myFunction(x, y=0) {
+	// do stuff
+}
+
+
+ACCESSING THE DOM
+
+Types of nodes: 
+document node (representing page)
+element node (can have parents, siblings, children(other elements, or text))
+text node (cannot have children)
+attribute node (are not considered children and cannot have children of their own)
+
+/// Working with the Element Nodes /// 
+
+Knowing the different ways to access particular elements on the DOM and choosing the most efficient access.
+Target by Id:
+getElementById() - most efficient
+
+Target by Tag Name:
+getElementByTagName() - gets collection of node elements in the order they are structured on the DOM
+document.getElementsByTagName("p").item(0);
+
+Target by Class Name:
+document.getElementsByClassName("pics");
+
+Using CSS Selectors in JavaScript to target nodes:
+(Gained popularity because used consistent syntax between CSS and JavaScript)
+
+// get the header ID element
+document.querySelector("#header");
+
+// get the first element with a dropcap class
+document.querySelector(".dropcap");
+
+// get all the paragraphs with a "dropcap" class – produces a nodeList
+document.querySelectorAll(".dropcap");
+
+// get all elements with a class of "dropcap" OR "huge"
+document.querySelectorAll(".dropcap, .huge");
+
+// get all paragraphs that have a class 
+document.querySelectorAll("p[class]");
+
+
+
+/// Working with the Attribute Node ///
+
+getAttribute() 		// get value of specified attribute.  same as getAttributeNode().value
+setAttribute()		// set value of attribute
+removeAttribute()
+hasAttribute()
+
+<p id="about" class="bio">About me!</p>
+
+// Getting
+// first we target the element and check if it has a class on it
+if(document.getElementById("about").hasAttribute("class")) {
+  // after we know a class exists, we can then get the value
+  document.getElementById("about").getAttribute("class");		// gets bio
+}
+
+// Setting
+// set the current id to "me"
+document.getElementById("about").setAttribute("id", "me");
+// set the style of <p>
+document.getElementById("me").setAttribute("style", "background-color: red;");
+
+// Removing
+There are no JavaScript exceptions thrown if you try to remove an attribute that doesn’t exist, 
+but it’s still best practice to check with hasAttribute()
+// Remove style
+document.getElementById("me").removeAttribute("style");
+
+
+/// Working with Text Node and changing content ///
+<div id="target"> 
+  <p>This is our text.</p>
+</div>
+
+document.getElementById("target").innerHTML = "<p>hello world</p>";
+
+/// Moving around the DOM ///
+Navigate with native methods and avoid overcluttering HTML with IDs and classes.
+parentNode
+previousSibling
+nextSibling
+firstChild
+lastChild
+
+<ul id="nav">
+<li><a href="/" id="home">Home</a></li>
+<li><a href="/about" id="about">About Us</a></li> 
+<li><a href="/contact" id="contact">Contact Us</a></li>
+</ul>
+
+// This <li><a href="/about" id="about">About Us</a></li> 
+// Becomes <li class="active"><a href="/about" id="about">About Us</a></li> 
+document.getElementById("about").parentNode.setAttribute("class", "active");   
+
+// This <li><a href="/" id="home">Home</a></li>
+// Becomes <li class="first"><a href="/" id="home">Home</a></li>
+document.getElementById("nav").firstChild.setAttribute("class", "first");
+
+/// Dynamically Adding and Removing Nodes from the DOM ///
+createElement()
+createTextNode()
+appendChild()
+removeChild()
+
+// Create and append 3rd paragraph to DOM
+<div id="div1">
+<p id="p1">First paragraph.</p>
+<p id="p2">Second paragraph.</p>
+</div>
+
+<script>
+var p = document.createElement("p");
+var node = document.createTextNode("Third paragraph");
+p.appendChild(node);
+
+var element = document.getElementById("div1");
+element.appendChild(p);
+</script>
+
+
+
+STORING DATA IN JAVASCRIPT
+Strings (single or double quoted), Numbers, Booleans (true, 1, false, 0)
+Use variables when possible.  Declaring a variable caches it in the script and is generally much more 
+performant because retrieving them from cache is very efficient.
+
+Arrays (use [] instead of new to create arrays.  see best practices section)
+Slight difference between var a1 = []; and var a2 = new Array();
+Difference in performance: new Array() goes through class constructor process while [] is created directly by interpreter.
+Note: Array() can take parameter to indicate initial size.
+
+Multidimensional Arrays (consider using objects instead)
+var breakfast = ["Egg, Sausage and Cheese", "Egg Whites on Flatbread", "Egg and Cheese"];
+var lunch = ["Turkey Club", "Grilled Cheese", "Peanut Butter and Jelly"];
+var dinner = ["Meatball", "Hamburger", "Oatmeal and banana on Rye"];
+// multi-dim array:
+var favoriteSandwiches = [breakfast, lunch, dinner];
+
+Storing into object:
+var favoriteSandwiches = {
+  breakfast : ["Egg, Sausage and Cheese", "Egg Whites on Flatbread", "Egg and Cheese"],
+  lunch : ["Turkey Club", "Grilled Cheese", "Peanut Butter and Jelly"], 
+  dinner : ["Meatball", "Hamburger", "Oatmeal and banana on Rye"],
+};
+
+Associative Arrays
+var songs = [];
+songs["study"] = "pachelbel canon";
+songs["exercise"] = "make you sweat";
+// retrieve value
+console.log(songs["study"]);
+
+Other array methods
+join, slice, shift/unshift, push/pop, concat, sort
+
+var cars = ["Saab", "Volvo", "BMW"];
+
+join - convert all items in an array to a string and output them in a format you specify.
+joinCars = cars.join(" and ");	// Saab and Volvo and BMW
+
+slice - obtain subset of an array
+sliceCars = cars.slice(1);		// Volvo,BMW
+sliceCars = cars.slice(1,2);	// Volvo
+
+shift and unshift are methods used to add and remove items to/from the beginning
+push and pop are methods used to add and remove items to/from the end
+firstItem = cars.shift();		// firstItem has "Saab"
+								// the array is now ["Volvo", "BMW"]
+
+concat - concatenate arrays (original arrays aren't changed)
+var cars = ["Saab", "Volvo", "BMW"];
+var cars2 = ["subaru", "tesla", "toyota"];
+var combined = cars.concat(cars2);			// combined has all items from both arrays
+
+sort - does alphabetical sorting (not numerical, so 100 comes before 4) or can provide custom defined sort function
+Note: sort changes the original array.
+
+Default alphabetical sorting, no function provided:
+var fruits = ["Banana", "Orange", "Apple", "Mango"];
+fruits.sort();
+
+Sort numbers in ascending:
+var points = [40, 100, 1, 5, 25, 10];
+points.sort(function(a, b){return a - b});
+
+Sort array of objects:
+var cars = [
+  {type:"Volvo", year:2016},
+  {type:"Saab", year:2001},
+  {type:"BMW", year:2010} ];
+cars.sort(function(a, b){return a.year - b.year});
+
+Objects - for dealing with more complex data (objects within objects) and making things more modular, but always 
+          balance maintainability with performance, especially when going beyond 3 levels deep into an object.
+
+Two ways to access object properties: objectName.propertyName and objectName["propertyName"]
+
+var person = {
+    firstName: "John",
+    lastName : "Doe",
+    id       : 5566,
+    languages: ["JavaScript", "piglatin"],
+    fullName : function() {
+       return this.firstName + " " + this.lastName;
+    }
+};
+// Access function: person.fullname();  or person["fullName"]();
+
+JSON, using APIs - generally preferred over XML since more human-readable and be directly accessed cross-domain.
+Saving to JSON object:
+var favoriteSandwiches = {
+	"breakfast" : [ 
+		{ 
+			"name": "Egg, Sausage and Cheese",
+			"bread": "English Muffin" 
+		},
+		{
+			"name": "Egg Whites on Flatbread", 
+			"bread": "Flatbread"
+		} 
+	],
+	"lunch" : [ 
+		{
+			"name": "Turkey Club",
+			"bread": "Wheat Bread" 
+		},
+		{
+			"name": "Grilled Cheese", 
+			"bread": "White Bread"
+		} 
+	],
+	"dinner" : [ 
+		{
+			"name": "Meatball",
+			"bread": "Kaiser Roll" 
+		},
+		{
+			"name": "Hamburger", 
+			"bread": "Hamburger Roll"
+		} 
+	]
+};
+
+
+Web Storage in HTML5 for storing data in the user behavior layer (cookies becoming obsolete)
+localStorage and sessionStorage methods: setItem, getItem, and removeItem.
+sessionStorage data lives and dies with your browser/tab session and is not shared between tabs.
+localStorage data remains active until manually cleared.
+// check for webStorage browser support: if(typeof(localStorage) === "undefined")
+
+localStorage.setItem("favoriteSandwich", "Meatball");
+var sandwich = localStorage.getItem("favoriteSandwich");
+localStorage.removeItem("favoriteSandwich");
+
+Storing chunks of data with JSON:
+Web storage currently can take only strings for data. This can be problematic when you need to store multiple items. 
+You can get around this limitation by storing your data in a JSON object and then using the JSON.stringify method 
+to convert the entire object to a string that can be stored using Web storage.
+
+/* stringify the JSON object first */
+var stringObject = JSON.stringify(favoriteSandwiches);
+localStorage.setItem("favoriteSandwiches", stringObject);
+
+var storedItem = localStorage.getItem("favoriteSandwiches");
+/* convert it from a string, back into a JSON object */ 
+var convertObject = JSON.parse(storedItem);
+alert(convertObject.breakfast[0].name); // Egg, Sausage and Cheese
+
+VARIABLES, FUNCTIONS, LOOPS
+Keep in mind reserved keywords when declaring variables.
+
+Return multiple values as array format:
+function sayHello(greeting, exitStatement){
+  // add exclamation marks
+  var newGreeting = greeting + "!",
+      newExitStatement = exitStatement + "!!";
+  return [newGreeting, newExitStatement];
+}
+console.log(sayHello("hello", "world"));	// hello!,world!!
+
+
+Anonymous functions 
+Help limit scopes, reducing the amount of variable and function collisions in your code.
+// You can call outerFunction() but innerFunction() is limited to scope of outerFunction()
+function outerFunction() {
+   var innerData = "secret";
+   function innerFunction() {
+      // code
+   }
+}
+
+(function () {
+  var greeting = "Hello Tim";
+  alert("in scope: " + greeting);
+})();
+
+
+Callback functions
+When you have a function that calls another function, the second function is referred to as
+a callback.  The callback function is defined as a normal function with all the others but is 
+executed inside another function. They’re a little different because instead of you having to 
+do something to execute the function, another function does something. It’s like having robots 
+that are built by other robots.  Callback functions are a great way to separate out the levels 
+of functionality in your code and make parts more reusable.  Often you will see callback 
+functions passed as arguments to other functions, like in event handling. 
+
+A Function as a Method
+Just as you can group variables and data into objects, you can also do it with functions. When 
+you group functions into objects, they’re not called functions anymore; they’re called “methods.”
+Associating and sectioning off particular functions to a particular object due according to 
+functionality is good for organization and meaning.
+var dog = {
+  greet: function(msg) {
+    return msg;
+  },
+  fetch: function(obj) {
+    this.moveTo(obj.location);
+    this.pickUp(obj);
+    this.moveTo(this.owner.location);
+  }
+};
+dog.fetch(ball);
+
+Loops
+var contacts = { "addressBook" : [
+		{
+			"name": "hillisha", 
+			"email": "hill@example.com",
+		}, 
+		{
+			"name": "paul",
+			"email": "cleveland@example.com", },
+		{
+			"name": "vishaal",
+			"email": "vish@example.com", 
+		},
+		{
+			"name": "mike",
+			"email": "grady@example.com", 
+		},
+		{
+			"name": "jamie",
+			"email": "dusted@example.com",
+		} 
+	]
+};
+
+/* cache some initial variables */
+var object = contacts.addressBook, 
+	contactsCount = object.length, 
+	target = document.getElementsByTagName("body")[0], // where you're outputting the data
+	i; 
+
+if(contactsCount > 0) {
+	for (i = 0; i < contactsCount; i = i + 1) {
+		var item = object[i],
+			name = item.name, 
+			email = item.email;
+
+		/* insert each person's name & mailto link in the HTML */ 
+		target.innerHTML += '<p><a href="mailto:'+ email +'">' + name + '</a></p>';
+	}
+}
+
+

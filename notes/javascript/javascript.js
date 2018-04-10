@@ -1,6 +1,8 @@
-// console.log(some_variable) in developer tools console for debugging
-// document.write("hi")
-// alert("hi")
+EdX - Programming for the Web with JavaScript
+
+// console.log()
+// document.write()
+// alert()
 
 // var userName = prompt("Please enter name:");
 
@@ -2268,7 +2270,7 @@ app.listen(3000,  () => {
 				(Re-render entire HTML page)
 
 // Intead of sending back and re-rendering the entire page, how about sending back only the data
-// that resulted from the HTTP request, and have some client-side code take that data and render 
+// requested by the HTTP request, and have some client-side code take that data and render 
 // the HTML accordingly.
 
 // Use an API (Application Programming Interface)
