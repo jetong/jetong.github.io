@@ -543,3 +543,319 @@ if(contactsCount > 0) {
 }
 
 
+INTERACTING WITH THE USER THROUGH EVENTS
+
+How to attach/bind events to DOM elements
+(3 approaches: Best to use Event Listeners)
+
+-Inline event handlers — don't use these
+<button onclick="bgChange()">Press me</button>
+
+-Event Handlers
+var btn = document.querySelector('button');
+btn.onclick = functionA;
+btn.onclick = functionB;	// this overwrites the previous value of onclick
+							// can't attach more than one function to this button's click event
+
+-Event Listeners
+var btn = document.querySelector('button');
+btn.addEventListener('click', functionA);		
+btn.addEventListener('click', functionB);		
+// Here we have multiple functions associated with one button click.
+// If this is a button for a form submission, functionA can be for validating data
+// while functionB can use Ajax to submit the form. 
+// Can remove event listener to add other actions, or simply to clean up unused handlers.
+btn.removeEventListener('click', bgChange);
+
+// Note the lack of parentheses on the event listener functions: functionA and functionB
+// This is so that they don't execute on page load.
+// To pass arguments to them, turn them into callbacks by wrapping with an anonymous function:
+
+var btn = document.querySelector('button');
+// define our event handler function
+function functionA(message) {
+  alert(message); 
+}
+btn.addEventListener("click", function() {
+  functionA("clicked the button");  // callback with String argument 
+}, false);
+
+
+Specifying the 'this' reference:
+The 'this' reference can be tricky when event listeners are defined/wrapped within objects/functions.  The 'this'
+reference actually points to the element that fired the event, and not the object where it was created.
+The key thing to remember is that it is bound to the calling object when the function is called, 
+not when/where the function is created.
+
+Ways to access the 'this' reference to the object where the event listener was defined:
+
+The Function.prototype.bind() method lets you specify the value that should be used as this for
+all calls to a given function:
+Ex: with and without binding
+var Something = function(element) {
+  // 'this' is a newly created object
+  this.name = 'Something Good';
+  this.onclick1 = function(event) {
+    console.log(this.name); // undefined, as 'this' is the element
+  };
+  this.onclick2 = function(event) {
+    console.log(this.name); // 'Something Good', as 'this' is bound to newly created object
+  };
+  element.addEventListener('click', this.onclick1, false);		
+  element.addEventListener('click', this.onclick2.bind(this), false); // Trick
+}
+var s = new Something(document.body);
+
+A problem in the example above is that you cannot remove the listener with bind(). Another solution is using 
+a special function called handleEvent() to catch any events.  This method is called whenever an event occurs 
+of the type for which the EventListener interface was registered.
+var Something = function(element) {
+  // 'this' is a newly created object
+  this.name = 'Something Good';
+  this.handleEvent = function(event) {
+    console.log(this.name); // 'Something Good', as this is bound to newly created object
+    switch(event.type) {
+      case 'click':
+        // some code here...
+        break;
+      case 'dblclick':
+        // some code here...
+        break;
+    }
+  };
+
+  // Note that the listeners in this case are 'this', not this.handleEvent
+  element.addEventListener('click', this, false);
+  element.addEventListener('dblclick', this, false);
+
+  // You can properly remove the listeners
+  element.removeEventListener('click', this, false);
+  element.removeEventListener('dblclick', this, false);
+}
+var s = new Something(document.body);
+
+// Another example
+var obj = {
+    handleEvent: function() {
+        alert(this.msg);
+    },
+    msg: "hola"
+};
+element.addEventListener("click", obj, false);
+
+Another way of handling the reference to this is to pass to the EventListener a function that calls the method
+of the object which contains the fields that need to be accessed:
+class SomeClass {
+
+  constructor() {
+    this.name = 'Something Good';
+  }
+
+  register() {
+    var that = this;
+    window.addEventListener('keydown', function(e) {return that.someMethod(e);});
+  }
+
+  someMethod(e) {
+    console.log(this.name);
+    switch(e.keyCode) {
+      case 5:
+        // some code here...
+        break;
+      case 6:
+        // some code here...
+        break;
+    }
+  }
+
+}
+
+var myObject = new SomeClass();
+myObject.register();
+
+
+
+Event Propagation
+Optional 3rd parameter useCapture:
+addEventListener(event, function, useCapture);
+Event propagation is a way of defining the element order when an event occurs. 
+If you have a <p> element inside a <div> element, and the user clicks on the <p> element, 
+which element's "click" event should be handled first?
+--In bubbling the inner most element's event is handled first and then the outer: 
+  the <p> element's click event is handled first, then the <div> element's click event.
+--In capturing the outer most element's event is handled first and then the inner: 
+  the <div> element's click event will be handled first, then the <p> element's click event.
+The default value is false, which will use the bubbling propagation, when the value is set 
+to true, the event uses the capturing propagation.
+To override this propagation behavior, see Event Objects below.
+
+Event Objects
+Sometimes inside an event handler function, you might see a parameter specified with a name 
+such as event, evt, or simply e. This is called the event object, and it is automatically 
+passed to event handlers to provide extra features and information.
+Ex:
+// e.target always references the DOM element that fired the event
+// in this case, it refers to the button "btn", and so we change the bg color of the button.
+function colorChange(e) {
+  var rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+  e.target.style.backgroundColor = rndCol;
+  console.log(e);
+}  
+btn.addEventListener('click', colorChange);
+
+// Event object commonly used to prevent default behavior of form submission:
+// The default behavior of a form submission is to redirect to a specified page on the server
+// for processing the form data.  This default behavior is an issue when the user has not 
+// submitted the data correctly.  Instead we should prevent it and give them an error message.
+Use preventDefault()
+form.onsubmit = function(e) {
+  if (fname.value === '' || lname.value === '') {
+    e.preventDefault();
+    para.textContent = 'You need to fill in both names!';
+  }
+}
+
+Preventing Event Propagation:
+The problem: We have a video element wrapped with a div, each of which have their own
+			 onclick event, but they both fire because they are overlapping one another.
+			 The result: the video plays but the div hides itself (along with the video).
+
+<button>Display video</button>
+<div class="hidden">
+  <video>
+    <source src="rabbit320.mp4" type="video/mp4">
+    <source src="rabbit320.webm" type="video/webm">
+    <p>Your browser doesn't support HTML5 video. Here is a <a href="rabbit320.mp4">link to the video</a> instead.</p>
+  </video>
+</div>
+
+<script>
+  var btn = document.querySelector('button');
+  var videoBox = document.querySelector('div');
+  var video = document.querySelector('video');
+
+  // reveals div and thus the video upon button click
+  btn.onclick = function() {
+    videoBox.setAttribute('class', 'showing');
+  }
+
+  videoBox.onclick = function() {
+    videoBox.setAttribute('class', 'hidden');
+  };
+
+  video.onclick = function() {
+    video.play();
+  };
+</script>
+
+The fix: Tell the event object to stop the default bubbling propagation behavior.
+video.onclick = function(e) {
+  e.stopPropagation();
+  video.play();
+};
+// Note that now the hiding mechanism on the div no longer executes.
+// We can change the implementation by giving the video different states depending on
+// how many times it had been clicked on up to that point.
+// Use counter that cycles different states of the video.onclick
+// event handler.
+0 - showing but not playing (consider this the default after button click)
+1 - play video (video clicked once)
+2 - stop video (video clicked twice)
+3 - hide video (video clicked thrice)
+
+
+Mouse and Keyboard Events
+Different DOM elements are equipped with different event actions that can be listened for.
+
+Common events:
+■ click
+■ focus
+■ blur
+■ change
+■ mouseover (hover part 1)
+■ mouseout (hover part 2)
+■ submit (form submit)
+■ keydown
+■ keypress
+■ keyup
+
+
+Touch and Orientation Events
+
+<!doctype html> 
+<html lang="en"> 
+  <head>
+    <title>Touch Events</title> 
+    <meta charset="utf-8">
+    <style>
+      body { min-height:600px;background:#ddd; }
+    </style>
+  </head> 
+  <body>
+    <h1>Touch Events Demo</h1>
+    <!-- JS at the bottom, because we still rock at performance --> 
+    <script src="js/script.js"></script>
+  </body> 
+</html>
+
+
+touchstart, touchend, touchmove, and orientationchange:
+
+/* Anonymous function wrapper again! */
+(function() {
+	var body = document.getElementsByTagName("body")[0];
+
+	// declare an object to hold touch controls 
+	var touchControls = {
+
+		pokeTheScreen : function(){
+			// output a message to the body
+			body.innerHTML += "you just poked me, how rude!<br>";
+		}, 
+
+		showMovement : function(){
+			// output a message to the body 
+			body.innerHTML += "moving!!<br>";
+		} 
+	
+		stopPokingTheScreen: function(){
+			// output another message to the body
+			body.innerHTML += "please do not do that again.<br><br>";
+		}
+
+		changedOrientation : function(){
+			// clear out the body content whenever orientation changes
+			body.innerHTML = "";
+		}
+	} // end object
+
+	// add event listeners to the body
+	body.addEventListener("touchstart", touchControls.pokeTheScreen, false); 
+	body.addEventListener("touchmove", touchControls.showMovement, false);
+	body.addEventListener("touchend", touchControls.stopPokingTheScreen, false);
+	body.addEventListener("orientationchange", touchControls.changedOrientation, false);
+})();
+
+
+
+COMMUNICATING WITH THE SERVER THROUGH AJAX
+Ajax is the concept of refreshing a part of an HTML document without reloading the entire page
+More generally, it is a term that represents a collection of technologies that fosters client and 
+server communication (XML, JSON, plain text, or HTML as data source).
+
+Brief History:
+Client-server communications origninated in 1999 when Microsoft introduced the XMLHttp object, originally to
+address its mail client, Web Access 2000, so that it could communicate with with the server.  It was first
+implemented in IE5 as an ActiveX object and was very powerful, but riddled with security holes.  Mozilla
+soon came up with the XMLHttpRequest object and made it native in their first release of Mozilla 1.0.  Support
+for it rocketed in all browsers and it forever changed the Web.
+
+Ajax offers both synchronous and asynchronous server communication.
+Synchronous Ajax is not very common, but it means that the Ajax call happens at the same time as all the other 
+requests in your application.  If an Ajax call is processing something critical for the user to the point that 
+you need to block them from doing something while the request is going on, a synchronous Ajax call may apply.
+
+Asynchronous Ajax allows processes to happen in realtime in the background without any blocking and so the user
+can continue to interact with the page while other requests are being processing.
+
+
