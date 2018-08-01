@@ -50,7 +50,7 @@ To start considering responsive grids, we need to look at Fluid Grids and Respon
 
 Fluid Grids:
 We assign percentages to the column widths rather than specific pixel values.
-Change class="container" to class ="container-fluid" and class="row" to class="row=fluid"
+Change class="container" to class ="container-fluid" and class="row" to class="row-fluid"
 Embedded images also scale in both directions proportionally.
 
 Responsive Design:
@@ -1152,7 +1152,7 @@ Miscellaneous Components:
 
 Bootstrap and JavaScript
 Button states, modal dialogue boxes (with progress bar), tooltips & popovers(more persistent tooltip), 
-scrollspy, typeahead, carousel.
+scrollspy(nav bar item gets highlight as page scrolls to that section), typeahead, carousel.
 
 <!DOCTYPE html>
 <html>

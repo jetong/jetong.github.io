@@ -1,0 +1,75 @@
+@media only screen and (min-width: 641px) {
+
+
+/*---------- NAVIGATION -----------*/
+	/* hide the select dropdown that's in the phone display */
+	nav select{
+		display: none;
+	}
+
+	nav {padding: 0;}
+	/* turn the ul display back on (it was turned off in phone mode) */
+	nav ul {
+		display:block;
+		margin-left: 2%;
+		border-left:solid 1px rgba(255,255,255,0.3);
+	}
+	
+	/*main menu items float side by side*/
+	nav ul li {
+		float: left;
+	}
+	
+	nav ul li a {
+		/* want to display as block; this makes them sizeable and have a clickable area */
+		display:block;
+
+		color: #FFF;
+		text-decoration: none;
+		border-right:solid 1px rgba(255,255,255,0.3);
+		font-size: .9em;
+		padding: .7em .9em;
+	}
+
+	/* use the > to NOT highlight the sub menu items.  
+		> makes the highlighting effct apply to only the first immediate child */
+	nav ul li.active > a {background-color: #ff7200;} 
+	
+	 /*rules for the sub menu items*/
+	nav ul li ul {
+		/* specifies the stack order of an element.
+		  The larger the number, the higher its stack order.
+		  note: z-index only works on positioned elements */
+		z-index:99;
+		position: absolute;
+
+		/* pushes the menu way off to the side so as to hide it until hovered over 
+			can instead do display:none here and do a display:block in the 
+			nav li:hover ul style below (replacing the left: auto) */
+		left: -999em; 
+
+		width: 10em;
+		background-color: #B00;
+		margin: 0;
+	}
+	
+	/* this displays the menus as drop downs  */
+	nav li:hover ul { 
+		/* readjusts the left: -999em; above to put the menu in view */
+		left: auto;
+	}
+
+	/* overides the float and line from the parent ul */
+	
+	nav ul li ul li {
+		/* create horizontal dividers */
+		border-bottom: 1px solid rgba(0,0,0,0.3);		
+		/* the sublist items are currently floating left due to inheritance from parent "nav ul li".
+		clear this so that the sublist items display one on top of another */
+		float: none;
+		/* border-right is also inherited when creating vertical dividers in the nav, so remove this style */
+		border-right: none;
+	}
+
+
+} /*end of the media query */

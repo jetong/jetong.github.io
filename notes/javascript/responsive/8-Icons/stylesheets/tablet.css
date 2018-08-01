@@ -1,0 +1,37 @@
+@media only screen and (min-width: 641px) {
+
+
+/*-----COLOR BAR -----*/
+	#colorbar {
+		height: 4px;
+	}
+	
+	
+/*----- SOCIAL -----*/
+
+	/* in tablet mode, we want to relocate the icons from nav location to top right */
+	header .social {
+		position: absolute;
+		top: 2em;
+		right: 2%;	
+	}	
+	header .social li {
+		width: 44px;
+		border: none; /*remove phone effect*/
+		background-color: transparent; /*remove phone effect*/
+
+	}
+
+
+/*-----NAVIGATION -----*/	
+	nav ul li a br {display: none;}
+
+
+
+/*-----CONTENT -----*/
+
+
+
+
+
+} /*end of the media query */

@@ -1,3 +1,4 @@
+Contents:
 Basics (structure, best practices)
 Multimedia (audio/video)
 Graphics
@@ -5,7 +6,7 @@ Animations
 Forms (validation, new input types and attributes)
 APIs (cache manifest, web storage, local files, geolocation)
 
-Some best practices
+<!-- Some best practices -->
 Do title pages, use alt for images, web internationalization
 <meta charset="utf-i"/>
 <html lang="fr">
@@ -19,32 +20,35 @@ header, footer, nav, section, article, aside, main
 <!-- FlexBox -->
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-.flex-container {
-  display: flex;
-  background-color: Blue;
-}
+	<head>
+		<style>
+			.flex-container {
+				display: flex;
+				background-color: Blue;
+			}
+			
+			.flex-container > div {
+				background-color: #11f1f1;
+			  	margin: 10px;
+			 	padding: 20px;
+				font-size: 30px;
+				width:30%;
+			}
+		</style>
+		Contents:
+	</head>
 
-.flex-container > div {
-  background-color: #11f1f1;
-  margin: 10px;
-  padding: 20px;
-  font-size: 30px;
-  width:30%;
-}
-</style>
-</head>
-
-<body>
-<div class="flex-container">
-  <div>1</div>
-  <div>2</div>
-  <div>3</div>  
-</div>
-</body>
+	<body>
+		<div class="flex-container">
+  		<div>1</div>
+  		<div>2</div>
+  		<div>3</div>  
+		</div>
+	</body>
 </html>
 
+
+<!-- em -->
 CSS note: em unit is a ratio of the current element's font size, or if no font size is defined, it inherits
 from the nearest parent.  The font size then becomes a sort of base for the element's children and this 
 allows CSS to be modular.  Changing the base font size scales all the other sizes below.
@@ -117,6 +121,7 @@ More elaborate example: https://codepen.io/w3devcampus/pen/wKRwbX
     <a href="">Link2</a>
     </strong>
   </nav>
+
   <main class="column">
   <section>
     <article>
@@ -143,6 +148,7 @@ More elaborate example: https://codepen.io/w3devcampus/pen/wKRwbX
     </article>
   </section>
   </main>  
+
   <aside>
     <h2>HTML</h2>    
     <p>Stands for HyperText Markup Language. The current standard is HTML5.</p>
@@ -158,7 +164,7 @@ More elaborate example: https://codepen.io/w3devcampus/pen/wKRwbX
 </html>
  
 
-<!-- details & summary tags to create simple widget to hide/show contents -->
+<!-- details & summary tags to create simple clickable widget to hide/show contents -->
 <!-- The summary element is not supported in Edge/Internet Explorer -->
 <details>
   <summary>Copyright 1999-2014.</summary>
@@ -177,7 +183,7 @@ details[open] summary::-webkit-details-marker {
 }
 
 <!---------------------------------------->
-polyfills - fallback javascript code that emulates an HTML5 feature not yet implemented certain browsers
+polyfills - fallback javascript code that emulates an HTML5 feature not yet implemented in certain browsers
 http://caniuse.com
 http://html5please.com
 modernizr on github
@@ -195,6 +201,7 @@ quickly locate and parse them.
 Download attribute.
 <a href="https://www.somewhere.com/picture.gif" download="pic.gif">Download Picture</a>
 Enables ability to force a download rather than navigating to the file.  Downloaded filename can be specified as well.
+href attribute is the file source and download is the specified name to save that file as.
 
 <!---------------------------------------->
 Translate attribute.
@@ -207,11 +214,11 @@ Any children of the attributed elemented will also inherit the attribute.
 
 <!-- VIDEO EMBEDDING --> 
 Old way:
-   <param name="movie"
-          value="http://www.youtube.com/v/9sEI1AUFJKw&hl=en_GB&fs=1&">
-   </param>
+<object>
+   <param name="movie" value="http://www.youtube.com/v/9sEI1AUFJKw&hl=en_GB&fs=1&"></param>
    <param name="allowFullScreen"   value="true"></param>
    <param name="allowscriptaccess" value="always"></param>
+
    <embed src="http://www.youtube.com/v/9sEI1AUFJKw&hl=en_GB&fs=1&"
           type="application/x-shockwave-flash"
           allowscriptaccess="always" allowfullscreen="true"
@@ -221,7 +228,7 @@ Old way:
 
 HTML5
 <!-- attributes: controls, autoplay, loop.  
-     can style using css since <video> is part ot the DOM -->
+     can style using css since <video> is part of the DOM -->
 <video id="vid" controls autoplay> 
 	<!-- I have three versions of the video encoded with
 	     different codecs.  The browser will automatically
@@ -295,7 +302,7 @@ To detect end of video and do something else (like play another video), listen f
 
 For YouTube, Dailymotion, Vimeo, etc, need to embed differently:
 (right click on video and select 'copy embed code')
-(licensing and royalties prevent certain videos from playing)
+(licensing and royalties prevent certain videos from playing, so this may not always work)
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ZH1XOsv8Oyo" frameborder="0" allowfullscreen></iframe>
 
 Example using CSS3 transformations(zoom, rotate, etc) on video: https://jsbin.com/lunosev/1/edit?html,css,js,output
@@ -321,15 +328,12 @@ YouTube video and offers online editor.
 
 
 <!-- GRAPHICS using <canvas> -->
-Ensure page is loaded before running js: 
-either
-<body onload="init();">
-or
-in script, use window.onload = function() { get canvas object, etc };
-or
-place <script></script> tags at the very end
-or
-use defer
+Ensure page is loaded before running js using one of the following methods: 
+
+1) <body onload="init();">
+2) in script, use window.onload = function() { get canvas object, etc };
+3) place <script></script> tags at the very end
+4) use defer
 
 Steps:
 1.  Declare the canvas, remembering to add an id attribute, and fallback content:  
@@ -350,35 +354,35 @@ Example
 <html lang="en">
  <head>
    <title>Drawing principales unité</title>
-  <meta charset="utf-8"/>
- <style>
-     #myCanvas {
-         border: 1px solid black;
+   <meta charset="utf-8"/>
+   <style>
+       #myCanvas {
+           border: 1px solid black;
+       }
+   </style>
+   <script>
+     var canvas, ctx;
+   
+     function init() {
+       // 1 - Get the canvas
+       canvas = document.getElementById('myCanvas');
+       // 2 - Get the context
+       ctx=canvas.getContext('2d');
+       // Optionally do transformations to the context before drawing
+       ctx.translate(100, 100);
+       ctx.rotate(Math.PI/4);
+       ctx.scale(0.5, 0.5);
+       // 3 - we can draw
+       drawSomething();
      }
- </style>
- <script>
-   var canvas, ctx;
- 
-   function init() {
-     // 1 - Get the canvas
-     canvas = document.getElementById('myCanvas');
-     // 2 - Get the context
-     ctx=canvas.getContext('2d');
-     // Optionally do transformations to the context before drawing
-     ctx.translate(100, 100);
-     ctx.rotate(Math.PI/4);
-     ctx.scale(0.5, 0.5);
-     // 3 - we can draw
-     drawSomething();
-   }
-
-   function drawSomething() {
-     // draw a red rectangle, line width=3 pixels
-     ctx.lineWidth=3;
-     ctx.strokeStyle='red';
-     ctx.strokeRect(10,10,80,100);
-   }
- </script>
+  
+     function drawSomething() {
+       // draw a red rectangle, line width=3 pixels
+       ctx.lineWidth=3;
+       ctx.strokeStyle='red';
+       ctx.strokeRect(10,10,80,100);
+     }
+   </script>
  </head>
 <body onload="init();">
     <canvas id="myCanvas" width="200" height="200">
@@ -387,9 +391,9 @@ Example
 </body>
 </html>
 
-There are two methods for saving and restoring the context properties: ctx.save()and ctx.restore().
-Best practice: save the context at the beginning of any function 
-that changes the context, restore it at the end of the function!
+There are two methods for saving and restoring the context properties: ctx.save() and ctx.restore().
+Best practice: 
+save the context at the beginning of any function that changes the context, then restore it at the end of the function!
 
 To draw an image from a file source, make sure web page loaded, and make sure image is loaded in memory first:
 <script>
@@ -407,7 +411,7 @@ To draw an image from a file source, make sure web page loaded, and make sure im
   };
 </script>
 
-Path mode = fill a buffer then execute all buffered orders at once to enable optimization and parallelism
+Path mode = fill a buffer then execute all buffered orders with one go to enable optimization and parallelism
 Call drawing methods that work in path mode, for example call ctx.rect(...) instead of ctx.strokeRect(...) or ctx.fillRect(...)
 Call ctx.stroke() or ctx.fill() to draw the buffer's contents,
 Beware that the buffer is never emptied, two consecutive calls to ctx.stroke() will draw the buffer contents twice! Instead, use ctx.beginPath() to empty it if needed.
@@ -501,7 +505,7 @@ Core example:
         //setTimeout(animate, 100);
 
         requestAnimationFrame(animate);
-        // use setInterval to update the object state (changing color/speed) rather than for animating directly
+        // use setInterval to update the object state (changing color/speed) rather than animating directly
         setInterval(changeColor, 1000);
       }
       
@@ -586,19 +590,23 @@ The default coordinates of the mouse are its "window coordinates".  To get mouse
 getBoundingClientRect() to adjust origin.
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>JS Bin</title>
-    <style>
-      body {
-        margin: 20px;
-        padding: 0px;
-      }
-      canvas {
-        border:1px solid black
-      }
-    </style>
+
+  <head>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+
+      <style>
+        body {
+          margin: 20px;
+          padding: 0px;
+        }
+        canvas {
+          border:1px solid black
+        }
+      </style>
+
   </head>
+
   <body>
     This is a canvas:<p></p>
     <canvas id="myCanvas" width="578" height="200"></canvas>
@@ -1690,7 +1698,7 @@ form:valid {
   border: 5px solid #ddffdd;
 }
   
-input:required {  /* or refer using #email_input:required */
+input:required {  /* equivalent to using #email_input:required */
   border-color: #800000;
   border-width: 3px;
 }
@@ -1845,10 +1853,10 @@ Display colored gauge bar to correspond to range widget
 Download progress:  <progress id=pr value=500  max=1000></progress> 
   <script>
     var i=500;
-window.setInterval(function () {
-  i = (i+1) %1000;
-  document.getElementById('pr').value = i;
-},1);
+			window.setInterval(function () {
+			  i = (i+1) %1000;
+			  document.getElementById('pr').value = i;
+			},1);
   </script>
 </body>
 
@@ -2094,7 +2102,7 @@ MIME type text/cache-manifest. For example, with the Apache server, this line mu
 HTTP.conf configuration file (or in the .htaccess files): 
 AddType text/cache-manifest .appcache
 
-PITFALL #1 : When a file is available in the cache and on the remote HTTP server, it will always be retrieved from the cache!
+PITFALL #1: When a file is available in the cache and on the remote HTTP server, it will always be retrieved from the cache!
 PITFALL #2: If one file cannot be retrieved and cached, none of the files will be updated in the cache.
 
 Another manifest file example:

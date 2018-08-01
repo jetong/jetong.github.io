@@ -1,0 +1,122 @@
+/*-----Prevents iPhone from resizing in landscape mode -----*/
+html {-webkit-text-size-adjust: none; }
+
+/*----------- apply a natural box layout model to all elements --------------*/
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+/*-----BODY -----*/
+body {
+	font-size: 16px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:300;	/*also loaded 600 for bold*/
+}
+
+
+/*-----HEADER -----*/
+#headerWrapper {
+	background-color: #3B4044;
+}
+header {
+	padding: 1em 2% .5em 2%;
+}
+
+header h1 {
+	font-size: 2.1em;
+	color: #fff;
+}
+header h2 {
+	font-size: .9em;
+	font-weight: 300;
+	color: #ddd;
+	margin-top: .75em;
+}
+
+
+
+/*---------- NAVIGATION -----------*/
+#navWrapper {
+	background-color: #e61b10;
+	padding: .75em 2%;
+}
+
+button#showPhoneNav {
+	color: #FFF;
+	font-weight:600;
+	display: block;
+	border: 1px #222 solid;
+	border-radius: 1.5em; 
+	padding: .75em 0; 
+	width: 100%;
+	background-color: rgba(0,0,0,0.6);
+
+}
+/* To handle the very first visit to the webpage.  Since the default initial state of the button is to 
+	have the text "Show navigation", we want to actually have the navigation menu hidden from the start. */
+ul#myNav {
+	display: none;	
+}
+
+
+nav ul {
+	border: 1px #ccc solid;
+	border-radius: .5em; 
+	margin: .5em 2%; 
+	background-color: rgba(255,255,255,0.8); 
+	box-shadow: 0 0 5px #666;
+}
+
+nav ul li a {
+	display:block;
+	text-align:center;
+	padding: .6em;
+	border-top: 1px #cccccc solid;
+	color:#000;
+	text-decoration:none;
+	font-weight: 600;
+	
+}
+
+/* Each anchor has a border top to create a horizontal divider, including the very first anchor.
+	But this line protrudes from the rounded corners of the very top anchor element.
+	To fix this, target the very first li's anchor and clear its border-top style. */
+nav ul li:first-child a {border-top: none;}
+
+/* turns text of the active anchor to orange */
+nav ul li.active a {
+	color: #ff7200;	
+}
+
+
+
+/*----- CONTENT -----*/
+
+
+
+
+
+
+
+
+
+
+
+
+/*----- FOOTER -----*/
+#footerWrapper {background-color: #979791;}
+footer {
+	clear: both;
+	font-size: .7em;
+	color: #fff;
+	text-align: center;
+	padding: .6em;
+}
+footer a {color: #fff;}
+
+
+
+/* ----- OTHER STUFF ----*/
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}

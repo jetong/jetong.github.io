@@ -1,0 +1,103 @@
+/*-----Prevents iPhone from resizing in landscape mode -----*/
+html {-webkit-text-size-adjust: none; }
+
+/*----------- apply a natural box layout model to all elements --------------*/
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+/*-----BODY -----*/
+body {
+	font-size: 16px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:300;	/*also loaded 600 for bold*/
+}
+
+
+/*-----HEADER -----*/
+#headerWrapper {
+	background-color: #3B4044;
+}
+header {
+	padding: 1em 2% .5em 2%;
+}
+
+header h1 {
+	font-size: 2.1em;
+	color: #fff;
+}
+header h2 {
+	font-size: .9em;
+	font-weight: 300;
+	color: #ddd;
+	margin-top: .75em;
+}
+
+
+/*---------- NAVIGATION -----------*/
+#navWrapper {background-color: #e61b10;}	/* red */
+nav ul {
+	padding: 1em 0;	
+}
+nav ul li {
+	/* set some margin between list items to give illusion of a button against the red nav background. 
+		0 margin top & bottom, 2% on left and right */
+	margin: 0 2%;
+
+	/* set up items to be side by side (2 columns) */
+	/* the margin set above protrudes 2% on either side, so accommodate by setting width to 46% */
+	width: 46%;
+
+	/* In order to achieve 2 columns, we must let these list items float from the left and fill.
+		Otherwise, they will all stack up as 1 column */
+	/* Note that whenever you float something, it will overflow outside of its container (<ul> in this case).
+		We designate class `clearfix` for the ul element and style it to prevent this.  See clearfix below */
+	float:left;
+}
+nav ul li a {
+	text-align:center;
+
+	/* anchors are inline by default.  Make them block so that they are height  
+		and width controllable and occupy the entire width of the parent container */
+	display: block;		
+	font-weight: 600;
+	margin: .2em 0;
+	padding: .6em 0;
+
+	/* remove default underline of anchors */
+	text-decoration: none;
+	color: #FFF;
+
+	/* the background-color is already set to red in #navWrapper.
+		use rgba to darken by changing alpha value */
+	background-color: rgba(0,0,0,.15);
+
+	/* round the corners */
+	border-radius: 16px;
+
+	/* can do box shadow to make buttons look 3d /*
+	/* box-shadow: 1px 1px 4px #000; */
+}
+
+/* makes the active list element slightly darker than the rest */
+nav ul li.active a {
+	background-color: rgba(0,0,0,.4);		
+}
+
+
+/*----- FOOTER -----*/
+#footerWrapper {background-color: #979791;}
+footer {
+	clear: both;
+	font-size: .7em;
+	color: #fff;
+	text-align: center;
+	padding: .6em;
+}
+footer a {color: #fff;}
+
+
+/* ----- OTHER STUFF ----*/
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}

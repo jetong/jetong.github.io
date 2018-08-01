@@ -1,0 +1,45 @@
+@media only screen and (min-width: 641px) {
+
+/*---------- NAVIGATION -----------*/
+	/* Hide the button in tablet view */
+	button#showPhoneNav { display: none;}
+	
+	#navWrapper {padding: 0;}
+	nav ul {
+		/*forces the menu to reappear on the tablet regardless if it was previously hidden in phone view */
+		display: block!important; 
+
+		/*remove phone effects.  for the tablet view, we want a horizontal nav display of these items */
+		padding: 0; 
+		margin: 0 0 0 2%; 
+		border: none;
+		border-left: solid 1px rgba(255,255,255,0.4);
+		border-radius: 0;
+		box-shadow:none;
+		background-color:transparent;
+	}
+	nav ul li {
+		/* make items float from left to right horizontally */
+		float: left;
+	}
+	nav ul li a {
+		/*remove phone effects*/
+		border: none; /* removes border-top horizontal dividers */
+		
+		/*add effects for the tablet*/
+		padding: 1em 1.5em;
+		font-weight: 300;
+		font-size: .9em;
+		border-right: solid 1px rgba(255,255,255,0.4);
+		color: #fff;
+		
+	}
+	
+	/* note that active is the one currently selected.  it's different from hover */
+	nav ul li.active a {
+		color: #FFFFFF;
+		background-color: rgba(0,0,0,0.4);		
+	}
+
+
+} /*end of the media query */

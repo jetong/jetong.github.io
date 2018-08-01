@@ -1,0 +1,5 @@
+demos cropping for hero image
+
+and also demos scaling + cropping combined for images within content area.
+
+prep by photoshopping original images and cropping them for each of mobile, tablet, and desktop modes.

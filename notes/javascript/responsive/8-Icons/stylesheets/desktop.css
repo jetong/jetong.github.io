@@ -1,0 +1,42 @@
+@media only screen and (min-width: 1140px) {
+
+
+
+/*-----INSIDE THE WRAPPERS-----*/
+	header, nav, .row, footer {
+		max-width: 1140px;
+		margin: 0 auto; /*centers everything on the page*/
+	}
+
+/*-----HEADER -----*/
+	header {
+		/*needed for the social icons and phone number*/
+		/*corrects the absolute positioning done in tablet.css.  Because there is no parent wrapping the
+			.social icon class, the absolute positioning is based on the page or <body>, which doesn't
+			match with the rest of the formatted margins and paddings.  To fix this, we ensure that the
+			header tag, which is a parent containing .social, has relative positioning */
+		position: relative; 
+	}
+
+
+
+/*-----NAVIGATION -----*/	
+nav ul li {width: auto;}
+nav ul li a {padding: .2em 1.5em;}
+
+	
+	
+	
+
+/*-----CONTENT -----*/
+
+
+
+	
+	
+
+
+
+
+
+} /*end of the media query */

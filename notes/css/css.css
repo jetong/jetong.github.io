@@ -3,6 +3,7 @@ How many of these HTML elements are on my page? Do I want this style to apply to
 What are the children of this HTML element, and do I want this style to apply to them as well?
 Is this element a block element or an inline element, and does this style make sense in that context?
 
+To center align an element, set its margin:auto and set its parent(using div if needed) to have text-align:center.
 
 <!DOCTYPE html>
 <html lang="en">  
@@ -66,27 +67,27 @@ Is this element a block element or an inline element, and does this style make s
     </strong>
   </nav>
   <main class="column">
-  <article>
-    <h2>
-      About This Page
-    </h2>
-    <p>On this page, I am experimenting with HTML5 semantics and CSS flexbox for a tidy layout.</p>
-    <p>On JS Bin, I purposedly includes the stylesheet on the HTML tab (instead of separate CSS tab) for easier code reading for those with small screen.</p>
-    <p>The <code>main</code> element is placed within a <code>div</code> element along with <code>nav</code> and <code>aside</code>. I do not know if this is right or wrong (let me know?).</p>
-    <p>Navigation links are placed within <code>nav</code>, laid on the left. The <code>main</code> is at the center column (this column). Within it is the main topic (this article).</p>
-    <p>The <code>aside</code> element is at the rightmost of the column, I put supplemental information on it.</p>    
-  </article>
-  <article>
-    <h2>Test This Page!</h2>
-    <p>Do test this page by:</p>
-      <ul>
-        <li>Resizing the browser windows; see if flexbox lives up to its reputation.</li>
-        <li>Run HTML Outliner or HeadingsMap (or similar tool) and see if the outline is good. </li>
-        <li>Check the markup in this page with W3C Markup validator; see if the markups are good. Paste the URL of this page to the address column. <a href="https://validator.w3.org/" target="_blank">Click here to try!</a>.</li>
-        <li>Check the CSS part of this page too! <a href="https://jigsaw.w3.org/css-validator/" target="_blank">Click here!</a></li>
-      </ul>
-    
-  </article>
+    <article>
+      <h2>
+        About This Page
+      </h2>
+      <p>On this page, I am experimenting with HTML5 semantics and CSS flexbox for a tidy layout.</p>
+      <p>On JS Bin, I purposedly includes the stylesheet on the HTML tab (instead of separate CSS tab) for easier code reading for those with small screen.</p>
+      <p>The <code>main</code> element is placed within a <code>div</code> element along with <code>nav</code> and <code>aside</code>. I do not know if this is right or wrong (let me know?).</p>
+      <p>Navigation links are placed within <code>nav</code>, laid on the left. The <code>main</code> is at the center column (this column). Within it is the main topic (this article).</p>
+      <p>The <code>aside</code> element is at the rightmost of the column, I put supplemental information on it.</p>    
+    </article>
+    <article>
+      <h2>Test This Page!</h2>
+      <p>Do test this page by:</p>
+        <ul>
+          <li>Resizing the browser windows; see if flexbox lives up to its reputation.</li>
+          <li>Run HTML Outliner or HeadingsMap (or similar tool) and see if the outline is good. </li>
+          <li>Check the markup in this page with W3C Markup validator; see if the markups are good. Paste the URL of this page to the address column. <a href="https://validator.w3.org/" target="_blank">Click here to try!</a>.</li>
+          <li>Check the CSS part of this page too! <a href="https://jigsaw.w3.org/css-validator/" target="_blank">Click here!</a></li>
+        </ul>
+      
+    </article>
   </main>  
   <aside>
     <h2>HTML</h2>    

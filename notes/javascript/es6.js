@@ -1,4 +1,5 @@
 // ES6
+// PluralSight
 
 //////////////////////////////
 // Variables and Parameters //
@@ -123,7 +124,7 @@ let doWork = function(url, { data = "Scott", cache = true}) {
 let result = doWork("api/test", {cache: false}); // when doWork() returns data, data will have value of Scott.
 
 
-//// Rest Parameters
+//// Rest Parameters - Working with variable function arguments.
 
 // Makes it easier to work with an unknown or variable number of arguments in a function.
 
