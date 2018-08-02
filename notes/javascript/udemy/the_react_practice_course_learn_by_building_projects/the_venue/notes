@@ -1,0 +1,58 @@
+<App>
+    import styles.css at top level and all children components have access through className.
+
+    Note that "import Featured from './components/featured';" implicitly imports index.js
+    Also note the organizational structure this creates: index.js is simply a stateless component that wraps the other components in the featured folder: <Carousel> and <TimeUntil>.
+
+    Temporarily set height in order to test scroll events
+    <div className="App" style={{ height:"1500px", background:'cornflowerblue'}}>
+</App>
+
+<Header>
+    Makes extensive use of Material-UI.  AppBar components, Drawer component, List components, etc.
+    These components have a number of different prop options.  See doc: https://material-ui.com/api/app-bar/
+
+    Demonstrates use of Google fonts
+    Obtain link and paste into index.html
+    styles.css now has access to those fonts
+    reference that style within <Header> by using className reference.
+
+    <IconButton> is the menu button.
+    <SideDrawer> is the actual menu that renders on click.
+    Note that because both of these are child components of <Header>, state is tracked in <Header>.
+    <IconButton> simply sets drawerOpen state to true and <SideDrawer> sets it to false onClose.
+
+    Scroll event listener set up in componentDidMount()
+    Sets headerShow state to true when window.scrollY > 0, otherwise false making it transparent.
+    Note the <AppBar> style property that was set up to handle some of this logic:
+    backgroundColor: this.state.headerShow ? '#2f2f2f' : 'transparent'
+</Header>
+
+
+<Carousel>
+    Makes use of react-slick to enable Carousel functionality.
+
+    Note at each div level we style with height:`${window.innerHeight}px`
+    This ensures the carousel and its contained image spans the full height of the window on load.
+
+    Note use of ES6 spread operator to populate Slider props.
+    We use divs with style background:`url(${slide_one})` to include images.
+</Carousel>
+
+
+<TimeUntil>
+    This is the counter displaying how much time is left until the concert date.
+    Makes use of react-reveal for sliding effect.
+
+    We keep state on the time so that it re-renders when it changes each second.
+
+    Note use of ES6 within setState()
+
+    We run getTimeUntil() once every second after we're sure the component has mounted:
+    componentDidMount() {
+            setInterval(()=> this.getTimeUntil(this.state.deadline), 1000);
+    }
+
+    <Slide left delay={1000}>
+    Slide has many options.  Here we slide in from left after 1 sec.
+</TimeUntil>

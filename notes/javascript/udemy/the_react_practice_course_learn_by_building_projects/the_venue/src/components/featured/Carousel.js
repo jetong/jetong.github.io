@@ -7,6 +7,7 @@ import slide_three from '../../resources/images/slide_three.jpg';
 
 const Carousel = () => {
 
+    // prop settings for Slider
     const settings = {
         dots: false,        // remove default dots at bottom of carousel
         infinite: true,     // loop infinitely
