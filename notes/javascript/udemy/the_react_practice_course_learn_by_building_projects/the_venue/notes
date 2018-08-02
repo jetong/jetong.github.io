@@ -37,6 +37,9 @@
 
     Note use of ES6 spread operator to populate Slider props.
     We use divs with style background:`url(${slide_one})` to include images.
+
+    Carousel stylesheets were linked within index.html
+    See https://github.com/akiran/react-slick
 </Carousel>
 
 
