@@ -84,6 +84,8 @@ footer .footer_copyright {
     background-size: cover !important;
 }
 
+/*  Top and left positions the top left corner of the div at the center of the page.
+    Translation then moves the center of the div to match the center of the page */
 .artist_name {
     position: absolute;
     top: 50%;
@@ -150,6 +152,7 @@ footer .footer_copyright {
         VENUE NFO
 ======================*/
 
+/* flex items side by side */
 .vn_wrapper {
     display: flex;
     padding: 170px 0px;
@@ -172,11 +175,11 @@ footer .footer_copyright {
     border: 2px solid #828282;
     position: relative;
     padding: 0px 20px;
-    transition: all 500ms ease;
+    transition: all 500ms ease;     /* transition for hover effect */
 }
 
 .vn_item .vn_inner:hover {
-    background: #3e3e3e;
+    background: #333333;
 }
 
 .vn_item .vn_icon_square {
@@ -210,7 +213,7 @@ footer .footer_copyright {
 .vn_item .vn_desc {
     font-size: 30px;
     font-weight: 300;
-    margin-bottom: 90px;
+    margin-bottom: 70px;
 }
 
 /*====================

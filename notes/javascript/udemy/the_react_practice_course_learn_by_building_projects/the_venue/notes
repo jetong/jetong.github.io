@@ -59,3 +59,10 @@
     <Slide left delay={1000}>
     Slide has many options.  Here we slide in from left after 1 sec.
 </TimeUntil>
+
+
+<VenueNfo>
+    Uses react-reveal/Zoom with duration and delay.
+</VenueNfo>
+
+
