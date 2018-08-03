@@ -18,7 +18,7 @@
     reference that style within <Header> by using className reference.
 
     <IconButton> is the menu button.
-    <SideDrawer> is the actual menu that renders on click.
+    <SideDrawer> is the actual menu that renders on click.  (See scrolling effect at end of notes).
     Note that because both of these are child components of <Header>, state is tracked in <Header>.
     <IconButton> simply sets drawerOpen state to true and <SideDrawer> sets it to false onClose.
 
@@ -116,3 +116,18 @@ More info: https://reactjs.org/docs/lists-and-keys.html
 <Footer>
     Straight-forward footer with delayed fade in.
 </Footer>
+
+
+<SideDrawer>
+    Revisiting SideDrawer to implement react-scroll effect.
+    
+    Setting up the scroll effect requires 2 parts that will be linked.
+    Part 1 - Setting up event listener with scrollTo() method that references a specific Element by name.
+        In <SideDrawer>, import { scroller } from 'react-scroll';  This gives us access to the scrollTo() method.
+        Provide scrollTo() with an Element name reference and prop specs (use offset to adjust to header overlay).
+    Part 2 - Setting up Elements in <App> to associate with those name references from Part 1.
+        In <App>, import import { Element } from 'react-scroll';
+        Wrap components with <Element name="nameRef"> tag to give those components the scrollTo effect.
+
+    Add props.onClose(false); to event listener so that drawer closes on selection.
+</SideDrawer>
