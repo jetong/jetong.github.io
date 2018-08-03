@@ -83,3 +83,27 @@
 </Hightlights>
 
 
+<Pricing>
+Demonstration of using a function to map through an array of state data, and returning the populated JSX to return().
+
+Note the shorter syntax using parentheses in showBoxes().
+These are equivalent:
+
+showBoxes = () => (
+    <div>
+        Hello
+    </div>
+)
+
+showBoxes = () => {
+    return (
+        <div>
+            Hello
+        </div>
+    )
+}
+
+Also note that lists require keys and it's not recommended to use array indexes as keys even though this demo project does.
+More info: https://reactjs.org/docs/lists-and-keys.html
+</Pricing>
+
