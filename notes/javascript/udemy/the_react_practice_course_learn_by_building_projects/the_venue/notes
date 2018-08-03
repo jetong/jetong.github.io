@@ -66,3 +66,20 @@
 </VenueNfo>
 
 
+<Hightlights>
+    <Description> contains simple description that fades in
+    <Discount> contains the discount percentage with fade effect and discount description with slide effect.
+    The onReveal() property of <Fade> waits for the percent fade-in animation to complete, and then triggers function percentage() that updates the percentage state by 1, re-rendering the component.
+    Meanwhile, we detect the component's re-rendering and call percentage() to increment again.  These functions pass control back and forth until we hit 30%.
+
+    componentDidUpdate() {
+        setTimeout(()=> {
+            this.percentage();
+        }, 25)
+    }
+
+    We also went over how to create a reusable button.
+    Simply have the button component take in a props parameter that would populate the button template.
+</Hightlights>
+
+
