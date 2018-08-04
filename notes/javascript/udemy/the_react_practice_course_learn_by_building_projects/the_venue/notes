@@ -131,3 +131,9 @@ More info: https://reactjs.org/docs/lists-and-keys.html
 
     Add props.onClose(false); to event listener so that drawer closes on selection.
 </SideDrawer>
+
+
+Introduction to Surge frontend web hosting.
+1. In project root directory, do 'npm run build'
+2. npm install -g surge
+3. surge -p build
